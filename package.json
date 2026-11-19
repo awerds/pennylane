@@ -1,0 +1,30 @@
+{
+  "name": "pennylane",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Open-source automated real-estate discovery index surfacing exceptional architecture, below-median deals, and fresh-to-market finds — auto-removing listings once under contract.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "sync": "node scripts/sync-listings.mjs",
+    "sync:simulate": "node scripts/sync-listings.mjs --simulate-next-day"
+  },
+  "dependencies": {
+    "lucide-react": "^0.511.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.4",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.7.0",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3"
+  }
+}

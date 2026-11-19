@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f6f3ec;
+  --paper-raised: #fcfbf8;
+  --paper-inset: #ede8dc;
+  --ink: #121211;
+  --ink-soft: #59564f;
+  --rule: #ddd7cb;
+  --vermilion: #c6462b;
+  --vermilion-soft: #f7e6e2;
+  --sage: #245942;
+  --sage-soft: #e3efe9;
+  --ochre: #8c5f18;
+  --ochre-soft: #f5ecdc;
+
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--paper);
+    color: var(--ink);
+  }
+
+  ::selection {
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+}
+
+.font-serif-editorial {
+  font-family: var(--font-serif);
+}
+
+.font-mono-tech {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Native Modal Dialog: scroll containment & top-layer entry/exit transitions */
+dialog.editorial-modal {
+  padding: 0;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+  color: var(--ink);
+  max-width: min(1040px, calc(100vw - 2rem));
+  max-height: min(90dvh, 880px);
+  width: 100%;
+  margin: auto;
+  overflow: auto;
+  box-shadow: 0 32px 80px -20px rgb(18 18 17 / 0.34);
+
+  opacity: 0;
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.24s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-behavior: allow-discrete;
+}
+
+dialog.editorial-modal.editorial-modal--narrow {
+  max-width: min(760px, calc(100vw - 2rem));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.editorial-modal {
+    transform: translateY(10px) scale(0.985);
+  }
+}
+
+dialog.editorial-modal:modal {
+  overscroll-behavior: contain;
+}
+
+dialog.editorial-modal::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgb(18 18 17 / 0);
+  backdrop-filter: blur(0px);
+  transition-property: background-color, backdrop-filter, display, overlay;
+  transition-duration: 0.24s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+dialog.editorial-modal[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+:is(dialog.editorial-modal[open]):where(:not([data-closing])) {
+  opacity: 1;
+
+  @starting-style {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateY(0) scale(1);
+
+    @starting-style {
+      transform: translateY(10px) scale(0.985);
+    }
+  }
+
+  &::backdrop {
+    background-color: rgb(18 18 17 / 0.56);
+    backdrop-filter: blur(3px);
+
+    @starting-style {
+      background-color: rgb(18 18 17 / 0);
+      backdrop-filter: blur(0px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.editorial-modal,
+  dialog.editorial-modal::backdrop {
+    transition-duration: 0.1s;
+  }
+}
+
+/* Subtle live pulse for sync telemetry */
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+.sync-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sync-dot {
+    animation: none;
+  }
+}
+

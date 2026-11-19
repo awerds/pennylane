@@ -1,0 +1,44 @@
+name: Daily Property Sync
+
+on:
+  schedule:
+    # Runs every day at 13:00 UTC (8:00 AM EST / 9:00 AM EDT)
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run daily listing sync & contract-removal pruning
+        env:
+          ZILLOW_API_KEY: ${{ secrets.ZILLOW_API_KEY }}
+          ZILLOW_API_HOST: ${{ secrets.ZILLOW_API_HOST }}
+          RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
+          PENNYLANE_MARKETS: ${{ vars.PENNYLANE_MARKETS }}
+        run: node scripts/sync-listings.mjs
+
+      - name: Commit updated daily edition
+        run: |
+          git config user.name "pennylane-sync[bot]"
+          git config user.email "pennylane-sync[bot]@users.noreply.github.com"
+          git add public/data/listings.json public/data/changelog.json
+          if git diff --staged --quiet; then
+            echo "No listing changes today."
+          else
+            DATE=$(date -u +"%Y-%m-%d")
+            git commit -m "chore(sync): daily property index refresh & contract pruning [$DATE]"
+            git push
+          fi
+

@@ -1,0 +1,33 @@
+[
+  {
+    "id": "pl-community-seattle-houseboat",
+    "zpid": "49001122",
+    "title": "Architectural Cedar Floating Home on Lake Union With Rooftop Deck",
+    "address": "2418 Fairview Ave E, Slip C",
+    "city": "Seattle",
+    "state": "WA",
+    "zip": "98102",
+    "region": "West",
+    "price": 825000,
+    "previousPrice": 895000,
+    "zipMedianPricePerSqft": 695,
+    "beds": 2,
+    "baths": 2,
+    "sqft": 1480,
+    "lotAcres": 0.04,
+    "yearBuilt": 1984,
+    "daysOnMarket": 2,
+    "status": "FOR_SALE",
+    "architecturalStyle": "Maritime Modern",
+    "raritySignals": ["Owned Lake Union Moorage", "Private Kayak Launch", "Cedar Skylight Atrium", "Community Submission"],
+    "editorialNote": "Submitted via open-source watchlist PR: owned slip floating home with cedar millwork and unobstructed Space Needle sunset views—listed $138/sqft below Eastlake's median.",
+    "zillowUrl": "https://www.zillow.com/homes/Seattle-WA-98102_rb/",
+    "images": [
+      "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "source": "community-watchlist",
+    "submittedBy": "pennylane-bot"
+  }
+]
+
