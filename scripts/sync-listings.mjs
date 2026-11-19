@@ -3,7 +3,6 @@
  *
  * Run locally:    npm run sync
  * Simulate day+1: npm run sync:simulate
- * Run in CI:      .github/workflows/daily-sync.yml (daily cron -> commits public/data/*.json -> GitHub Pages)
  */
 
 import fs from 'node:fs/promises';
@@ -15,7 +14,6 @@ const ROOT = process.cwd();
 const LISTINGS_PATH = path.join(ROOT, 'public/data/listings.json');
 const CHANGELOG_PATH = path.join(ROOT, 'public/data/changelog.json');
 const RESERVE_PATH = path.join(ROOT, 'public/data/reserve.json');
-const POOL_PATH = path.join(ROOT, 'data/catalog-pool.json');
 
 async function readJsonSafe(filePath, fallback) {
   try {
@@ -30,7 +28,7 @@ async function main() {
   const existingFeed = await readJsonSafe(LISTINGS_PATH, {
     editionNumber: 0,
     syncedAt: null,
-    provider: 'open-curated',
+    provider: 'open-50state-index',
     listings: [],
   });
   const existingChangelog = await readJsonSafe(CHANGELOG_PATH, {
@@ -46,10 +44,14 @@ async function main() {
   }
   const isoNow = now.toISOString();
   const editionNumber = (existingFeed.editionNumber || 0) + 1;
-  const dayIndex = Math.floor(now.getTime() / (24 * 60 * 60 * 1000)) + (simulateNextDay ? editionNumber : 0);
+  const dayIndex =
+    Math.floor(now.getTime() / (24 * 60 * 60 * 1000)) + (simulateNextDay ? editionNumber : 0);
 
   const prevMap = new Map((existingFeed.listings || []).map((item) => [item.id, item]));
-  const { provider, candidates } = await fetchFromProvider(existingFeed.listings || [], { dayIndex });
+  const { provider, candidates, fullPool = [] } = await fetchFromProvider(
+    existingFeed.listings || [],
+    { dayIndex }
+  );
 
   const activeListings = [];
   const added = [];
@@ -58,7 +60,7 @@ async function main() {
 
   for (const candidate of candidates) {
     if (isUnderContract(candidate.status)) {
-      const removedEntry = {
+      removed.push({
         id: candidate.id,
         title: candidate.title,
         city: candidate.city,
@@ -73,8 +75,7 @@ async function main() {
             : 'Under Contract',
         removedAt: isoNow,
         architecturalStyle: candidate.architecturalStyle,
-      };
-      removed.push(removedEntry);
+      });
       continue;
     }
 
@@ -110,10 +111,14 @@ async function main() {
     activeListings.push(scored);
   }
 
-  // Sort by PennyLane Score descending, then newest
-  activeListings.sort((a, b) => b.scores.overall - a.scores.overall || a.daysOnMarket - b.daysOnMarket);
+  // Default sort: highest deal value (Deal Tier -> % below Zestimate -> overall PL score)
+  activeListings.sort(
+    (a, b) =>
+      b.dealTier - a.dealTier ||
+      a.zestimateDeltaPct - b.zestimateDeltaPct ||
+      b.scores.overall - a.scores.overall
+  );
 
-  // Seed initial realistic contract removal history on Edition #1 so visitors immediately see the contract-pruning ledger in action
   let removedArchive = existingChangelog.removedArchive || [];
   let totalRemoved = existingChangelog.totalRemovedUnderContract || 0;
 
@@ -143,7 +148,7 @@ async function main() {
       },
       {
         id: 'pl-archive-03',
-        title: '1889 Victorian Turret Townhouse — Estate Sale 28% Below Comps',
+        title: '1889 Victorian Turret Townhouse — Estate Sale 28% Below Zestimate',
         city: 'Providence',
         state: 'RI',
         finalPrice: 549000,
@@ -157,12 +162,15 @@ async function main() {
     totalRemoved = seedRemoved.length;
   }
 
-  removedArchive = [...removed, ...removedArchive].slice(0, 40);
+  removedArchive = [...removed, ...removedArchive].slice(0, 50);
   totalRemoved += removed.length;
 
   const avgDealDelta = Math.round(
-    activeListings.reduce((acc, item) => acc + item.medianDeltaPct, 0) / Math.max(activeListings.length, 1)
+    activeListings.reduce((acc, item) => acc + item.zestimateDeltaPct, 0) /
+      Math.max(activeListings.length, 1)
   );
+  const statesCovered = new Set(activeListings.map((l) => l.state)).size;
+  const stealCount = activeListings.filter((l) => l.dealTier >= 5).length;
 
   const nextFeed = {
     editionNumber,
@@ -170,6 +178,8 @@ async function main() {
     provider,
     summary: {
       activeCount: activeListings.length,
+      statesCovered,
+      stealCount,
       addedToday: added.length,
       removedToday: removed.length,
       priceDropsToday: priceDrops.length,
@@ -188,9 +198,9 @@ async function main() {
     addedCount: added.length,
     removedCount: removed.length,
     priceDropsCount: priceDrops.length,
-    added: added.slice(0, 6),
-    removed,
-    priceDrops,
+    added: added.slice(0, 8),
+    removed: removed.slice(0, 12),
+    priceDrops: priceDrops.slice(0, 8),
   };
 
   const nextChangelog = {
@@ -201,24 +211,24 @@ async function main() {
   };
 
   await fs.mkdir(path.dirname(LISTINGS_PATH), { recursive: true });
-  await fs.writeFile(LISTINGS_PATH, JSON.stringify(nextFeed, null, 2) + '\n', 'utf8');
+  // Compact JSON for fast static GitHub Pages CDN transfer of 1,200+ listings
+  await fs.writeFile(LISTINGS_PATH, JSON.stringify(nextFeed) + '\n', 'utf8');
   await fs.writeFile(CHANGELOG_PATH, JSON.stringify(nextChangelog, null, 2) + '\n', 'utf8');
 
-  // Export scored reserve pool (non-active candidates) so the live GitHub Pages demo can preview tomorrow's sync interactively
-  const fullPool = await readJsonSafe(POOL_PATH, []);
   const activeIdSet = new Set(activeListings.map((l) => l.id));
   const reserveScored = fullPool
     .filter((item) => !activeIdSet.has(item.id))
+    .slice(0, 40)
     .map((item) => ({
       ...scoreListing({ ...item, daysOnMarket: 0, status: 'FOR_SALE' }),
       firstSeenAt: isoNow,
       lastVerifiedAt: isoNow,
       isNewToday: true,
     }));
-  await fs.writeFile(RESERVE_PATH, JSON.stringify(reserveScored, null, 2) + '\n', 'utf8');
+  await fs.writeFile(RESERVE_PATH, JSON.stringify(reserveScored) + '\n', 'utf8');
 
   console.log(
-    `[PennyLane Sync] Edition #${editionNumber} (${provider}) | Active: ${activeListings.length} | +${added.length} added | -${removed.length} removed (under contract) | ${priceDrops.length} price drops`
+    `[PennyLane Sync] Edition #${editionNumber} (${provider}) | Active: ${activeListings.length} homes across ${statesCovered} states | Steals (5/5): ${stealCount} | +${added.length} added | -${removed.length} removed (under contract)`
   );
 }
 

@@ -29,12 +29,8 @@ export function matchesLocationQuery(listing: PropertyListing, rawQuery: string)
   if (!q) return true;
 
   const stateFull = getStateName(listing.state).toLowerCase();
-  const cityState = `${listing.city}, ${listing.state}`.toLowerCase();
-  const cityStateFull = `${listing.city}, ${stateFull}`.toLowerCase();
-
-  // Support multi-token queries like "Garrison NY 10524" or "California modern"
   const tokens = q.split(/[\s,]+/).filter(Boolean);
-  const searchable = `${listing.city} ${listing.state} ${stateFull} ${listing.zip} ${listing.region} ${cityState} ${cityStateFull} ${listing.title} ${listing.architecturalStyle} ${listing.raritySignals.join(' ')}`.toLowerCase();
+  const searchable = `${listing.city} ${listing.state} ${stateFull} ${listing.zip} ${listing.region} ${listing.title} ${listing.architecturalStyle} ${listing.raritySignals.join(' ')}`.toLowerCase();
 
   return tokens.every((token) => searchable.includes(token));
 }
@@ -53,6 +49,52 @@ export function formatPriceCompact(amount: number): string {
     return `$${m >= 10 ? m.toFixed(1) : m.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')}M`;
   }
   return `$${Math.round(amount / 1000)}k`;
+}
+
+export function dealTierMeta(tier: number): {
+  label: string;
+  barActive: string;
+  textClass: string;
+  badgeClass: string;
+} {
+  if (tier >= 5) {
+    return {
+      label: 'Steal',
+      barActive: 'bg-gradient-to-t from-emerald-600 to-teal-400',
+      textClass: 'text-emerald-700',
+      badgeClass: 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-emerald-600/30',
+    };
+  }
+  if (tier === 4) {
+    return {
+      label: 'Standout Deal',
+      barActive: 'bg-emerald-500',
+      textClass: 'text-emerald-700',
+      badgeClass: 'bg-emerald-600 text-white shadow-emerald-600/25',
+    };
+  }
+  if (tier === 3) {
+    return {
+      label: 'Strong Value',
+      barActive: 'bg-teal-500',
+      textClass: 'text-teal-700',
+      badgeClass: 'bg-teal-600 text-white shadow-teal-600/25',
+    };
+  }
+  if (tier === 2) {
+    return {
+      label: 'Fair Value',
+      barActive: 'bg-indigo-500',
+      textClass: 'text-indigo-700',
+      badgeClass: 'bg-indigo-600 text-white shadow-indigo-600/25',
+    };
+  }
+  return {
+    label: 'Market Ask',
+    barActive: 'bg-amber-500',
+    textClass: 'text-amber-700',
+    badgeClass: 'bg-amber-500 text-white shadow-amber-500/25',
+  };
 }
 
 export function matchesStyleGroup(listing: PropertyListing, group: StyleGroup): boolean {
@@ -85,7 +127,8 @@ export function matchesStyleGroup(listing: PropertyListing, group: StyleGroup): 
       hay.includes('schoolhouse') ||
       hay.includes('barn') ||
       hay.includes('carriage') ||
-      hay.includes('studio')
+      hay.includes('studio') ||
+      hay.includes('loft')
     );
   }
   if (group === 'desert') {
@@ -103,7 +146,8 @@ export function matchesStyleGroup(listing: PropertyListing, group: StyleGroup): 
       hay.includes('a-frame') ||
       hay.includes('maritime') ||
       hay.includes('alpine') ||
-      hay.includes('boathouse')
+      hay.includes('boathouse') ||
+      hay.includes('timber')
     );
   }
   return true;
@@ -141,12 +185,12 @@ export function categoryLabel(category: CategoryKey): string {
 
 export function categoryPillClasses(category: CategoryKey): string {
   if (category === 'deal') {
-    return 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/15';
+    return 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20';
   }
   if (category === 'new') {
-    return 'bg-rose-50 text-rose-700 ring-1 ring-rose-600/15';
+    return 'bg-rose-50 text-rose-700 ring-1 ring-rose-600/20';
   }
-  return 'bg-amber-50 text-amber-800 ring-1 ring-amber-600/15';
+  return 'bg-amber-50 text-amber-800 ring-1 ring-amber-600/20';
 }
 
 export function simulateNextDayClient(
@@ -165,7 +209,8 @@ export function simulateNextDayClient(
   const nextEdition = feed.editionNumber + 1;
 
   const sortedByDom = [...feed.listings].sort((a, b) => b.daysOnMarket - a.daysOnMarket);
-  const toRemove = sortedByDom.slice(0, Math.min(2, Math.max(1, feed.listings.length > 6 ? 2 : 1)));
+  const pruneCount = Math.min(12, Math.max(2, Math.floor(feed.listings.length * 0.01)));
+  const toRemove = sortedByDom.slice(0, pruneCount);
   const removeIds = new Set(toRemove.map((r) => r.id));
 
   const removedEntries: RemovedProperty[] = toRemove.map((item, idx) => ({
@@ -175,7 +220,7 @@ export function simulateNextDayClient(
     state: item.state,
     finalPrice: item.price,
     daysOnMarket: item.daysOnMarket + 1,
-    reason: idx % 2 === 0 ? 'Under Contract' : 'Pending Sale',
+    reason: idx % 3 === 0 ? 'Pending Sale' : 'Under Contract',
     removedAt: isoNow,
     architecturalStyle: item.architecturalStyle,
   }));
@@ -196,7 +241,7 @@ export function simulateNextDayClient(
       let previousPrice = item.previousPrice;
       let priceCutPct = item.priceCutPct;
 
-      if (idx === 1 && priceCutPct === 0) {
+      if (idx < 5 && priceCutPct === 0) {
         previousPrice = price;
         price = Math.round((price * 0.91) / 1000) * 1000;
         priceCutPct = Math.round(((previousPrice - price) / previousPrice) * 100);
@@ -209,33 +254,37 @@ export function simulateNextDayClient(
         });
       }
 
+      const estimatedSavings = Math.max(0, item.zestimate - price);
+      const zestimateDeltaPct = Math.round(((price - item.zestimate) / item.zestimate) * 100);
       const pricePerSqft = Math.round(price / Math.max(item.sqft, 400));
       const medianDeltaPct = Math.round(
         ((pricePerSqft - item.zipMedianPricePerSqft) / item.zipMedianPricePerSqft) * 100
       );
-      const nextCategories: CategoryKey[] = Array.from(
-        new Set([
-          ...item.categories.filter((c) => c !== 'new' || nextDom <= 3),
-          ...(medianDeltaPct <= -14 || priceCutPct >= 8 ? (['deal'] as CategoryKey[]) : []),
-        ])
-      );
-      if (nextCategories.length === 0) nextCategories.push('exceptional');
+
+      const belowZest = -zestimateDeltaPct;
+      const dealTier: 1 | 2 | 3 | 4 | 5 =
+        belowZest >= 28 ? 5 : belowZest >= 20 ? 4 : belowZest >= 12 ? 3 : belowZest >= 5 ? 2 : 1;
+      const dealLabel = dealTierMeta(dealTier).label;
 
       return {
         ...item,
         price,
         previousPrice,
+        estimatedSavings,
+        zestimateDeltaPct,
+        dealTier,
+        dealLabel,
         pricePerSqft,
         medianDeltaPct,
         priceCutPct,
         daysOnMarket: nextDom,
-        categories: nextCategories,
         isNewToday: false,
         lastVerifiedAt: isoNow,
       };
     });
 
-  const incoming = reservePool.slice(0, 2).map((item) => ({
+  const addCount = Math.min(14, reservePool.length);
+  const incoming = reservePool.slice(0, addCount).map((item) => ({
     ...item,
     daysOnMarket: 0,
     isNewToday: true,
@@ -244,17 +293,22 @@ export function simulateNextDayClient(
     categories: Array.from(new Set([...item.categories, 'new' as CategoryKey])),
   }));
   const remainingReserve = [
-    ...reservePool.slice(2),
+    ...reservePool.slice(addCount),
     ...toRemove.map((r) => ({ ...r, daysOnMarket: 0, isNewToday: true })),
   ];
 
   const merged = [...incoming, ...survivors].sort(
-    (a, b) => b.scores.overall - a.scores.overall || a.daysOnMarket - b.daysOnMarket
+    (a, b) =>
+      b.dealTier - a.dealTier ||
+      a.zestimateDeltaPct - b.zestimateDeltaPct ||
+      b.scores.overall - a.scores.overall
   );
 
   const avgMedianDeltaPct = Math.round(
-    merged.reduce((acc, l) => acc + l.medianDeltaPct, 0) / Math.max(merged.length, 1)
+    merged.reduce((acc, l) => acc + l.zestimateDeltaPct, 0) / Math.max(merged.length, 1)
   );
+  const statesCovered = new Set(merged.map((l) => l.state)).size;
+  const stealCount = merged.filter((l) => l.dealTier >= 5).length;
 
   const nextFeed: ListingsFeed = {
     editionNumber: nextEdition,
@@ -262,6 +316,8 @@ export function simulateNextDayClient(
     provider: `${feed.provider} (simulated)`,
     summary: {
       activeCount: merged.length,
+      statesCovered,
+      stealCount,
       addedToday: incoming.length,
       removedToday: removedEntries.length,
       priceDropsToday: priceDrops.length,
@@ -284,7 +340,7 @@ export function simulateNextDayClient(
         addedCount: incoming.length,
         removedCount: removedEntries.length,
         priceDropsCount: priceDrops.length,
-        added: incoming.map((a) => ({
+        added: incoming.slice(0, 8).map((a) => ({
           id: a.id,
           title: a.title,
           city: a.city,
@@ -297,11 +353,10 @@ export function simulateNextDayClient(
       },
       ...changelog.runs,
     ].slice(0, 14),
-    removedArchive: [...removedEntries, ...changelog.removedArchive].slice(0, 40),
+    removedArchive: [...removedEntries, ...changelog.removedArchive].slice(0, 50),
   };
 
-  const removedNames = removedEntries.map((r) => `${r.city}, ${r.state}`).join(' & ');
-  const summaryText = `Edition #${nextEdition}: +${incoming.length} new finds · −${removedEntries.length} removed under contract (${removedNames})`;
+  const summaryText = `Edition #${nextEdition}: +${incoming.length} new finds added · −${removedEntries.length} pruned under contract across ${statesCovered} states`;
 
   return { nextFeed, nextChangelog, nextReserve: remainingReserve, summaryText };
 }

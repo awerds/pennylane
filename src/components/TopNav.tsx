@@ -1,11 +1,13 @@
 import { Activity, Bookmark, Github } from 'lucide-react';
 import type { PropertyListing } from '../types';
+import { formatNumber } from '../utils/format';
 import { LocationSearch } from './LocationSearch';
 
 interface TopNavProps {
   locationQuery: string;
   listings: PropertyListing[];
   activeCount: number;
+  statesCovered: number;
   removedToday: number;
   savedCount: number;
   isSavedLens: boolean;
@@ -20,6 +22,7 @@ export function TopNav({
   locationQuery,
   listings,
   activeCount,
+  statesCovered,
   removedToday,
   savedCount,
   isSavedLens,
@@ -30,22 +33,22 @@ export function TopNav({
   onResetHome,
 }: TopNavProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
       {/* Signature 2.5px architectural color spectrum bar */}
       <div
-        className="h-[2.5px] w-full bg-gradient-to-r from-rose-500 via-amber-400 to-indigo-600"
+        className="h-[2.5px] w-full bg-gradient-to-r from-rose-500 via-amber-400 via-emerald-500 to-indigo-600"
         aria-hidden="true"
       />
 
-      <div className="mx-auto flex h-[62px] max-w-[1600px] items-center justify-between gap-3 px-4 sm:gap-5 sm:px-6 lg:px-8">
-        {/* Brand */}
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-2.5 sm:gap-5 sm:px-6 lg:px-8">
+        {/* Brand + Mission Tagline */}
         <button
           type="button"
           onClick={onResetHome}
           className="flex shrink-0 cursor-pointer items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 via-orange-500 to-indigo-600 text-white shadow-sm shadow-indigo-500/20">
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 via-amber-500 to-indigo-600 text-white shadow-sm shadow-indigo-500/20">
+            <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" aria-hidden="true">
               <path
                 d="M4 19V10.5L12 4.5L20 10.5V19"
                 stroke="currentColor"
@@ -56,15 +59,21 @@ export function TopNav({
               <circle cx="12" cy="14.5" r="2.2" fill="#FEF08A" />
             </svg>
           </span>
+
           <div className="hidden sm:block">
-            <span className="block text-[16.5px] font-bold tracking-[-0.03em] text-slate-950 leading-none">
-              penny<span className="text-indigo-600">lane</span>
-            </span>
-            <span className="mt-0.5 flex items-center gap-1.5 text-[11px] font-medium text-slate-500 leading-none tabular-nums">
-              <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              {isSimulated ? 'Preview · ' : ''}
-              {activeCount} live
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-[17px] font-bold tracking-[-0.03em] text-slate-950 leading-none">
+                penny<span className="text-indigo-600">lane</span>
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-500/20 tabular-nums">
+                <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                {isSimulated ? 'Preview · ' : ''}
+                {formatNumber(activeCount)} homes · {statesCovered} states
+              </span>
+            </div>
+            <p className="mt-1 hidden text-[11.5px] font-medium text-slate-500 leading-none xl:block">
+              Unique, high-value homes ranked by deal spread vs. Zestimate — updated daily, removed once under contract.
+            </p>
           </div>
         </button>
 
@@ -82,11 +91,11 @@ export function TopNav({
           <button
             type="button"
             onClick={onOpenLedger}
-            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-rose-200/80 bg-rose-50/70 px-3 text-xs font-medium text-rose-700 transition-colors hover:border-rose-300 hover:bg-rose-100/80"
+            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-rose-200/80 bg-rose-50/75 px-3 text-xs font-medium text-rose-700 transition-colors hover:border-rose-300 hover:bg-rose-100/80"
             title="Daily sync & auto-removed under-contract ledger"
           >
             <Activity className="h-3.5 w-3.5 text-rose-500" strokeWidth={2.2} />
-            <span className="hidden md:inline">Daily Feed</span>
+            <span className="hidden md:inline">Contracted</span>
             <span className="rounded-full bg-rose-500 px-1.5 py-0.5 text-[10px] font-semibold text-white tabular-nums">
               −{removedToday}
             </span>
@@ -129,6 +138,11 @@ export function TopNav({
             <Github className="h-4 w-4" strokeWidth={1.85} />
           </a>
         </div>
+      </div>
+
+      {/* Compact mobile/tablet tagline strip (hidden on xl where it sits inline in the brand block) */}
+      <div className="border-t border-slate-100 bg-slate-50/70 px-4 py-1.5 text-center text-[11px] font-medium text-slate-600 xl:hidden">
+        Unique, high-value homes across all {statesCovered} states — ranked by asking price vs. Zestimate, pruned once under contract.
       </div>
     </header>
   );

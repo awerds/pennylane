@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Pause, Play, SlidersHorizontal, Sparkles, X } from 'lucide-react';
+import { ChevronDown, Flame, Pause, Play, SlidersHorizontal, Sparkles, X } from 'lucide-react';
 import type { FilterLens, FilterState, SortMode, StyleGroup } from '../types';
-import { formatPriceCompact } from '../utils/format';
+import { formatNumber, formatPriceCompact } from '../utils/format';
 
 interface FilterStripProps {
   filters: FilterState;
   counts: {
     all: number;
+    steals: number;
     exceptional: number;
     deal: number;
     new: number;
@@ -33,16 +34,22 @@ const LENS_TABS: Array<{
     dotClass: 'bg-indigo-500',
   },
   {
-    key: 'exceptional',
-    label: 'Exceptional',
-    activeClass: 'bg-amber-500 text-white shadow-sm shadow-amber-500/25',
-    dotClass: 'bg-amber-500',
+    key: 'steals',
+    label: '5/5 Steals',
+    activeClass: 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-sm shadow-emerald-600/25',
+    dotClass: 'bg-emerald-500',
   },
   {
     key: 'deal',
     label: 'Good Deals',
     activeClass: 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/25',
-    dotClass: 'bg-emerald-500',
+    dotClass: 'bg-teal-500',
+  },
+  {
+    key: 'exceptional',
+    label: 'Unique',
+    activeClass: 'bg-amber-500 text-white shadow-sm shadow-amber-500/25',
+    dotClass: 'bg-amber-500',
   },
   {
     key: 'new',
@@ -53,9 +60,9 @@ const LENS_TABS: Array<{
 ];
 
 const PRICE_TIERS = [
-  { label: 'Under $400k', min: 0, max: 400000 },
-  { label: '$400k – $800k', min: 400000, max: 800000 },
-  { label: '$800k – $1.5M', min: 800000, max: 1500000 },
+  { label: 'Under $350k', min: 0, max: 350000 },
+  { label: '$350k – $750k', min: 350000, max: 750000 },
+  { label: '$750k – $1.5M', min: 750000, max: 1500000 },
   { label: '$1.5M+', min: 1500000, max: 0 },
 ];
 
@@ -111,6 +118,7 @@ export function FilterStrip({
     (filters.minBeds > 0 ? 1 : 0) +
     (filters.minBaths > 0 ? 1 : 0) +
     (filters.minSqft > 0 ? 1 : 0) +
+    (filters.minDealTier > 0 ? 1 : 0) +
     (filters.styleGroup !== 'all' ? 1 : 0);
 
   const hasAnyFilter =
@@ -124,9 +132,9 @@ export function FilterStrip({
   return (
     <div
       ref={stripRef}
-      className="sticky top-[64.5px] z-20 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl"
+      className="sticky top-[88px] z-20 border-b border-slate-200/75 bg-white/85 backdrop-blur-xl xl:top-[61px]"
     >
-      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-2.5 px-4 py-2 sm:px-6 lg:px-8">
         {/* Left: Color-Coded Category Segmented Pills + Filter Popover Triggers */}
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           <div
@@ -146,16 +154,20 @@ export function FilterStrip({
                     active ? tab.activeClass : 'text-slate-600 hover:text-slate-950'
                   }`}
                 >
-                  {!active && (
-                    <span className={`h-1.5 w-1.5 rounded-full ${tab.dotClass}`} aria-hidden="true" />
+                  {tab.key === 'steals' ? (
+                    <Flame className={`h-3 w-3 ${active ? 'text-amber-200' : 'text-emerald-600'}`} />
+                  ) : (
+                    !active && (
+                      <span className={`h-1.5 w-1.5 rounded-full ${tab.dotClass}`} aria-hidden="true" />
+                    )
                   )}
                   <span>{tab.label}</span>
                   <span
                     className={`text-[10.5px] tabular-nums ${
-                      active ? 'text-white/80' : 'text-slate-400'
+                      active ? 'text-white/85' : 'text-slate-400'
                     }`}
                   >
-                    {counts[tab.key]}
+                    {formatNumber(counts[tab.key])}
                   </span>
                 </button>
               );
@@ -276,7 +288,7 @@ export function FilterStrip({
             )}
           </div>
 
-          {/* Beds, Baths, SqFt & Style Popover Trigger */}
+          {/* Beds, Deal Scale & Style Popover Trigger */}
           <div className="relative">
             <button
               type="button"
@@ -289,7 +301,7 @@ export function FilterStrip({
               }`}
             >
               <SlidersHorizontal className="h-3.5 w-3.5" strokeWidth={2} />
-              <span>Beds &amp; Style</span>
+              <span>Filters</span>
               {specsCount > 0 && (
                 <span className="rounded-full bg-white/25 px-1.5 py-0.2 text-[10px] font-semibold tabular-nums">
                   {specsCount}
@@ -303,20 +315,52 @@ export function FilterStrip({
             </button>
 
             {openMenu === 'specs' && (
-              <div className="absolute top-[calc(100%+8px)] left-0 z-40 w-[330px] rounded-2xl border border-slate-200/90 bg-white p-4 shadow-[0_20px_56px_-16px_rgba(15,23,42,0.22)]">
+              <div className="absolute top-[calc(100%+8px)] left-0 z-40 w-[340px] rounded-2xl border border-slate-200/90 bg-white p-4 shadow-[0_20px_56px_-16px_rgba(15,23,42,0.22)]">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-950">Property Specs</span>
+                  <span className="text-xs font-semibold text-slate-950">Deal Scale &amp; Specs</span>
                   {specsCount > 0 && (
                     <button
                       type="button"
                       onClick={() =>
-                        onChange({ minBeds: 0, minBaths: 0, minSqft: 0, styleGroup: 'all' })
+                        onChange({
+                          minBeds: 0,
+                          minBaths: 0,
+                          minSqft: 0,
+                          minDealTier: 0,
+                          styleGroup: 'all',
+                        })
                       }
                       className="cursor-pointer text-[11px] font-medium text-indigo-600 hover:underline"
                     >
                       Clear
                     </button>
                   )}
+                </div>
+
+                {/* Deal Scale Rating */}
+                <div className="mt-3">
+                  <div className="text-[11px] font-medium text-slate-500">Minimum Deal Scale</div>
+                  <div className="mt-1.5 grid grid-cols-4 gap-1">
+                    {[
+                      { val: 0, label: 'Any' },
+                      { val: 3, label: '3/5+' },
+                      { val: 4, label: '4/5+' },
+                      { val: 5, label: '5/5 Steal' },
+                    ].map((opt) => (
+                      <button
+                        key={opt.val}
+                        type="button"
+                        onClick={() => onChange({ minDealTier: opt.val })}
+                        className={`cursor-pointer rounded-xl border py-1.5 text-[11.5px] font-semibold transition-colors ${
+                          filters.minDealTier === opt.val
+                            ? 'border-emerald-600 bg-emerald-600 text-white'
+                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-emerald-300'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Beds */}
@@ -411,8 +455,8 @@ export function FilterStrip({
             )}
           </div>
 
-          {/* Quick Deal Checkboxes */}
-          <label className="pl-check-label hidden h-9 cursor-pointer items-center gap-2 rounded-full border border-slate-200/90 bg-white px-3 text-xs font-medium text-slate-700 transition-colors select-none hover:border-rose-300 hover:bg-rose-50/40 lg:inline-flex">
+          {/* Quick Price Cut Checkbox */}
+          <label className="pl-check-label hidden h-9 cursor-pointer items-center gap-2 rounded-full border border-slate-200/90 bg-white px-3 text-xs font-medium text-slate-700 transition-colors select-none hover:border-rose-300 hover:bg-rose-50/40 xl:inline-flex">
             <input
               type="checkbox"
               checked={filters.priceCutsOnly}
@@ -420,16 +464,6 @@ export function FilterStrip({
               className="pl-native-check h-3.5 w-3.5 cursor-pointer rounded"
             />
             <span>Price Cuts</span>
-          </label>
-
-          <label className="pl-check-label hidden h-9 cursor-pointer items-center gap-2 rounded-full border border-slate-200/90 bg-white px-3 text-xs font-medium text-slate-700 transition-colors select-none hover:border-emerald-300 hover:bg-emerald-50/40 xl:inline-flex">
-            <input
-              type="checkbox"
-              checked={filters.belowMedianOnly}
-              onChange={(e) => onChange({ belowMedianOnly: e.target.checked })}
-              className="pl-native-check h-3.5 w-3.5 cursor-pointer rounded"
-            />
-            <span>20%+ Below Zip</span>
           </label>
 
           {hasAnyFilter && (
@@ -444,13 +478,12 @@ export function FilterStrip({
           )}
         </div>
 
-        {/* Right: Result Count, Pause/Play Motion Control (WCAG 2.2.2), Sort & +1 Day Demo */}
+        {/* Right: Result Count, Pause/Play Motion Control, Sort & +1 Day Demo */}
         <div className="flex shrink-0 items-center gap-2">
-          <span className="hidden text-xs font-medium text-slate-400 tabular-nums md:inline">
-            {resultCount} {resultCount === 1 ? 'find' : 'finds'}
+          <span className="hidden text-xs font-semibold text-slate-500 tabular-nums md:inline">
+            {formatNumber(resultCount)} {resultCount === 1 ? 'home' : 'homes'}
           </span>
 
-          {/* Accessible Pause/Play control for auto-transitioning property slides (no aria-pressed per WCAG / motion guide) */}
           <button
             type="button"
             onClick={onToggleMotion}
@@ -460,29 +493,30 @@ export function FilterStrip({
             {motionPaused ? (
               <>
                 <Play className="h-3 w-3 fill-current text-indigo-600" />
-                <span className="hidden lg:inline">Play Motion</span>
+                <span className="hidden xl:inline">Play Motion</span>
               </>
             ) : (
               <>
                 <Pause className="h-3 w-3 text-indigo-600" />
-                <span className="hidden lg:inline">Pause Motion</span>
+                <span className="hidden xl:inline">Pause Motion</span>
               </>
             )}
           </button>
 
-          <label className="inline-flex h-9 items-center rounded-full border border-slate-200/90 bg-white px-3 text-xs font-medium text-slate-700 transition-colors hover:border-slate-300">
+          <label className="inline-flex h-9 items-center rounded-full border border-emerald-200 bg-emerald-50/60 px-3 text-xs font-semibold text-emerald-800 transition-colors hover:border-emerald-300">
             <span className="sr-only">Sort listings</span>
             <select
               value={filters.sort}
               onChange={(e) => onChange({ sort: e.target.value as SortMode })}
-              className="cursor-pointer bg-transparent pr-1 text-xs font-medium text-slate-800 focus:outline-none"
+              className="cursor-pointer bg-transparent pr-1 text-xs font-semibold text-emerald-900 focus:outline-none"
             >
-              <option value="score">Top Ranked</option>
-              <option value="newest">Just Listed</option>
-              <option value="discount">Biggest Deal</option>
-              <option value="price-asc">Price: Low → High</option>
-              <option value="price-desc">Price: High → Low</option>
-              <option value="sqft-desc">Largest SqFt</option>
+              <option value="deal-value">Sort: Best Deal Value</option>
+              <option value="savings">Sort: Biggest $ Savings</option>
+              <option value="score">Sort: Top Overall Score</option>
+              <option value="newest">Sort: Just Listed</option>
+              <option value="price-asc">Sort: Price Low → High</option>
+              <option value="price-desc">Sort: Price High → Low</option>
+              <option value="sqft-desc">Sort: Largest SqFt</option>
             </select>
           </label>
 

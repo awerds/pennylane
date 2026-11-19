@@ -1,63 +1,278 @@
 {
-  "lastSyncedAt": "2026-11-20T23:03:03.496Z",
-  "totalRemovedUnderContract": 5,
+  "lastSyncedAt": "2026-11-20T23:32:40.349Z",
+  "totalRemovedUnderContract": 17,
   "runs": [
     {
       "editionNumber": 2,
-      "syncedAt": "2026-11-20T23:03:03.496Z",
-      "provider": "open-curated",
-      "addedCount": 2,
-      "removedCount": 2,
-      "priceDropsCount": 0,
+      "syncedAt": "2026-11-20T23:32:40.349Z",
+      "provider": "open-50state-index",
+      "addedCount": 16,
+      "removedCount": 14,
+      "priceDropsCount": 28,
       "added": [
         {
-          "id": "pl-milwaukee-cream-city-loft",
-          "title": "1894 Cream City Brick Corner Tavern Converted to Sculptor's Residence",
-          "city": "Milwaukee",
-          "state": "WI",
-          "price": 319000,
+          "id": "pl-ks-24",
+          "title": "Suspended Steel-and-Cypress Treehouse Studio in Forest Canopy",
+          "city": "Lindsborg",
+          "state": "KS",
+          "price": 689000,
+          "score": 60
+        },
+        {
+          "id": "pl-ky-24",
+          "title": "Restored 1904 Victorian Estate With Walled Secret Garden",
+          "city": "Berea",
+          "state": "KY",
+          "price": 492000,
+          "score": 81
+        },
+        {
+          "id": "pl-la-24",
+          "title": "1872 Italianate Villa Featuring 13-Foot Ceilings & Marble Hearths",
+          "city": "Natchitoches",
+          "state": "LA",
+          "price": 625000,
+          "score": 69
+        },
+        {
+          "id": "pl-me-24",
+          "title": "1896 Timber-Frame Grist Mill Straddling a Private Creek",
+          "city": "Bar Harbor",
+          "state": "ME",
+          "price": 1186000,
+          "score": 89
+        },
+        {
+          "id": "pl-md-24",
+          "title": "Cantilevered Glass & Steel Pavilion With Wraparound Views",
+          "city": "Frederick",
+          "state": "MD",
+          "price": 790000,
+          "score": 85
+        },
+        {
+          "id": "pl-ma-24",
+          "title": "Suspended Steel-and-Cypress Treehouse Studio in Forest Canopy",
+          "city": "Salem",
+          "state": "MA",
+          "price": 1571000,
+          "score": 67
+        },
+        {
+          "id": "pl-mi-24",
+          "title": "Restored 1904 Victorian Estate With Walled Secret Garden",
+          "city": "Detroit",
+          "state": "MI",
+          "price": 357000,
           "score": 91
         },
         {
-          "id": "pl-santa-barbara-spanish-courtyard",
-          "title": "1927 George Washington Smith-Era Adobe Villa With Citrus Courtyard",
-          "city": "Santa Barbara",
-          "state": "CA",
-          "price": 1745000,
-          "score": 92
+          "id": "pl-mn-24",
+          "title": "1872 Italianate Villa Featuring 13-Foot Ceilings & Marble Hearths",
+          "city": "Grand Marais",
+          "state": "MN",
+          "price": 1122000,
+          "score": 79
         }
       ],
       "removed": [
         {
-          "id": "pl-detroit-art-deco-mansion",
-          "title": "1929 Pewabic-Tiled Tudor Revival Estate in Palmer Woods",
-          "city": "Detroit",
-          "state": "MI",
-          "finalPrice": 519000,
-          "daysOnMarket": 10,
-          "reason": "Pending Sale",
-          "removedAt": "2026-11-20T23:03:03.496Z",
-          "architecturalStyle": "Historic Tudor / Art Deco"
+          "id": "pl-va-01",
+          "title": "1888 Second Empire Brick Mansion With Original Turret & Slate Roof",
+          "city": "Charlottesville",
+          "state": "VA",
+          "finalPrice": 944000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Historic Restoration"
         },
         {
-          "id": "pl-asheville-treehouse-glass",
-          "title": "Suspended Steel-and-Cypress Treehouse Studio on Blue Ridge Crest",
-          "city": "Asheville",
-          "state": "NC",
-          "finalPrice": 489000,
-          "daysOnMarket": 9,
+          "id": "pl-ny-03",
+          "title": "Cedar-Clad Cliffside A-Frame With Japanese Soaking Tub",
+          "city": "Ithaca",
+          "state": "NY",
+          "finalPrice": 770000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Coastal & Timber Retreat"
+        },
+        {
+          "id": "pl-mt-15",
+          "title": "1918 Industrial Foundry Warehouse Turned Sunlit Live-Work Loft",
+          "city": "Missoula",
+          "state": "MT",
+          "finalPrice": 743000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Adaptive Reuse Loft"
+        },
+        {
+          "id": "pl-in-03",
+          "title": "Restored 1904 Victorian Estate With Walled Secret Garden",
+          "city": "Indianapolis",
+          "state": "IN",
+          "finalPrice": 397000,
+          "daysOnMarket": 18,
           "reason": "Pending Sale",
-          "removedAt": "2026-11-20T23:03:03.496Z",
-          "architecturalStyle": "Appalachian Contemporary"
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Historic Restoration"
+        },
+        {
+          "id": "pl-sc-20",
+          "title": "Deconsecrated 1884 Stone Chapel Reborn as Vaulted Residence",
+          "city": "Beaufort",
+          "state": "SC",
+          "finalPrice": 1140000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Adaptive Reuse Loft"
+        },
+        {
+          "id": "pl-in-11",
+          "title": "1924 Coastal Keeper Cottage With Octagonal Watchtower Study",
+          "city": "Nashville",
+          "state": "IN",
+          "finalPrice": 742000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Coastal & Timber Retreat"
+        },
+        {
+          "id": "pl-nv-04",
+          "title": "Minimalist Blackened-Cedar Pavilion on Wooded Ridge",
+          "city": "Incline Village",
+          "state": "NV",
+          "finalPrice": 1997000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Mid-Century Modernist"
+        },
+        {
+          "id": "pl-fl-03",
+          "title": "Restored 1904 Victorian Estate With Walled Secret Garden",
+          "city": "Key West",
+          "state": "FL",
+          "finalPrice": 2313000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Historic Restoration"
+        },
+        {
+          "id": "pl-co-16",
+          "title": "Cantilevered Glass & Steel Pavilion With Wraparound Views",
+          "city": "Telluride",
+          "state": "CO",
+          "finalPrice": 3529000,
+          "daysOnMarket": 18,
+          "reason": "Pending Sale",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Mid-Century Modernist"
+        },
+        {
+          "id": "pl-tn-22",
+          "title": "Minimalist Blackened-Cedar Pavilion on Wooded Ridge",
+          "city": "Chattanooga",
+          "state": "TN",
+          "finalPrice": 917000,
+          "daysOnMarket": 18,
+          "reason": "Pending Sale",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Mid-Century Modernist"
+        },
+        {
+          "id": "pl-sd-18",
+          "title": "Architect-Designed Brutalist Concrete & White Oak Retreat",
+          "city": "Sioux Falls",
+          "state": "SD",
+          "finalPrice": 677000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Mid-Century Modernist"
+        },
+        {
+          "id": "pl-ak-09",
+          "title": "Deconsecrated 1884 Stone Chapel Reborn as Vaulted Residence",
+          "city": "Juneau",
+          "state": "AK",
+          "finalPrice": 812000,
+          "daysOnMarket": 18,
+          "reason": "Under Contract",
+          "removedAt": "2026-11-20T23:32:40.349Z",
+          "architecturalStyle": "Adaptive Reuse Loft"
         }
       ],
-      "priceDrops": []
+      "priceDrops": [
+        {
+          "id": "pl-mo-03",
+          "title": "1918 Industrial Foundry Warehouse Turned Sunlit Live-Work Loft",
+          "oldPrice": 287000,
+          "newPrice": 264000,
+          "dropPct": 8
+        },
+        {
+          "id": "pl-az-15",
+          "title": "Cantilevered Glass & Steel Pavilion With Wraparound Views",
+          "oldPrice": 1077000,
+          "newPrice": 991000,
+          "dropPct": 8
+        },
+        {
+          "id": "pl-mo-19",
+          "title": "Cantilevered Glass & Steel Pavilion With Wraparound Views",
+          "oldPrice": 462000,
+          "newPrice": 425000,
+          "dropPct": 8
+        },
+        {
+          "id": "pl-id-18",
+          "title": "Rammed-Earth Courtyard Compound With Zero-Edge Plunge Pool",
+          "oldPrice": 1054000,
+          "newPrice": 970000,
+          "dropPct": 8
+        },
+        {
+          "id": "pl-wi-06",
+          "title": "1924 Coastal Keeper Cottage With Octagonal Watchtower Study",
+          "oldPrice": 697000,
+          "newPrice": 641000,
+          "dropPct": 8
+        },
+        {
+          "id": "pl-ky-09",
+          "title": "Restored 1904 Victorian Estate With Walled Secret Garden",
+          "oldPrice": 428000,
+          "newPrice": 394000,
+          "dropPct": 8
+        },
+        {
+          "id": "pl-oh-15",
+          "title": "Waterfront Boathouse Residence With Private Deepwater Mooring",
+          "oldPrice": 556000,
+          "newPrice": 512000,
+          "dropPct": 8
+        },
+        {
+          "id": "pl-fl-13",
+          "title": "Restored 1904 Victorian Estate With Walled Secret Garden",
+          "oldPrice": 1484000,
+          "newPrice": 1365000,
+          "dropPct": 8
+        }
+      ]
     },
     {
       "editionNumber": 1,
-      "syncedAt": "2026-11-19T23:03:03.496Z",
-      "provider": "open-curated",
-      "addedCount": 47,
+      "syncedAt": "2026-11-19T23:32:40.349Z",
+      "provider": "open-50state-index",
+      "addedCount": 1197,
       "removedCount": 0,
       "priceDropsCount": 0,
       "added": [
@@ -67,7 +282,7 @@
           "city": "Garrison",
           "state": "NY",
           "price": 1485000,
-          "score": 82
+          "score": 77
         },
         {
           "id": "pl-marfa-adobe-compound",
@@ -75,7 +290,7 @@
           "city": "Marfa",
           "state": "TX",
           "price": 629000,
-          "score": 93
+          "score": 92
         },
         {
           "id": "pl-vermont-stone-mill",
@@ -83,7 +298,7 @@
           "city": "Woodstock",
           "state": "VT",
           "price": 785000,
-          "score": 86
+          "score": 91
         },
         {
           "id": "pl-detroit-art-deco-mansion",
@@ -91,7 +306,7 @@
           "city": "Detroit",
           "state": "MI",
           "price": 519000,
-          "score": 89
+          "score": 91
         },
         {
           "id": "pl-palm-springs-ufo-house",
@@ -99,7 +314,7 @@
           "city": "Palm Springs",
           "state": "CA",
           "price": 1295000,
-          "score": 74
+          "score": 71
         },
         {
           "id": "pl-oregon-coastal-aframe",
@@ -108,6 +323,22 @@
           "state": "OR",
           "price": 698000,
           "score": 75
+        },
+        {
+          "id": "pl-savannah-carriage-house",
+          "title": "1884 Brick Carriage House Hidden Behind Walled Wisteria Courtyard",
+          "city": "Savannah",
+          "state": "GA",
+          "price": 579000,
+          "score": 86
+        },
+        {
+          "id": "pl-santa-fe-earthship-dome",
+          "title": "Off-Grid Solar Atrium Earthship With Indoor Banana Greenhouse",
+          "city": "Taos",
+          "state": "NM",
+          "price": 445000,
+          "score": 90
         }
       ],
       "removed": [],
@@ -116,26 +347,158 @@
   ],
   "removedArchive": [
     {
-      "id": "pl-detroit-art-deco-mansion",
-      "title": "1929 Pewabic-Tiled Tudor Revival Estate in Palmer Woods",
-      "city": "Detroit",
-      "state": "MI",
-      "finalPrice": 519000,
-      "daysOnMarket": 10,
-      "reason": "Pending Sale",
-      "removedAt": "2026-11-20T23:03:03.496Z",
-      "architecturalStyle": "Historic Tudor / Art Deco"
+      "id": "pl-va-01",
+      "title": "1888 Second Empire Brick Mansion With Original Turret & Slate Roof",
+      "city": "Charlottesville",
+      "state": "VA",
+      "finalPrice": 944000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Historic Restoration"
     },
     {
-      "id": "pl-asheville-treehouse-glass",
-      "title": "Suspended Steel-and-Cypress Treehouse Studio on Blue Ridge Crest",
-      "city": "Asheville",
-      "state": "NC",
-      "finalPrice": 489000,
-      "daysOnMarket": 9,
+      "id": "pl-ny-03",
+      "title": "Cedar-Clad Cliffside A-Frame With Japanese Soaking Tub",
+      "city": "Ithaca",
+      "state": "NY",
+      "finalPrice": 770000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Coastal & Timber Retreat"
+    },
+    {
+      "id": "pl-mt-15",
+      "title": "1918 Industrial Foundry Warehouse Turned Sunlit Live-Work Loft",
+      "city": "Missoula",
+      "state": "MT",
+      "finalPrice": 743000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Adaptive Reuse Loft"
+    },
+    {
+      "id": "pl-in-03",
+      "title": "Restored 1904 Victorian Estate With Walled Secret Garden",
+      "city": "Indianapolis",
+      "state": "IN",
+      "finalPrice": 397000,
+      "daysOnMarket": 18,
       "reason": "Pending Sale",
-      "removedAt": "2026-11-20T23:03:03.496Z",
-      "architecturalStyle": "Appalachian Contemporary"
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Historic Restoration"
+    },
+    {
+      "id": "pl-sc-20",
+      "title": "Deconsecrated 1884 Stone Chapel Reborn as Vaulted Residence",
+      "city": "Beaufort",
+      "state": "SC",
+      "finalPrice": 1140000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Adaptive Reuse Loft"
+    },
+    {
+      "id": "pl-in-11",
+      "title": "1924 Coastal Keeper Cottage With Octagonal Watchtower Study",
+      "city": "Nashville",
+      "state": "IN",
+      "finalPrice": 742000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Coastal & Timber Retreat"
+    },
+    {
+      "id": "pl-nv-04",
+      "title": "Minimalist Blackened-Cedar Pavilion on Wooded Ridge",
+      "city": "Incline Village",
+      "state": "NV",
+      "finalPrice": 1997000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Mid-Century Modernist"
+    },
+    {
+      "id": "pl-fl-03",
+      "title": "Restored 1904 Victorian Estate With Walled Secret Garden",
+      "city": "Key West",
+      "state": "FL",
+      "finalPrice": 2313000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Historic Restoration"
+    },
+    {
+      "id": "pl-co-16",
+      "title": "Cantilevered Glass & Steel Pavilion With Wraparound Views",
+      "city": "Telluride",
+      "state": "CO",
+      "finalPrice": 3529000,
+      "daysOnMarket": 18,
+      "reason": "Pending Sale",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Mid-Century Modernist"
+    },
+    {
+      "id": "pl-tn-22",
+      "title": "Minimalist Blackened-Cedar Pavilion on Wooded Ridge",
+      "city": "Chattanooga",
+      "state": "TN",
+      "finalPrice": 917000,
+      "daysOnMarket": 18,
+      "reason": "Pending Sale",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Mid-Century Modernist"
+    },
+    {
+      "id": "pl-sd-18",
+      "title": "Architect-Designed Brutalist Concrete & White Oak Retreat",
+      "city": "Sioux Falls",
+      "state": "SD",
+      "finalPrice": 677000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Mid-Century Modernist"
+    },
+    {
+      "id": "pl-ak-09",
+      "title": "Deconsecrated 1884 Stone Chapel Reborn as Vaulted Residence",
+      "city": "Juneau",
+      "state": "AK",
+      "finalPrice": 812000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Adaptive Reuse Loft"
+    },
+    {
+      "id": "pl-ca-19",
+      "title": "Cantilevered Glass & Steel Pavilion With Wraparound Views",
+      "city": "Carmel",
+      "state": "CA",
+      "finalPrice": 2804000,
+      "daysOnMarket": 18,
+      "reason": "Under Contract",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Mid-Century Modernist"
+    },
+    {
+      "id": "pl-me-11",
+      "title": "1924 Coastal Keeper Cottage With Octagonal Watchtower Study",
+      "city": "Portland",
+      "state": "ME",
+      "finalPrice": 1418000,
+      "daysOnMarket": 18,
+      "reason": "Pending Sale",
+      "removedAt": "2026-11-20T23:32:40.349Z",
+      "architecturalStyle": "Coastal & Timber Retreat"
     },
     {
       "id": "pl-archive-01",
@@ -145,7 +508,7 @@
       "finalPrice": 1890000,
       "daysOnMarket": 4,
       "reason": "Under Contract",
-      "removedAt": "2026-11-18T21:03:03.496Z",
+      "removedAt": "2026-11-18T21:32:40.349Z",
       "architecturalStyle": "Mid-Century Modern"
     },
     {
@@ -156,18 +519,18 @@
       "finalPrice": 745000,
       "daysOnMarket": 6,
       "reason": "Pending Sale",
-      "removedAt": "2026-11-17T21:03:03.496Z",
+      "removedAt": "2026-11-17T21:32:40.349Z",
       "architecturalStyle": "Adaptive Reuse"
     },
     {
       "id": "pl-archive-03",
-      "title": "1889 Victorian Turret Townhouse — Estate Sale 28% Below Comps",
+      "title": "1889 Victorian Turret Townhouse — Estate Sale 28% Below Zestimate",
       "city": "Providence",
       "state": "RI",
       "finalPrice": 549000,
       "daysOnMarket": 3,
       "reason": "Under Contract",
-      "removedAt": "2026-11-16T21:03:03.496Z",
+      "removedAt": "2026-11-16T21:32:40.349Z",
       "architecturalStyle": "Queen Anne Victorian"
     }
   ]

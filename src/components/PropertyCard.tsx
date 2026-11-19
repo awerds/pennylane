@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, Bookmark, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Bookmark, ChevronLeft, ChevronRight, Flame } from 'lucide-react';
 import type { PropertyListing } from '../types';
-import { formatCurrency, formatNumber } from '../utils/format';
+import {
+  dealTierMeta,
+  formatCurrency,
+  formatNumber,
+  formatPriceCompact,
+} from '../utils/format';
 import { PropertyImage } from './PropertyImage';
 
 interface PropertyCardProps {
@@ -32,8 +37,8 @@ export function PropertyCard({
 
   const images = listing.images.length > 0 ? listing.images : [''];
   const hasMultiplePhotos = images.length > 1;
+  const dealMeta = dealTierMeta(listing.dealTier);
 
-  // Track viewport visibility so only on-screen cards auto-transition (zero offscreen work)
   useEffect(() => {
     const el = cardRef.current;
     if (!el || typeof IntersectionObserver === 'undefined') {
@@ -50,13 +55,11 @@ export function PropertyCard({
     return () => observer.disconnect();
   }, []);
 
-  // Organic staggered auto-crossfade across visible cards (pauses on hover/focus or global Pause Motion)
   useEffect(() => {
     if (!hasMultiplePhotos || motionPaused || !isVisible || isInteracting) return;
 
-    // Stagger interval (5.0s–7.8s) and initial offset so cards crossfade organically instead of in unison
-    const cycleMs = 5000 + ((index * 719) % 2800);
-    const initialDelayMs = 1400 + ((index * 937) % 3400);
+    const cycleMs = 5200 + ((index * 719) % 2800);
+    const initialDelayMs = 1500 + ((index * 937) % 3400);
 
     let intervalId: number | undefined;
     const timeoutId = window.setTimeout(() => {
@@ -72,26 +75,12 @@ export function PropertyCard({
     };
   }, [hasMultiplePhotos, images.length, index, isInteracting, isVisible, motionPaused]);
 
-  const signalBadge =
-    listing.isNewToday || listing.daysOnMarket === 0
-      ? { label: 'New Today', tone: 'bg-rose-500/95 text-white shadow-rose-500/30' }
-      : listing.priceCutPct >= 10
-      ? { label: `−${listing.priceCutPct}% Cut`, tone: 'bg-indigo-600/95 text-white shadow-indigo-600/30' }
-      : listing.medianDeltaPct <= -20
-      ? { label: `${Math.abs(listing.medianDeltaPct)}% Below Zip`, tone: 'bg-emerald-600/95 text-white shadow-emerald-600/30' }
-      : { label: 'Rare Find', tone: 'bg-amber-500/95 text-white shadow-amber-500/30' };
-
-  const scoreTone =
-    listing.scores.overall >= 88
-      ? 'bg-gradient-to-r from-amber-500 to-rose-500 text-white'
-      : listing.scores.overall >= 80
-      ? 'bg-indigo-600/90 text-white'
-      : 'bg-slate-900/75 text-white';
-
   const stepPhoto = (e: React.MouseEvent, delta: number) => {
     e.stopPropagation();
     setPhotoIdx((prev) => (prev + delta + images.length) % images.length);
   };
+
+  const pctBelowZest = Math.max(0, -listing.zestimateDeltaPct);
 
   return (
     <article
@@ -104,14 +93,14 @@ export function PropertyCard({
           setIsInteracting(false);
         }
       }}
-      className={`group flex flex-col rounded-3xl bg-white/85 p-2.5 ring-1 ring-slate-200/75 shadow-[0_2px_10px_-4px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:ring-indigo-300/80 hover:shadow-[0_18px_40px_-18px_rgba(79,70,229,0.22)] ${
+      className={`group flex flex-col rounded-3xl bg-white/90 p-2.5 ring-1 ring-slate-200/80 shadow-[0_2px_10px_-4px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:ring-indigo-300/80 hover:shadow-[0_18px_40px_-18px_rgba(79,70,229,0.2)] ${
         featured ? 'sm:col-span-2' : ''
       }`}
     >
       {/* Rounded Multi-Layer Crossfade Photo Stage */}
       <div
         className={`relative w-full overflow-hidden rounded-2xl bg-slate-100 ${
-          featured ? 'aspect-[16/10] sm:aspect-[2.15/1]' : 'aspect-[4/3]'
+          featured ? 'aspect-[16/10] sm:aspect-[2.25/1]' : 'aspect-[4/3]'
         }`}
       >
         <button
@@ -144,22 +133,25 @@ export function PropertyCard({
 
         {/* Subtle bottom scrim */}
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-20 bg-gradient-to-t from-slate-950/45 via-slate-950/10 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-20 bg-gradient-to-t from-slate-950/50 via-slate-950/15 to-transparent"
           aria-hidden="true"
         />
 
-        {/* Top-left Vibrant Signal Pill */}
-        <div className="pointer-events-none absolute top-3 left-3 z-[3] flex items-center gap-1.5">
-          {featured && (
-            <span className="rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold tracking-tight text-indigo-700 shadow-sm backdrop-blur-md">
-              Featured Find
+        {/* Top-left High-Contrast Deal Value Badge */}
+        <div className="pointer-events-none absolute top-3 left-3 z-[3] flex flex-wrap items-center gap-1.5">
+          <span
+            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold tracking-tight shadow-sm backdrop-blur-md tabular-nums ${dealMeta.badgeClass}`}
+          >
+            {listing.dealTier >= 5 && <Flame className="h-3 w-3 text-amber-200" />}
+            <span>{dealMeta.label}</span>
+            {pctBelowZest > 0 && <span className="opacity-90">· −{pctBelowZest}%</span>}
+          </span>
+
+          {(listing.isNewToday || listing.daysOnMarket === 0) && (
+            <span className="rounded-full bg-rose-500/95 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm backdrop-blur-md">
+              New
             </span>
           )}
-          <span
-            className={`rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-tight shadow-sm backdrop-blur-md tabular-nums ${signalBadge.tone}`}
-          >
-            {signalBadge.label}
-          </span>
         </div>
 
         {/* Top-right Save Button */}
@@ -213,34 +205,66 @@ export function PropertyCard({
           </>
         )}
 
-        {/* Bottom-right Score Pill */}
-        <span
-          className={`pointer-events-none absolute right-3 bottom-3 z-[3] rounded-full px-2 py-0.5 text-[10.5px] font-bold shadow-sm backdrop-blur-md tabular-nums ${scoreTone}`}
-        >
-          {listing.scores.overall}
-        </span>
+        {/* Bottom-left Price Cut tag if reduced */}
+        {listing.priceCutPct > 0 && (
+          <span className="pointer-events-none absolute bottom-3 left-3 z-[3] rounded-full bg-slate-950/70 px-2 py-0.5 text-[10.5px] font-semibold text-white backdrop-blur-md tabular-nums">
+            Price Cut −{listing.priceCutPct}%
+          </span>
+        )}
       </div>
 
-      {/* Crisp Typography Metadata Below Photo */}
+      {/* Info Block: Obvious Price vs. Zestimate + 5-Bar Deal Scale */}
       <div className="px-1.5 pt-3 pb-1">
-        <div className="flex items-baseline justify-between gap-2">
-          <div className="flex items-baseline gap-2">
-            <span className="text-[16.5px] font-bold tracking-[-0.02em] text-slate-950 tabular-nums">
+        {/* Row 1: Asking Price vs Zestimate & Instant Savings */}
+        <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-[17px] font-bold tracking-[-0.025em] text-slate-950 tabular-nums">
               {formatCurrency(listing.price)}
             </span>
-            {listing.medianDeltaPct <= -10 && (
-              <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 ring-1 ring-emerald-500/20 tabular-nums">
-                {listing.medianDeltaPct}% zip
-              </span>
-            )}
+            <span
+              className="text-[11.5px] font-medium text-slate-400 tabular-nums"
+              title={`Zestimate: ${formatCurrency(listing.zestimate)}`}
+            >
+              Zest. <span className="line-through">{formatPriceCompact(listing.zestimate)}</span>
+            </span>
           </div>
 
-          <span className="truncate text-[12px] font-medium text-indigo-600/85">
+          {listing.estimatedSavings > 0 && (
+            <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700 ring-1 ring-emerald-500/25 tabular-nums">
+              Save {formatPriceCompact(listing.estimatedSavings)}
+            </span>
+          )}
+        </div>
+
+        {/* Row 2: Visual 5-Segment Deal Scale Meter + Location */}
+        <div className="mt-2 flex items-center justify-between gap-2 rounded-xl bg-slate-50/90 px-2.5 py-1.5 ring-1 ring-slate-200/60">
+          <div
+            className="flex items-center gap-2"
+            title={`Deal Scale ${listing.dealTier}/5 (${dealMeta.label}): ${pctBelowZest}% below Zestimate`}
+          >
+            <div className="flex items-end gap-0.5" aria-hidden="true">
+              {[1, 2, 3, 4, 5].map((bar) => (
+                <span
+                  key={bar}
+                  className={`w-1.5 rounded-full transition-colors ${
+                    bar <= listing.dealTier ? dealMeta.barActive : 'bg-slate-200'
+                  }`}
+                  style={{ height: `${7 + bar * 2}px` }}
+                />
+              ))}
+            </div>
+            <span className={`text-[11px] font-bold tabular-nums ${dealMeta.textClass}`}>
+              {listing.dealTier}/5 {dealMeta.label}
+            </span>
+          </div>
+
+          <span className="truncate text-[11.5px] font-semibold text-indigo-600">
             {listing.city}, {listing.state}
           </span>
         </div>
 
-        <h3 className="mt-0.5 text-[14px] font-semibold text-slate-900">
+        {/* Row 3: Architectural Headline */}
+        <h3 className="mt-2 text-[13.5px] font-semibold text-slate-900">
           <button
             type="button"
             onClick={() => onInspect(listing)}
@@ -251,12 +275,13 @@ export function PropertyCard({
         </h3>
 
         {featured && (
-          <p className="mt-1 line-clamp-1 text-[13px] text-slate-500">
+          <p className="mt-1 line-clamp-1 text-[12.5px] text-slate-500">
             {listing.editorialNote}
           </p>
         )}
 
-        <div className="mt-1.5 flex items-center justify-between gap-2 text-[12px] text-slate-500 tabular-nums">
+        {/* Row 4: Specs & Zillow Link */}
+        <div className="mt-1.5 flex items-center justify-between gap-2 text-[11.5px] text-slate-500 tabular-nums">
           <span>
             {listing.beds} bd · {listing.baths} ba · {formatNumber(listing.sqft)} sf · {listing.yearBuilt}
           </span>

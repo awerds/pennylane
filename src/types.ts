@@ -1,6 +1,13 @@
 export type CategoryKey = 'exceptional' | 'deal' | 'new';
-export type FilterLens = 'all' | CategoryKey | 'saved';
-export type SortMode = 'score' | 'newest' | 'discount' | 'price-asc' | 'price-desc' | 'sqft-desc';
+export type FilterLens = 'all' | 'steals' | CategoryKey | 'saved';
+export type SortMode =
+  | 'deal-value'
+  | 'savings'
+  | 'score'
+  | 'newest'
+  | 'price-asc'
+  | 'price-desc'
+  | 'sqft-desc';
 export type StyleGroup = 'all' | 'modern' | 'historic' | 'reuse' | 'desert' | 'coastal';
 
 export interface ScoreBreakdown {
@@ -23,6 +30,11 @@ export interface PropertyListing {
   lng: number;
   price: number;
   previousPrice: number;
+  zestimate: number;
+  estimatedSavings: number;
+  zestimateDeltaPct: number;
+  dealTier: 1 | 2 | 3 | 4 | 5;
+  dealLabel: string;
   pricePerSqft: number;
   zipMedianPricePerSqft: number;
   medianDeltaPct: number;
@@ -51,6 +63,8 @@ export interface PropertyListing {
 
 export interface ListingsSummary {
   activeCount: number;
+  statesCovered: number;
+  stealCount: number;
   addedToday: number;
   removedToday: number;
   priceDropsToday: number;
@@ -120,6 +134,7 @@ export interface FilterState {
   minBeds: number;
   minBaths: number;
   minSqft: number;
+  minDealTier: number;
   styleGroup: StyleGroup;
   priceCutsOnly: boolean;
   belowMedianOnly: boolean;
