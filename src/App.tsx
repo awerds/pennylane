@@ -75,10 +75,12 @@ export function App() {
     let active = true;
     async function loadEdition() {
       try {
+        const bust = Date.now();
+        const fetchOpts: RequestInit = { cache: 'no-store' };
         const [listingsRes, changelogRes, reserveRes] = await Promise.all([
-          fetch('./data/listings.json'),
-          fetch('./data/changelog.json'),
-          fetch('./data/reserve.json').catch(() => null),
+          fetch(`./data/listings.json?v=${bust}`, fetchOpts),
+          fetch(`./data/changelog.json?v=${bust}`, fetchOpts),
+          fetch(`./data/reserve.json?v=${bust}`, fetchOpts).catch(() => null),
         ]);
         if (!listingsRes.ok) throw new Error('Unable to load daily property index.');
         const listingsData: ListingsFeed = await listingsRes.json();
