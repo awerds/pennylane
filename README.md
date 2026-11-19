@@ -65,6 +65,22 @@ To pull live listings from official APIs without scraping:
 
 The daily sync worker automatically detects whichever secret is configured and verifies status changes to remove under-contract properties.
 
+## Lead Generation & Revenue Capture (Zero Backend)
+
+PennyLane includes 3 built-in real-estate monetization funnels compatible with free GitHub Pages:
+
+1. **Buyer / Investor Tour & Agent Referral Leads** — Triggered directly from every property dossier with full property attribution (asking price, Zestimate, location, financing status, timeline).
+2. **Daily Deal Alerts & Mortgage Lender Referrals** — Top-bar CTA and inline gallery capture banner collecting target city/state/ZIP, budget, and pre-approval needs.
+3. **Agent & Lender Territory Sponsorships** — B2B partner intake form for local agents and brokers claiming exclusive state/ZIP referrals.
+
+To route captured leads directly into your CRM or inbox, set a single environment variable at build time (supports **Formspree**, **Web3Forms**, **Zapier**, **Make**, **HubSpot**, or **Airtable**):
+
+```bash
+VITE_LEAD_WEBHOOK_URL=https://formspree.io/f/your-form-id
+```
+
+Without a webhook configured, leads are stored locally in the built-in **Lead Inbox** modal with one-click **CSV export**.
+
 ## Community Contributions
 
 Found an architectural gem or outrageous deal on Zillow? Open a pull request adding an entry to [`data/watchlist.json`](data/watchlist.json) — see [`CONTRIBUTING.md`](CONTRIBUTING.md).

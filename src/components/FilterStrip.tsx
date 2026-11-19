@@ -132,7 +132,7 @@ export function FilterStrip({
   return (
     <div
       ref={stripRef}
-      className="sticky top-[88px] z-20 border-b border-slate-200/75 bg-white/85 backdrop-blur-xl xl:top-[61px]"
+      className="sticky top-[88px] z-20 border-b border-sky-200/60 bg-sky-50/75 backdrop-blur-xl xl:top-[58px]"
     >
       <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-2.5 px-4 py-2 sm:px-6 lg:px-8">
         {/* Left: Color-Coded Category Segmented Pills + Filter Popover Triggers */}

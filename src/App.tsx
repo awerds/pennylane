@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUp, RotateCcw, Sparkles } from 'lucide-react';
 import { TopNav } from './components/TopNav';
 import { FilterStrip } from './components/FilterStrip';
 import { PropertyCard } from './components/PropertyCard';
 import { PropertyDossierModal } from './components/PropertyDossierModal';
 import { SyncLedgerModal } from './components/SyncLedgerModal';
+import { LeadCaptureModal } from './components/LeadCaptureModal';
+import { InlineLeadBanner } from './components/InlineLeadBanner';
 import { PennyLaneLogo } from './components/PennyLaneLogo';
 import type { ChangelogFeed, FilterState, ListingsFeed, PropertyListing } from './types';
 import {
@@ -14,6 +16,7 @@ import {
   matchesStyleGroup,
   simulateNextDayClient,
 } from './utils/format';
+import { loadLeads, type LeadKind, type LeadRecord } from './utils/leads';
 
 const SAVED_STORAGE_KEY = 'pennylane:saved-listings:v1';
 const PAGE_SIZE = 24;
@@ -67,8 +70,15 @@ export function App() {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [motionPaused, setMotionPaused] = useState<boolean>(() => prefersReducedMotion());
   const [savedIds, setSavedIds] = useState<string[]>(() => loadSavedIds());
+  const [leads, setLeads] = useState<LeadRecord[]>(() => loadLeads());
+
   const [selectedListing, setSelectedListing] = useState<PropertyListing | null>(null);
   const [ledgerOpen, setLedgerOpen] = useState(false);
+  const [leadModalState, setLeadModalState] = useState<{
+    open: boolean;
+    tab: LeadKind;
+    property: PropertyListing | null;
+  }>({ open: false, tab: 'deal-alerts', property: null });
 
   const loadMoreSentinelRef = useRef<HTMLDivElement>(null);
 
@@ -130,7 +140,6 @@ export function App() {
     }
   }, [savedIds]);
 
-  // Reset pagination whenever filters change
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
   }, [filters]);
@@ -157,6 +166,10 @@ export function App() {
       url.searchParams.delete('property');
       window.history.replaceState({}, '', url);
     }
+  }, []);
+
+  const openLeadModal = useCallback((tab: LeadKind, property: PropertyListing | null = null) => {
+    setLeadModalState({ open: true, tab, property });
   }, []);
 
   const handleSimulateNextDay = () => {
@@ -251,7 +264,6 @@ export function App() {
   );
   const hasMore = visibleCount < filteredListings.length;
 
-  // Automatic smooth progressive loading as user scrolls through 1,200+ properties
   useEffect(() => {
     const sentinel = loadMoreSentinelRef.current;
     if (!sentinel || !hasMore || typeof IntersectionObserver === 'undefined') return;
@@ -315,12 +327,14 @@ export function App() {
         statesCovered={feed.summary.statesCovered || 50}
         removedToday={feed.summary.removedToday}
         savedCount={counts.saved}
+        leadCount={leads.length}
         isSavedLens={filters.lens === 'saved'}
         isSimulated={isSimulated}
         onLocationChange={(locationQuery) => setFilters((prev) => ({ ...prev, locationQuery }))}
         onToggleSavedLens={() =>
           setFilters((prev) => ({ ...prev, lens: prev.lens === 'saved' ? 'all' : 'saved' }))
         }
+        onOpenAlerts={() => openLeadModal('deal-alerts')}
         onOpenLedger={() => setLedgerOpen(true)}
         onResetHome={() => setFilters(DEFAULT_FILTERS)}
       />
@@ -341,11 +355,11 @@ export function App() {
         <div
           role="status"
           aria-live="polite"
-          className="border-b border-indigo-200/70 bg-gradient-to-r from-indigo-50 via-rose-50/70 to-emerald-50/70 px-4 py-2 text-xs text-slate-900 sm:px-6 lg:px-8"
+          className="border-b border-blue-200/70 bg-gradient-to-r from-sky-50 via-blue-50/70 to-emerald-50/70 px-4 py-2 text-xs text-slate-900 sm:px-6 lg:px-8"
         >
           <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-3">
             <span className="flex items-center gap-2 font-medium">
-              <Sparkles className="h-3.5 w-3.5 text-indigo-600" />
+              <Sparkles className="h-3.5 w-3.5 text-blue-600" />
               {simulationNotice}
             </span>
             <div className="flex items-center gap-3">
@@ -369,7 +383,7 @@ export function App() {
         </div>
       )}
 
-      {/* Main High-Density 50-State Gallery */}
+      {/* Main High-Density 50-State Gallery + Inline Revenue Capture Strip */}
       <main className="mx-auto max-w-[1600px] px-4 pt-5 pb-16 sm:px-6 lg:px-8">
         {filteredListings.length === 0 ? (
           <div className="mx-auto my-12 max-w-md rounded-3xl bg-white px-6 py-16 text-center ring-1 ring-slate-200/80 shadow-xs">
@@ -379,31 +393,50 @@ export function App() {
             <p className="mt-1.5 text-sm text-slate-500">
               {filters.lens === 'saved'
                 ? 'Bookmark properties as you browse to track them here until they go under contract.'
-                : 'Try searching any of the 50 US states, a city, or ZIP code, or widening your price range.'}
+                : 'Try searching any of the 50 US states, a city, or ZIP code, or get alerted when a deal drops here.'}
             </p>
-            <button
-              type="button"
-              onClick={() => setFilters(DEFAULT_FILTERS)}
-              className="mt-5 cursor-pointer rounded-full bg-indigo-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700"
-            >
-              Reset All Filters
-            </button>
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setFilters(DEFAULT_FILTERS)}
+                className="cursor-pointer rounded-full bg-blue-700 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-800"
+              >
+                Reset All Filters
+              </button>
+              <button
+                type="button"
+                onClick={() => openLeadModal('deal-alerts')}
+                className="cursor-pointer rounded-full border border-slate-200 bg-white px-5 py-2.5 text-xs font-semibold text-slate-800 hover:border-blue-300"
+              >
+                Alert Me for This Market
+              </button>
+            </div>
           </div>
         ) : (
           <>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {visibleListings.map((listing, idx) => (
-                <PropertyCard
-                  key={listing.id}
-                  listing={listing}
-                  index={idx}
-                  isSaved={savedSet.has(listing.id)}
-                  motionPaused={motionPaused}
-                  featured={isDefaultUnfiltered && idx === 0}
-                  isLcp={idx === 0}
-                  onInspect={handleInspect}
-                  onToggleSave={toggleSave}
-                />
+                <Fragment key={listing.id}>
+                  <PropertyCard
+                    listing={listing}
+                    index={idx}
+                    isSaved={savedSet.has(listing.id)}
+                    motionPaused={motionPaused}
+                    featured={isDefaultUnfiltered && idx === 0}
+                    isLcp={idx === 0}
+                    onInspect={handleInspect}
+                    onToggleSave={toggleSave}
+                  />
+                  {/* Inject tasteful sapphire-blue Lead Capture Banner after the top row/fold */}
+                  {idx === 6 && (
+                    <InlineLeadBanner
+                      stealCount={counts.steals}
+                      statesCovered={feed.summary.statesCovered || 50}
+                      onOpenAlerts={() => openLeadModal('deal-alerts')}
+                      onOpenPartner={() => openLeadModal('agent-partner')}
+                    />
+                  )}
+                </Fragment>
               ))}
             </div>
 
@@ -424,7 +457,7 @@ export function App() {
                     onClick={() =>
                       setVisibleCount((prev) => Math.min(filteredListings.length, prev + PAGE_SIZE))
                     }
-                    className="cursor-pointer rounded-full bg-indigo-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm shadow-indigo-500/20 transition-colors hover:bg-indigo-700"
+                    className="cursor-pointer rounded-full bg-blue-700 px-5 py-2.5 text-xs font-semibold text-white shadow-sm shadow-blue-700/20 transition-colors hover:bg-blue-800"
                   >
                     Load {Math.min(PAGE_SIZE, filteredListings.length - visibleListings.length)} More Homes
                   </button>
@@ -434,7 +467,7 @@ export function App() {
                   <button
                     type="button"
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-600 hover:border-indigo-300 hover:text-indigo-700"
+                    className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-600 hover:border-blue-300 hover:text-blue-700"
                   >
                     <ArrowUp className="h-3.5 w-3.5" />
                     <span>Top</span>
@@ -452,7 +485,10 @@ export function App() {
           <div className="flex flex-wrap items-center gap-2.5 tabular-nums">
             <PennyLaneLogo size="sm" />
             <span>·</span>
-            <span>{formatNumber(feed.summary.activeCount)} homes across {feed.summary.statesCovered || 50} states</span>
+            <span>
+              {formatNumber(feed.summary.activeCount)} homes across{' '}
+              {feed.summary.statesCovered || 50} states
+            </span>
             <span>·</span>
             <span>Updated {formatDateShort(feed.syncedAt)}</span>
             <span>·</span>
@@ -461,11 +497,18 @@ export function App() {
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
+            <button
+              type="button"
+              onClick={() => openLeadModal('agent-partner')}
+              className="cursor-pointer font-semibold text-blue-700 transition-colors hover:text-blue-900"
+            >
+              Partner (Agents &amp; Lenders)
+            </button>
             <button
               type="button"
               onClick={handleSimulateNextDay}
-              className="cursor-pointer font-medium text-indigo-600 transition-colors hover:text-indigo-800"
+              className="cursor-pointer font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
               Preview +1 Day Sync
             </button>
@@ -474,7 +517,7 @@ export function App() {
               onClick={() => setLedgerOpen(true)}
               className="cursor-pointer font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
-              Removal Log &amp; Docs
+              Lead Inbox ({leads.length}) &amp; Removals
             </button>
             <a
               href="https://github.com/awerds/pennylane"
@@ -493,16 +536,28 @@ export function App() {
         isSaved={selectedListing ? savedSet.has(selectedListing.id) : false}
         onClose={handleCloseDossier}
         onToggleSave={toggleSave}
+        onRequestTour={(listing) => openLeadModal('property-tour', listing)}
+      />
+
+      <LeadCaptureModal
+        open={leadModalState.open}
+        initialTab={leadModalState.tab}
+        property={leadModalState.property}
+        defaultMarket={filters.locationQuery}
+        onLeadCaptured={(lead) => setLeads((prev) => [lead, ...prev])}
+        onClose={() => setLeadModalState((prev) => ({ ...prev, open: false }))}
       />
 
       <SyncLedgerModal
         open={ledgerOpen}
         changelog={changelog}
+        leads={leads}
         provider={feed.provider}
         editionNumber={feed.editionNumber}
         isSimulated={isSimulated}
         onSimulateNextDay={handleSimulateNextDay}
         onResetSimulation={handleResetSimulation}
+        onOpenLeadCapture={() => openLeadModal('deal-alerts')}
         onClose={() => setLedgerOpen(false)}
       />
     </div>

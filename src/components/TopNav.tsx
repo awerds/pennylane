@@ -1,4 +1,4 @@
-import { Activity, Bookmark, Github } from 'lucide-react';
+import { Activity, BellRing, Bookmark } from 'lucide-react';
 import type { PropertyListing } from '../types';
 import { formatNumber } from '../utils/format';
 import { LocationSearch } from './LocationSearch';
@@ -11,10 +11,12 @@ interface TopNavProps {
   statesCovered: number;
   removedToday: number;
   savedCount: number;
+  leadCount: number;
   isSavedLens: boolean;
   isSimulated: boolean;
   onLocationChange: (query: string) => void;
   onToggleSavedLens: () => void;
+  onOpenAlerts: () => void;
   onOpenLedger: () => void;
   onResetHome: () => void;
 }
@@ -26,71 +28,81 @@ export function TopNav({
   statesCovered,
   removedToday,
   savedCount,
+  leadCount,
   isSavedLens,
   isSimulated,
   onLocationChange,
   onToggleSavedLens,
+  onOpenAlerts,
   onOpenLedger,
   onResetHome,
 }: TopNavProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
-      {/* Signature 2.5px architectural color spectrum bar */}
-      <div
-        className="h-[2.5px] w-full bg-gradient-to-r from-rose-500 via-amber-400 via-emerald-500 to-indigo-600"
-        aria-hidden="true"
-      />
-
+    <header className="sticky top-0 z-30 border-b border-sky-200/20 bg-gradient-to-r from-[#0b2b59]/80 via-[#15458a]/78 to-[#1e40af]/78 text-white shadow-[0_10px_34px_-12px_rgba(11,43,89,0.45)] backdrop-blur-2xl backdrop-saturate-150">
       <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-2.5 sm:gap-5 sm:px-6 lg:px-8">
-        {/* High-Design Brand Lockup + Purpose Tagline */}
+        {/* Brand Lockup + Tagline */}
         <button
           type="button"
           onClick={onResetHome}
-          className="flex shrink-0 cursor-pointer items-center gap-3 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600"
+          className="flex shrink-0 cursor-pointer items-center gap-3 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300"
         >
-          <PennyLaneLogo size="md" showWordmark={false} />
+          <PennyLaneLogo size="md" variant="dark" showWordmark={false} />
 
           <div className="hidden sm:block">
             <div className="flex items-center gap-2.5">
               <span className="font-brand text-[19px] leading-none select-none">
-                <span className="font-bold tracking-[-0.045em] text-slate-950">penny</span>
-                <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-500 bg-clip-text font-semibold tracking-[-0.04em] text-transparent">
+                <span className="font-bold tracking-[-0.045em] text-white">penny</span>
+                <span className="bg-gradient-to-r from-sky-200 via-amber-200 to-rose-300 bg-clip-text font-semibold tracking-[-0.04em] text-transparent">
                   lane
                 </span>
               </span>
 
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-500/20 tabular-nums">
-                <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span className="inline-flex items-center gap-1 rounded-full bg-white/14 px-2 py-0.5 text-[10px] font-semibold text-sky-100 ring-1 ring-white/20 tabular-nums">
+                <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 {isSimulated ? 'Preview · ' : ''}
                 {formatNumber(activeCount)} homes · {statesCovered} states
               </span>
             </div>
-            <p className="mt-1 hidden text-[11.5px] font-medium text-slate-500 leading-none xl:block">
-              Unique, high-value homes ranked by deal spread vs. Zestimate — updated daily, removed once under contract.
+            <p className="mt-1 hidden text-[11.5px] font-medium text-sky-100/80 leading-none xl:block">
+              Unique, high-value homes ranked by deal spread vs. Zestimate — updated daily, pruned once under contract.
             </p>
           </div>
         </button>
 
-        {/* Center City / State / ZIP Search */}
+        {/* Center City / State / ZIP Frosted Glass Search */}
         <div className="flex flex-1 justify-center">
           <LocationSearch
             value={locationQuery}
             listings={listings}
+            variant="glass-blue"
             onChange={onLocationChange}
           />
         </div>
 
-        {/* Right Actions */}
+        {/* Right Revenue & Utility Actions */}
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          {/* Primary Lead-Gen CTA */}
+          <button
+            type="button"
+            onClick={onOpenAlerts}
+            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full bg-white px-3.5 text-xs font-bold text-blue-950 shadow-sm shadow-blue-950/20 transition-all hover:bg-sky-50"
+          >
+            <BellRing className="h-3.5 w-3.5 text-amber-500" strokeWidth={2.25} />
+            <span className="hidden sm:inline">Get Deal Alerts</span>
+            <span className="sm:hidden">Alerts</span>
+          </button>
+
           <button
             type="button"
             onClick={onOpenLedger}
-            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-rose-200/80 bg-rose-50/75 px-3 text-xs font-medium text-rose-700 transition-colors hover:border-rose-300 hover:bg-rose-100/80"
-            title="Daily sync & auto-removed under-contract ledger"
+            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-white/20 bg-white/12 px-3 text-xs font-medium text-white backdrop-blur-md transition-colors hover:bg-white/20"
+            title="Daily sync, contract removals & captured lead inbox"
           >
-            <Activity className="h-3.5 w-3.5 text-rose-500" strokeWidth={2.2} />
-            <span className="hidden md:inline">Contracted</span>
-            <span className="rounded-full bg-rose-500 px-1.5 py-0.5 text-[10px] font-semibold text-white tabular-nums">
+            <Activity className="h-3.5 w-3.5 text-rose-300" strokeWidth={2.2} />
+            <span className="hidden lg:inline">
+              {leadCount > 0 ? `Leads (${leadCount})` : 'Daily Log'}
+            </span>
+            <span className="rounded-full bg-rose-500/90 px-1.5 py-0.5 text-[10px] font-semibold text-white tabular-nums">
               −{removedToday}
             </span>
           </button>
@@ -99,10 +111,10 @@ export function TopNav({
             type="button"
             onClick={onToggleSavedLens}
             aria-pressed={isSavedLens}
-            className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-all ${
+            className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-medium backdrop-blur-md transition-all ${
               isSavedLens
-                ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm shadow-indigo-500/25'
-                : 'border-slate-200/90 bg-white text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/50 hover:text-indigo-700'
+                ? 'border-sky-300 bg-sky-400/30 text-white'
+                : 'border-white/20 bg-white/12 text-white hover:bg-white/20'
             }`}
           >
             <Bookmark
@@ -110,32 +122,18 @@ export function TopNav({
               fill={isSavedLens ? 'currentColor' : 'none'}
               strokeWidth={2}
             />
-            <span className="hidden sm:inline">Saved</span>
+            <span className="hidden md:inline">Saved</span>
             {savedCount > 0 && (
-              <span
-                className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums ${
-                  isSavedLens ? 'bg-white/25 text-white' : 'bg-indigo-100 text-indigo-700'
-                }`}
-              >
+              <span className="rounded-full bg-white/25 px-1.5 py-0.5 text-[10px] font-semibold text-white tabular-nums">
                 {savedCount}
               </span>
             )}
           </button>
-
-          <a
-            href="https://github.com/awerds/pennylane"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View PennyLane open-source repository on GitHub"
-            className="hidden h-9 w-9 items-center justify-center rounded-full border border-slate-200/90 bg-white text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950 sm:inline-flex"
-          >
-            <Github className="h-4 w-4" strokeWidth={1.85} />
-          </a>
         </div>
       </div>
 
       {/* Compact mobile/tablet tagline strip */}
-      <div className="border-t border-slate-100 bg-slate-50/70 px-4 py-1.5 text-center text-[11px] font-medium text-slate-600 xl:hidden">
+      <div className="border-t border-white/12 bg-blue-950/25 px-4 py-1.5 text-center text-[11px] font-medium text-sky-100/90 xl:hidden">
         Unique, high-value homes across all {statesCovered} states — ranked by asking price vs. Zestimate, pruned once under contract.
       </div>
     </header>

@@ -2,6 +2,7 @@ import { useId } from 'react';
 
 interface PennyLaneLogoProps {
   size?: 'sm' | 'md' | 'lg';
+  variant?: 'light' | 'dark';
   showWordmark?: boolean;
   className?: string;
 }
@@ -19,6 +20,7 @@ const SIZE_MAP = {
  */
 export function PennyLaneLogo({
   size = 'md',
+  variant = 'light',
   showWordmark = true,
   className = '',
 }: PennyLaneLogoProps) {
@@ -31,16 +33,16 @@ export function PennyLaneLogo({
         viewBox="0 0 48 48"
         fill="none"
         aria-hidden="true"
-        className={`${dims.box} shrink-0 drop-shadow-[0_4px_12px_rgba(15,23,42,0.16)]`}
+        className={`${dims.box} shrink-0 drop-shadow-[0_4px_14px_rgba(9,13,30,0.35)]`}
       >
         <defs>
           <linearGradient id={`${uid}-bg`} x1="4" y1="2" x2="44" y2="46" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#161E3D" />
-            <stop offset="100%" stopColor="#090D1E" />
+            <stop offset="0%" stopColor="#16234D" />
+            <stop offset="100%" stopColor="#090F24" />
           </linearGradient>
           <linearGradient id={`${uid}-rim`} x1="24" y1="1" x2="24" y2="47" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.42" />
-            <stop offset="48%" stopColor="#818CF8" stopOpacity="0.18" />
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.5" />
+            <stop offset="50%" stopColor="#7DD3FC" stopOpacity="0.22" />
             <stop offset="100%" stopColor="#000000" stopOpacity="0.45" />
           </linearGradient>
           <linearGradient id={`${uid}-arch`} x1="21" y1="10" x2="38" y2="30" gradientUnits="userSpaceOnUse">
@@ -56,8 +58,8 @@ export function PennyLaneLogo({
             gradientUnits="userSpaceOnUse"
             gradientTransform="translate(36 12) rotate(135) scale(34)"
           >
-            <stop offset="0%" stopColor="#6366F1" stopOpacity="0.34" />
-            <stop offset="100%" stopColor="#6366F1" stopOpacity="0" />
+            <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.34" />
+            <stop offset="100%" stopColor="#38BDF8" stopOpacity="0" />
           </radialGradient>
         </defs>
 
@@ -73,10 +75,8 @@ export function PennyLaneLogo({
           strokeWidth="1"
         />
 
-        {/* Architectural L spine & cantilevered floorplate */}
         <path d="M12 11H19V31.5H36V37H12V11Z" fill="#FFFFFF" />
 
-        {/* Cantilevered metallic coral-gold P arch with micro-glide on hover */}
         <path
           className="pl-logo-arch"
           fillRule="evenodd"
@@ -90,8 +90,20 @@ export function PennyLaneLogo({
         <span
           className={`font-brand ${dims.text} inline-flex items-baseline leading-none select-none`}
         >
-          <span className="font-bold tracking-[-0.045em] text-slate-950">penny</span>
-          <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-500 bg-clip-text font-semibold tracking-[-0.04em] text-transparent">
+          <span
+            className={`font-bold tracking-[-0.045em] ${
+              variant === 'dark' ? 'text-white' : 'text-slate-950'
+            }`}
+          >
+            penny
+          </span>
+          <span
+            className={
+              variant === 'dark'
+                ? 'bg-gradient-to-r from-sky-200 via-amber-200 to-rose-300 bg-clip-text font-semibold tracking-[-0.04em] text-transparent'
+                : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-rose-500 bg-clip-text font-semibold tracking-[-0.04em] text-transparent'
+            }
+          >
             lane
           </span>
         </span>

@@ -15,17 +15,22 @@ interface LocationSuggestion {
 interface LocationSearchProps {
   value: string;
   listings: PropertyListing[];
+  variant?: 'light' | 'glass-blue';
   onChange: (value: string) => void;
 }
 
-export function LocationSearch({ value, listings, onChange }: LocationSearchProps) {
+export function LocationSearch({
+  value,
+  listings,
+  variant = 'light',
+  onChange,
+}: LocationSearchProps) {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxId = useId();
 
-  // Build deduplicated location index from active listings
   const index = useMemo<LocationSuggestion[]>(() => {
     const cityMap = new Map<string, LocationSuggestion>();
     const stateMap = new Map<string, LocationSuggestion>();
@@ -78,7 +83,9 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
     }
 
     return [
-      ...Array.from(stateMap.values()).sort((a, b) => b.count - a.count || a.label.localeCompare(b.label)),
+      ...Array.from(stateMap.values()).sort(
+        (a, b) => b.count - a.count || a.label.localeCompare(b.label)
+      ),
       ...Array.from(cityMap.values()).sort((a, b) => a.label.localeCompare(b.label)),
       ...Array.from(regionMap.values()).sort((a, b) => b.count - a.count),
     ];
@@ -87,7 +94,6 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
   const suggestions = useMemo(() => {
     const q = value.trim().toLowerCase();
     if (!q) {
-      // Show top popular states & regions when empty and focused
       const topStates = index.filter((s) => s.type === 'state').slice(0, 4);
       const topCities = index.filter((s) => s.type === 'city').slice(0, 4);
       return [...topStates, ...topCities];
@@ -101,7 +107,6 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
       .slice(0, 8);
   }, [index, value]);
 
-  // Close dropdown on outside pointerdown
   useEffect(() => {
     const onPointerDown = (e: PointerEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -140,11 +145,23 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
     }
   };
 
+  const isBlueGlass = variant === 'glass-blue';
+
   return (
     <div ref={wrapperRef} className="relative w-full max-w-xl">
-      <div className="group flex h-10 items-center rounded-full border border-slate-200/90 bg-slate-100/75 px-3.5 transition-all hover:border-indigo-300/80 hover:bg-white focus-within:border-indigo-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-indigo-500/15">
+      <div
+        className={`group flex h-10 items-center rounded-full border px-3.5 transition-all ${
+          isBlueGlass
+            ? 'border-white/25 bg-white/14 backdrop-blur-md hover:border-white/40 hover:bg-white/20 focus-within:border-white focus-within:bg-white focus-within:shadow-lg focus-within:shadow-blue-950/25'
+            : 'border-slate-200/90 bg-slate-100/75 hover:border-blue-300/80 hover:bg-white focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/15'
+        }`}
+      >
         <Search
-          className="h-4 w-4 shrink-0 text-slate-400 transition-colors group-focus-within:text-indigo-600"
+          className={`h-4 w-4 shrink-0 transition-colors ${
+            isBlueGlass
+              ? 'text-sky-100/85 group-focus-within:text-blue-700'
+              : 'text-slate-400 group-focus-within:text-blue-600'
+          }`}
           strokeWidth={2}
         />
         <input
@@ -166,8 +183,12 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
             setActiveIndex(-1);
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Search city, state, or ZIP code..."
-          className="w-full bg-transparent px-2.5 text-[13.5px] text-zinc-950 placeholder:text-zinc-400 focus:outline-none"
+          placeholder="Search any of 50 states, city, or ZIP code..."
+          className={`w-full bg-transparent px-2.5 text-[13.5px] focus:outline-none ${
+            isBlueGlass
+              ? 'text-white placeholder:text-sky-100/75 group-focus-within:text-slate-950 group-focus-within:placeholder:text-slate-400'
+              : 'text-slate-950 placeholder:text-slate-400'
+          }`}
         />
 
         {value.trim().length > 0 && (
@@ -179,7 +200,11 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
               inputRef.current?.focus();
             }}
             aria-label="Clear location search"
-            className="flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full bg-zinc-200/90 text-zinc-600 transition-colors hover:bg-zinc-950 hover:text-white"
+            className={`flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors ${
+              isBlueGlass
+                ? 'bg-white/25 text-white hover:bg-white hover:text-blue-950 group-focus-within:bg-slate-200 group-focus-within:text-slate-700'
+                : 'bg-slate-200/90 text-slate-600 hover:bg-slate-950 hover:text-white'
+            }`}
           >
             <X className="h-3 w-3" strokeWidth={2.25} />
           </button>
@@ -192,9 +217,9 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
           id={listboxId}
           role="listbox"
           aria-label="Matching locations"
-          className="absolute top-[calc(100%+8px)] right-0 left-0 z-50 overflow-hidden rounded-2xl border border-zinc-200/90 bg-white/95 p-1.5 shadow-[0_16px_48px_-12px_rgba(9,9,11,0.18)] backdrop-blur-xl"
+          className="absolute top-[calc(100%+8px)] right-0 left-0 z-50 overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-1.5 text-slate-950 shadow-[0_16px_48px_-12px_rgba(12,45,87,0.28)] backdrop-blur-xl"
         >
-          <li className="px-3 pt-1.5 pb-1 text-[11px] font-medium text-zinc-400">
+          <li className="px-3 pt-1.5 pb-1 text-[11px] font-medium text-slate-400">
             {value.trim() ? 'Matching locations' : 'Popular markets'}
           </li>
           {suggestions.map((item, idx) => {
@@ -211,21 +236,21 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
                 }}
                 onMouseEnter={() => setActiveIndex(idx)}
                 className={`flex cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2 text-left transition-colors ${
-                  active ? 'bg-zinc-100 text-zinc-950' : 'text-zinc-700 hover:bg-zinc-50'
+                  active ? 'bg-blue-50 text-blue-950' : 'text-slate-700 hover:bg-slate-50'
                 }`}
               >
                 <div className="flex min-w-0 items-center gap-2.5">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-500">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                     <MapPin className="h-3.5 w-3.5" strokeWidth={1.85} />
                   </span>
                   <div className="min-w-0">
-                    <div className="truncate text-[13px] font-medium text-zinc-950">
+                    <div className="truncate text-[13px] font-medium text-slate-950">
                       {item.label}
                     </div>
-                    <div className="truncate text-[11px] text-zinc-500">{item.sublabel}</div>
+                    <div className="truncate text-[11px] text-slate-500">{item.sublabel}</div>
                   </div>
                 </div>
-                <span className="shrink-0 rounded-full bg-zinc-100 px-2 py-0.5 text-[11px] font-medium text-zinc-600 tabular-nums">
+                <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600 tabular-nums">
                   {item.count} {item.count === 1 ? 'home' : 'homes'}
                 </span>
               </li>
@@ -236,4 +261,3 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
     </div>
   );
 }
-

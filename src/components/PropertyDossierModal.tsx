@@ -20,6 +20,7 @@ interface PropertyDossierModalProps {
   isSaved: boolean;
   onClose: () => void;
   onToggleSave: (id: string) => void;
+  onRequestTour: (listing: PropertyListing) => void;
 }
 
 export function PropertyDossierModal({
@@ -27,6 +28,7 @@ export function PropertyDossierModal({
   isSaved,
   onClose,
   onToggleSave,
+  onRequestTour,
 }: PropertyDossierModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -357,15 +359,27 @@ export function PropertyDossierModal({
                 </div>
               </div>
 
-              {/* Action Bar */}
+              {/* Action Bar — Primary Lead Capture + Zillow Link */}
               <div className="mt-6 flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const target = listing;
+                    handleCloseClick();
+                    onRequestTour(target);
+                  }}
+                  className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-600 px-5 py-3 text-xs font-bold text-white shadow-sm shadow-blue-700/25 transition-opacity hover:opacity-92"
+                >
+                  <span>Request Private Tour &amp; Local Agent</span>
+                </button>
+
                 <a
                   href={listing.zillowUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-rose-500 px-5 py-3 text-xs font-semibold text-white shadow-sm shadow-indigo-500/20 transition-opacity hover:opacity-90"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-2.5 text-xs font-semibold text-slate-900 transition-colors hover:border-blue-300 hover:bg-blue-50/50"
                 >
-                  <span>View Listing on Zillow</span>
+                  <span>View Original Listing on Zillow</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
 
