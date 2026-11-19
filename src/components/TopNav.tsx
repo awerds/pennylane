@@ -2,6 +2,7 @@ import { Activity, Bookmark, Github } from 'lucide-react';
 import type { PropertyListing } from '../types';
 import { formatNumber } from '../utils/format';
 import { LocationSearch } from './LocationSearch';
+import { PennyLaneLogo } from './PennyLaneLogo';
 
 interface TopNavProps {
   locationQuery: string;
@@ -41,30 +42,23 @@ export function TopNav({
       />
 
       <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-2.5 sm:gap-5 sm:px-6 lg:px-8">
-        {/* Brand + Mission Tagline */}
+        {/* High-Design Brand Lockup + Purpose Tagline */}
         <button
           type="button"
           onClick={onResetHome}
-          className="flex shrink-0 cursor-pointer items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600"
+          className="flex shrink-0 cursor-pointer items-center gap-3 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600"
         >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 via-amber-500 to-indigo-600 text-white shadow-sm shadow-indigo-500/20">
-            <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" aria-hidden="true">
-              <path
-                d="M4 19V10.5L12 4.5L20 10.5V19"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <circle cx="12" cy="14.5" r="2.2" fill="#FEF08A" />
-            </svg>
-          </span>
+          <PennyLaneLogo size="md" showWordmark={false} />
 
           <div className="hidden sm:block">
-            <div className="flex items-center gap-2">
-              <span className="text-[17px] font-bold tracking-[-0.03em] text-slate-950 leading-none">
-                penny<span className="text-indigo-600">lane</span>
+            <div className="flex items-center gap-2.5">
+              <span className="font-brand text-[19px] leading-none select-none">
+                <span className="font-bold tracking-[-0.045em] text-slate-950">penny</span>
+                <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-500 bg-clip-text font-semibold tracking-[-0.04em] text-transparent">
+                  lane
+                </span>
               </span>
+
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-500/20 tabular-nums">
                 <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
                 {isSimulated ? 'Preview · ' : ''}
@@ -140,7 +134,7 @@ export function TopNav({
         </div>
       </div>
 
-      {/* Compact mobile/tablet tagline strip (hidden on xl where it sits inline in the brand block) */}
+      {/* Compact mobile/tablet tagline strip */}
       <div className="border-t border-slate-100 bg-slate-50/70 px-4 py-1.5 text-center text-[11px] font-medium text-slate-600 xl:hidden">
         Unique, high-value homes across all {statesCovered} states — ranked by asking price vs. Zestimate, pruned once under contract.
       </div>

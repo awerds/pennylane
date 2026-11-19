@@ -293,3 +293,4 @@ export function generateNationwideIndex(countPerState = 24) {
 
   return generated;
 }
+

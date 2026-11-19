@@ -5,6 +5,7 @@ import { FilterStrip } from './components/FilterStrip';
 import { PropertyCard } from './components/PropertyCard';
 import { PropertyDossierModal } from './components/PropertyDossierModal';
 import { SyncLedgerModal } from './components/SyncLedgerModal';
+import { PennyLaneLogo } from './components/PennyLaneLogo';
 import type { ChangelogFeed, FilterState, ListingsFeed, PropertyListing } from './types';
 import {
   formatDateShort,
@@ -284,11 +285,9 @@ export function App() {
   if (loading) {
     return (
       <div className="flex min-h-dvh items-center justify-center">
-        <div className="text-center">
-          <div className="text-xl font-bold tracking-[-0.03em] text-slate-950">
-            penny<span className="text-indigo-600">lane</span>
-          </div>
-          <p className="mt-1.5 text-xs text-slate-400">Loading 50-state property index...</p>
+        <div className="flex flex-col items-center text-center">
+          <PennyLaneLogo size="lg" />
+          <p className="mt-2.5 text-xs text-slate-400">Loading 50-state property index...</p>
         </div>
       </div>
     );
@@ -450,10 +449,8 @@ export function App() {
       {/* Clean Minimalist Footer */}
       <footer className="border-t border-slate-200/70 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4 px-4 py-6 text-xs text-slate-500 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-2 tabular-nums">
-            <span className="font-bold tracking-tight text-slate-950">
-              penny<span className="text-indigo-600">lane</span>
-            </span>
+          <div className="flex flex-wrap items-center gap-2.5 tabular-nums">
+            <PennyLaneLogo size="sm" />
             <span>·</span>
             <span>{formatNumber(feed.summary.activeCount)} homes across {feed.summary.statesCovered || 50} states</span>
             <span>·</span>
