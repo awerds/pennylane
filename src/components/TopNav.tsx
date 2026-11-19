@@ -30,31 +30,37 @@ export function TopNav({
   onResetHome,
 }: TopNavProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-zinc-200/80 bg-white/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-3 px-4 sm:gap-5 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
+      {/* Signature 2.5px architectural color spectrum bar */}
+      <div
+        className="h-[2.5px] w-full bg-gradient-to-r from-rose-500 via-amber-400 to-indigo-600"
+        aria-hidden="true"
+      />
+
+      <div className="mx-auto flex h-[62px] max-w-[1600px] items-center justify-between gap-3 px-4 sm:gap-5 sm:px-6 lg:px-8">
         {/* Brand */}
         <button
           type="button"
           onClick={onResetHome}
-          className="flex shrink-0 cursor-pointer items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-950"
+          className="flex shrink-0 cursor-pointer items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-600"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-950 text-white shadow-xs">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 via-orange-500 to-indigo-600 text-white shadow-sm shadow-indigo-500/20">
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
               <path
                 d="M4 19V10.5L12 4.5L20 10.5V19"
                 stroke="currentColor"
-                strokeWidth="2.1"
+                strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="12" cy="14.5" r="2.2" fill="#F43F5E" />
+              <circle cx="12" cy="14.5" r="2.2" fill="#FEF08A" />
             </svg>
           </span>
           <div className="hidden sm:block">
-            <span className="block text-[16px] font-semibold tracking-[-0.03em] text-zinc-950 leading-none">
-              pennylane
+            <span className="block text-[16.5px] font-bold tracking-[-0.03em] text-slate-950 leading-none">
+              penny<span className="text-indigo-600">lane</span>
             </span>
-            <span className="mt-0.5 flex items-center gap-1.5 text-[11px] text-zinc-500 leading-none tabular-nums">
+            <span className="mt-0.5 flex items-center gap-1.5 text-[11px] font-medium text-slate-500 leading-none tabular-nums">
               <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
               {isSimulated ? 'Preview · ' : ''}
               {activeCount} live
@@ -76,12 +82,12 @@ export function TopNav({
           <button
             type="button"
             onClick={onOpenLedger}
-            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-zinc-200/90 bg-white px-3 text-xs font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-950"
+            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-rose-200/80 bg-rose-50/70 px-3 text-xs font-medium text-rose-700 transition-colors hover:border-rose-300 hover:bg-rose-100/80"
             title="Daily sync & auto-removed under-contract ledger"
           >
-            <Activity className="h-3.5 w-3.5 text-rose-500" strokeWidth={2} />
+            <Activity className="h-3.5 w-3.5 text-rose-500" strokeWidth={2.2} />
             <span className="hidden md:inline">Daily Feed</span>
-            <span className="rounded-full bg-rose-50 px-1.5 py-0.5 text-[10px] font-semibold text-rose-600 tabular-nums">
+            <span className="rounded-full bg-rose-500 px-1.5 py-0.5 text-[10px] font-semibold text-white tabular-nums">
               −{removedToday}
             </span>
           </button>
@@ -90,10 +96,10 @@ export function TopNav({
             type="button"
             onClick={onToggleSavedLens}
             aria-pressed={isSavedLens}
-            className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors ${
+            className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-all ${
               isSavedLens
-                ? 'border-zinc-950 bg-zinc-950 text-white'
-                : 'border-zinc-200/90 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-950'
+                ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm shadow-indigo-500/25'
+                : 'border-slate-200/90 bg-white text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/50 hover:text-indigo-700'
             }`}
           >
             <Bookmark
@@ -105,7 +111,7 @@ export function TopNav({
             {savedCount > 0 && (
               <span
                 className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums ${
-                  isSavedLens ? 'bg-white/20 text-white' : 'bg-zinc-100 text-zinc-700'
+                  isSavedLens ? 'bg-white/25 text-white' : 'bg-indigo-100 text-indigo-700'
                 }`}
               >
                 {savedCount}
@@ -118,7 +124,7 @@ export function TopNav({
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View PennyLane open-source repository on GitHub"
-            className="hidden h-9 w-9 items-center justify-center rounded-full border border-zinc-200/90 bg-white text-zinc-600 transition-colors hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-950 sm:inline-flex"
+            className="hidden h-9 w-9 items-center justify-center rounded-full border border-slate-200/90 bg-white text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950 sm:inline-flex"
           >
             <Github className="h-4 w-4" strokeWidth={1.85} />
           </a>

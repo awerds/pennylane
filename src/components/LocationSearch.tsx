@@ -142,9 +142,9 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
 
   return (
     <div ref={wrapperRef} className="relative w-full max-w-xl">
-      <div className="group flex h-10 items-center rounded-full border border-zinc-200/90 bg-zinc-100/80 px-3.5 transition-all hover:border-zinc-300 hover:bg-zinc-100 focus-within:border-zinc-950 focus-within:bg-white focus-within:shadow-sm">
+      <div className="group flex h-10 items-center rounded-full border border-slate-200/90 bg-slate-100/75 px-3.5 transition-all hover:border-indigo-300/80 hover:bg-white focus-within:border-indigo-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-indigo-500/15">
         <Search
-          className="h-4 w-4 shrink-0 text-zinc-400 transition-colors group-focus-within:text-zinc-950"
+          className="h-4 w-4 shrink-0 text-slate-400 transition-colors group-focus-within:text-indigo-600"
           strokeWidth={2}
         />
         <input
@@ -236,3 +236,4 @@ export function LocationSearch({ value, listings, onChange }: LocationSearchProp
     </div>
   );
 }
+

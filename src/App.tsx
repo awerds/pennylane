@@ -40,6 +40,11 @@ function loadSavedIds(): string[] {
   }
 }
 
+function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined' || !window.matchMedia) return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 export function App() {
   const [liveFeed, setLiveFeed] = useState<ListingsFeed | null>(null);
   const [liveChangelog, setLiveChangelog] = useState<ChangelogFeed | null>(null);
@@ -55,6 +60,7 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
 
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
+  const [motionPaused, setMotionPaused] = useState<boolean>(() => prefersReducedMotion());
   const [savedIds, setSavedIds] = useState<string[]>(() => loadSavedIds());
   const [selectedListing, setSelectedListing] = useState<PropertyListing | null>(null);
   const [ledgerOpen, setLedgerOpen] = useState(false);
@@ -229,10 +235,12 @@ export function App() {
 
   if (loading) {
     return (
-      <div className="flex min-h-dvh items-center justify-center bg-white">
+      <div className="flex min-h-dvh items-center justify-center">
         <div className="text-center">
-          <div className="text-xl font-semibold tracking-[-0.03em] text-zinc-950">pennylane</div>
-          <p className="mt-1.5 text-xs text-zinc-400">Loading daily property index...</p>
+          <div className="text-xl font-bold tracking-[-0.03em] text-slate-950">
+            penny<span className="text-indigo-600">lane</span>
+          </div>
+          <p className="mt-1.5 text-xs text-slate-400">Loading daily property index...</p>
         </div>
       </div>
     );
@@ -240,10 +248,10 @@ export function App() {
 
   if (error || !feed) {
     return (
-      <div className="flex min-h-dvh items-center justify-center bg-white px-6">
-        <div className="max-w-md rounded-3xl border border-zinc-200 p-8 text-center">
-          <h1 className="text-xl font-semibold text-zinc-950">Feed Unavailable</h1>
-          <p className="mt-2 text-sm text-zinc-500">
+      <div className="flex min-h-dvh items-center justify-center px-6">
+        <div className="max-w-md rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <h1 className="text-xl font-bold text-slate-950">Feed Unavailable</h1>
+          <p className="mt-2 text-sm text-slate-500">
             {error || 'Run `npm run sync` to generate today’s daily listing feed.'}
           </p>
         </div>
@@ -252,7 +260,7 @@ export function App() {
   }
 
   return (
-    <div className="min-h-dvh bg-white text-zinc-950">
+    <div className="min-h-dvh text-slate-950">
       <TopNav
         locationQuery={filters.locationQuery}
         listings={allListings}
@@ -273,21 +281,23 @@ export function App() {
         filters={filters}
         counts={counts}
         resultCount={filteredListings.length}
+        motionPaused={motionPaused}
+        onToggleMotion={() => setMotionPaused((p) => !p)}
         onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
         onReset={() => setFilters(DEFAULT_FILTERS)}
         onSimulateNextDay={handleSimulateNextDay}
       />
 
-      {/* Compact Simulated Sync Toast Banner (only visible when previewing tomorrow's sync) */}
+      {/* Compact Simulated Sync Banner */}
       {simulationNotice && (
         <div
           role="status"
           aria-live="polite"
-          className="border-b border-rose-200/70 bg-rose-50/80 px-4 py-2 text-xs text-zinc-900 sm:px-6 lg:px-8"
+          className="border-b border-indigo-200/70 bg-gradient-to-r from-indigo-50 via-rose-50/70 to-amber-50/60 px-4 py-2 text-xs text-slate-900 sm:px-6 lg:px-8"
         >
           <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-3">
             <span className="flex items-center gap-2 font-medium">
-              <Sparkles className="h-3.5 w-3.5 text-rose-500" />
+              <Sparkles className="h-3.5 w-3.5 text-indigo-600" />
               {simulationNotice}
             </span>
             <div className="flex items-center gap-3">
@@ -301,7 +311,7 @@ export function App() {
               <button
                 type="button"
                 onClick={handleResetSimulation}
-                className="inline-flex cursor-pointer items-center gap-1 text-zinc-600 hover:text-zinc-950"
+                className="inline-flex cursor-pointer items-center gap-1 text-slate-600 hover:text-slate-950"
               >
                 <RotateCcw className="h-3 w-3" />
                 <span>Reset</span>
@@ -314,11 +324,11 @@ export function App() {
       {/* Main High-Density Bento Photo Gallery */}
       <main className="mx-auto max-w-[1600px] px-4 pt-5 pb-16 sm:px-6 lg:px-8">
         {filteredListings.length === 0 ? (
-          <div className="mx-auto my-12 max-w-md rounded-3xl bg-zinc-50 px-6 py-16 text-center">
-            <p className="text-lg font-semibold tracking-tight text-zinc-950">
+          <div className="mx-auto my-12 max-w-md rounded-3xl bg-white px-6 py-16 text-center ring-1 ring-slate-200/80 shadow-xs">
+            <p className="text-lg font-semibold tracking-tight text-slate-950">
               No matching homes in today&apos;s feed
             </p>
-            <p className="mt-1.5 text-sm text-zinc-500">
+            <p className="mt-1.5 text-sm text-slate-500">
               {filters.lens === 'saved'
                 ? 'Bookmark properties as you browse to track them here until they go under contract.'
                 : 'Try searching a different city, state, or ZIP, or widening your price range.'}
@@ -326,18 +336,20 @@ export function App() {
             <button
               type="button"
               onClick={() => setFilters(DEFAULT_FILTERS)}
-              className="mt-5 cursor-pointer rounded-full bg-zinc-950 px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-zinc-800"
+              className="mt-5 cursor-pointer rounded-full bg-indigo-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700"
             >
               Reset All Filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredListings.map((listing, idx) => (
               <PropertyCard
                 key={listing.id}
                 listing={listing}
+                index={idx}
                 isSaved={savedSet.has(listing.id)}
+                motionPaused={motionPaused}
                 featured={isDefaultUnfiltered && idx === 0}
                 isLcp={idx === 0}
                 onInspect={handleInspect}
@@ -348,29 +360,33 @@ export function App() {
         )}
       </main>
 
-      {/* Ultra-Clean Minimalist Footer */}
-      <footer className="border-t border-zinc-100 bg-white">
-        <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4 px-4 py-6 text-xs text-zinc-400 sm:px-6 lg:px-8">
+      {/* Clean Minimalist Footer */}
+      <footer className="border-t border-slate-200/70 bg-white/80 backdrop-blur-md">
+        <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4 px-4 py-6 text-xs text-slate-500 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <span className="font-semibold tracking-tight text-zinc-900">pennylane</span>
+            <span className="font-bold tracking-tight text-slate-950">
+              penny<span className="text-indigo-600">lane</span>
+            </span>
             <span>·</span>
             <span>Updated {formatDateShort(feed.syncedAt)}</span>
             <span>·</span>
-            <span>{changelog?.totalRemovedUnderContract ?? 0} removed under contract</span>
+            <span className="font-medium text-rose-600">
+              {changelog?.totalRemovedUnderContract ?? 0} removed under contract
+            </span>
           </div>
 
           <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={handleSimulateNextDay}
-              className="cursor-pointer font-medium text-zinc-600 transition-colors hover:text-zinc-950"
+              className="cursor-pointer font-medium text-indigo-600 transition-colors hover:text-indigo-800"
             >
               Preview +1 Day Sync
             </button>
             <button
               type="button"
               onClick={() => setLedgerOpen(true)}
-              className="cursor-pointer font-medium text-zinc-600 transition-colors hover:text-zinc-950"
+              className="cursor-pointer font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
               Removal Log &amp; Docs
             </button>
@@ -378,7 +394,7 @@ export function App() {
               href="https://github.com/awerds/pennylane"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-zinc-600 transition-colors hover:text-zinc-950"
+              className="font-medium text-slate-600 transition-colors hover:text-slate-950"
             >
               MIT Open Source
             </a>

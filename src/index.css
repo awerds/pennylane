@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --surface: #ffffff;
-  --surface-subtle: #f4f4f5;
-  --ink: #09090b;
-  --ink-muted: #71717a;
-  --border: rgba(9, 9, 11, 0.08);
-  --accent: #e11d48;
-  --deal: #059669;
+  --surface: #faf9f6;
+  --surface-card: #ffffff;
+  --ink: #0f172a;
+  --ink-muted: #64748b;
+  --brand-indigo: #4f46e5;
+  --brand-coral: #f43f5e;
+  --brand-amber: #f59e0b;
+  --brand-emerald: #059669;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -25,12 +26,17 @@
     margin: 0;
     min-height: 100dvh;
     background-color: var(--surface);
+    background-image:
+      radial-gradient(60% 340px at 14% 0%, rgba(244, 63, 94, 0.08), transparent 72%),
+      radial-gradient(55% 320px at 86% 0%, rgba(79, 70, 229, 0.085), transparent 72%),
+      radial-gradient(45% 260px at 50% 4%, rgba(245, 158, 11, 0.06), transparent 70%);
+    background-repeat: no-repeat;
     color: var(--ink);
-    accent-color: var(--ink);
+    accent-color: var(--brand-indigo);
   }
 
   ::selection {
-    background-color: var(--ink);
+    background-color: var(--brand-indigo);
     color: #ffffff;
   }
 }
@@ -48,8 +54,53 @@
   display: none;
 }
 
+/* Smooth GPU-composited image crossfade + subtle Ken Burns drift */
+.pl-slide-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition-property: opacity, transform;
+  transition-duration: 0.9s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.pl-slide-layer--active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.pl-slide-layer--inactive {
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes pl-ken-burns {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.07) translate3d(-0.8%, -0.5%, 0);
+  }
+}
+
+/* Opt in to ambient Ken Burns drift only when reduced motion is not requested */
+@media (prefers-reduced-motion: no-preference) {
+  .pl-slide-layer--active.pl-slide-layer--moving {
+    animation: pl-ken-burns 8.5s ease-out forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-slide-layer {
+    transition-duration: 0.2s;
+  }
+}
+
 /* Brand-consistent checkbox fallback when accent-color is unsupported */
-@supports not (accent-color: #09090b) {
+@supports not (accent-color: #4f46e5) {
   .pl-native-check {
     position: absolute !important;
     clip-path: inset(50%) !important;
@@ -76,18 +127,18 @@
     width: 0.95rem;
     height: 0.95rem;
     border-radius: 0.25rem;
-    border: 1.5px solid #a1a1aa;
+    border: 1.5px solid #94a3b8;
     background: #ffffff;
   }
 
   .pl-native-check:focus-visible + span::before {
-    outline: 2px solid #09090b;
+    outline: 2px solid #4f46e5;
     outline-offset: 2px;
   }
 
   .pl-native-check:checked + span::before {
-    background-color: #09090b;
-    border-color: #09090b;
+    background-color: #4f46e5;
+    border-color: #4f46e5;
   }
 
   .pl-native-check:checked + span::after {
@@ -105,7 +156,7 @@
 /* Native Modal Dialog: scroll containment & top-layer entry/exit transitions */
 dialog.modern-modal {
   padding: 0;
-  border: 1px solid rgba(9, 9, 11, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 1.5rem;
   background: #ffffff;
   color: var(--ink);
@@ -114,7 +165,7 @@ dialog.modern-modal {
   width: 100%;
   margin: auto;
   overflow: auto;
-  box-shadow: 0 32px 96px -24px rgba(9, 9, 11, 0.28), 0 0 0 1px rgba(9, 9, 11, 0.05);
+  box-shadow: 0 32px 96px -24px rgba(15, 23, 42, 0.3), 0 0 0 1px rgba(79, 70, 229, 0.06);
 
   opacity: 0;
   transition-property: opacity, transform, display, overlay;
@@ -140,7 +191,7 @@ dialog.modern-modal:modal {
 dialog.modern-modal::backdrop {
   overflow: hidden;
   overscroll-behavior: contain;
-  background-color: rgba(9, 9, 11, 0);
+  background-color: rgba(15, 23, 42, 0);
   backdrop-filter: blur(0px);
   transition-property: background-color, backdrop-filter, display, overlay;
   transition-duration: 0.24s;
@@ -169,11 +220,11 @@ dialog.modern-modal[open] {
   }
 
   &::backdrop {
-    background-color: rgba(9, 9, 11, 0.48);
+    background-color: rgba(15, 23, 42, 0.48);
     backdrop-filter: blur(6px);
 
     @starting-style {
-      background-color: rgba(9, 9, 11, 0);
+      background-color: rgba(15, 23, 42, 0);
       backdrop-filter: blur(0px);
     }
   }
@@ -197,12 +248,8 @@ dialog.modern-modal[open] {
   }
 }
 
-.live-dot {
-  animation: live-pulse 2.2s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: no-preference) {
   .live-dot {
-    animation: none;
+    animation: live-pulse 2.2s ease-in-out infinite;
   }
 }
