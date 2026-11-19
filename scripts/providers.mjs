@@ -63,6 +63,8 @@ async function fetchRapidApiZillow(existingListings) {
         state,
         zip: String(p.zipcode || '00000'),
         region: inferRegion(state),
+        lat: Number(p.latitude) || 39.8283,
+        lng: Number(p.longitude) || -98.5795,
         price: Number(p.price) || 500000,
         previousPrice: Number(p.priceChange ? p.price - p.priceChange : p.price) || Number(p.price) || 500000,
         zipMedianPricePerSqft: Math.round(((Number(p.price) || 500000) / Math.max(Number(p.livingArea) || 1800, 600)) * 1.18),
@@ -129,6 +131,8 @@ async function fetchRentCast() {
         state: r.state,
         zip: r.zipCode || '00000',
         region: inferRegion(r.state),
+        lat: Number(r.latitude) || 39.8283,
+        lng: Number(r.longitude) || -98.5795,
         price: Number(r.price) || 450000,
         previousPrice: Number(r.price) || 450000,
         zipMedianPricePerSqft: Math.round(((Number(r.price) || 450000) / Math.max(Number(r.squareFootage) || 1800, 600)) * 1.15),
@@ -247,11 +251,11 @@ function normalizeStatus(status) {
 
 function inferRegion(state) {
   const map = {
-    NY: 'Northeast', VT: 'Northeast', ME: 'Northeast', PA: 'Northeast', MA: 'Northeast', CT: 'Northeast', NH: 'Northeast', NJ: 'Northeast',
-    CA: 'West', OR: 'West', WA: 'West', CO: 'West', UT: 'West', MT: 'West', ID: 'West', NV: 'West',
+    NY: 'Northeast', VT: 'Northeast', ME: 'Northeast', PA: 'Northeast', MA: 'Northeast', CT: 'Northeast', NH: 'Northeast', NJ: 'Northeast', RI: 'Northeast',
+    CA: 'West', OR: 'West', WA: 'West', CO: 'West', UT: 'West', MT: 'West', ID: 'West', NV: 'West', WY: 'West',
     TX: 'Southwest', NM: 'Southwest', AZ: 'Southwest',
     MI: 'Midwest', IL: 'Midwest', MN: 'Midwest', OH: 'Midwest', WI: 'Midwest', MO: 'Midwest',
-    GA: 'South', NC: 'South', LA: 'South', TN: 'South', FL: 'South', SC: 'South', VA: 'South',
+    GA: 'South', NC: 'South', LA: 'South', TN: 'South', FL: 'South', SC: 'South', VA: 'South', WV: 'South',
   };
   return map[state] || 'US';
 }

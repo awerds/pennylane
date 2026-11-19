@@ -11,18 +11,30 @@ import { PropertyImage } from './PropertyImage';
 interface PropertyCardProps {
   listing: PropertyListing;
   isSaved: boolean;
+  isHighlighted?: boolean;
   onInspect: (listing: PropertyListing) => void;
   onToggleSave: (id: string) => void;
+  onHover?: (id: string | null) => void;
 }
 
 export function PropertyCard({
   listing,
   isSaved,
+  isHighlighted = false,
   onInspect,
   onToggleSave,
+  onHover,
 }: PropertyCardProps) {
   return (
-    <article className="group flex flex-col border border-[var(--rule)] bg-[var(--paper-raised)] transition-colors hover:border-[#b9b1a2]">
+    <article
+      onMouseEnter={() => onHover?.(listing.id)}
+      onMouseLeave={() => onHover?.(null)}
+      className={`group flex flex-col border bg-[var(--paper-raised)] transition-colors ${
+        isHighlighted
+          ? 'border-[var(--ink)] ring-1 ring-[var(--ink)]'
+          : 'border-[var(--rule)] hover:border-[#b9b1a2]'
+      }`}
+    >
       {/* Architectural plate */}
       <div className="relative aspect-[4/3] overflow-hidden bg-[var(--paper-inset)]">
         <button
@@ -85,7 +97,7 @@ export function PropertyCard({
             </span>
           </div>
 
-          <h3 className="mt-2 font-serif-editorial text-[24px] leading-[1.12] tracking-[-0.01em] text-[var(--ink)]">
+          <h3 className="mt-2 font-serif-editorial text-[23px] leading-[1.12] tracking-[-0.01em] text-[var(--ink)]">
             <button
               type="button"
               onClick={() => onInspect(listing)}
@@ -95,14 +107,14 @@ export function PropertyCard({
             </button>
           </h3>
 
-          <p className="mt-2.5 line-clamp-2 text-[13px] leading-relaxed text-[var(--ink-soft)]">
+          <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-[var(--ink-soft)]">
             {listing.editorialNote}
           </p>
         </div>
 
-        <div className="mt-5">
+        <div className="mt-4">
           {/* Price & Deal Delta */}
-          <div className="flex items-baseline justify-between gap-2 border-t border-[var(--rule)] pt-3.5">
+          <div className="flex items-baseline justify-between gap-2 border-t border-[var(--rule)] pt-3">
             <div className="flex items-baseline gap-2">
               <span className="font-mono-tech text-lg font-medium text-[var(--ink)]">
                 {formatCurrency(listing.price)}
@@ -126,7 +138,7 @@ export function PropertyCard({
           </div>
 
           {/* Specs & Actions */}
-          <div className="mt-2.5 flex items-center justify-between gap-2 text-[11px] font-mono-tech text-[var(--ink-soft)]">
+          <div className="mt-2 flex items-center justify-between gap-2 text-[11px] font-mono-tech text-[var(--ink-soft)]">
             <span>
               {listing.beds}bd · {listing.baths}ba · {formatNumber(listing.sqft)}sf · {listing.yearBuilt}
             </span>
@@ -145,4 +157,3 @@ export function PropertyCard({
     </article>
   );
 }
-

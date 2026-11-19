@@ -1,42 +1,42 @@
 {
-  "lastSyncedAt": "2026-11-20T22:40:31.468Z",
+  "lastSyncedAt": "2026-11-20T23:03:03.496Z",
   "totalRemovedUnderContract": 5,
   "runs": [
     {
       "editionNumber": 2,
-      "syncedAt": "2026-11-20T22:40:31.468Z",
+      "syncedAt": "2026-11-20T23:03:03.496Z",
       "provider": "open-curated",
       "addedCount": 2,
       "removedCount": 2,
       "priceDropsCount": 0,
       "added": [
         {
-          "id": "pl-upstate-chapel-loft",
-          "title": "1874 Gothic Revival Stone Chapel Converted Into Painter's Loft",
-          "city": "Hudson",
-          "state": "NY",
-          "price": 675000,
-          "score": 98
+          "id": "pl-milwaukee-cream-city-loft",
+          "title": "1894 Cream City Brick Corner Tavern Converted to Sculptor's Residence",
+          "city": "Milwaukee",
+          "state": "WI",
+          "price": 319000,
+          "score": 91
         },
         {
-          "id": "pl-joshua-tree-steel-bunker",
-          "title": "Corrugated Corten & Glass Desert Observatory Surrounded by Boulders",
-          "city": "Joshua Tree",
+          "id": "pl-santa-barbara-spanish-courtyard",
+          "title": "1927 George Washington Smith-Era Adobe Villa With Citrus Courtyard",
+          "city": "Santa Barbara",
           "state": "CA",
-          "price": 529000,
-          "score": 91
+          "price": 1745000,
+          "score": 92
         }
       ],
       "removed": [
         {
           "id": "pl-detroit-art-deco-mansion",
-          "title": "1929 Pewabic-Tiled Tutor Revival Estate in Palmer Woods",
+          "title": "1929 Pewabic-Tiled Tudor Revival Estate in Palmer Woods",
           "city": "Detroit",
           "state": "MI",
           "finalPrice": 519000,
           "daysOnMarket": 10,
           "reason": "Pending Sale",
-          "removedAt": "2026-11-20T22:40:31.468Z",
+          "removedAt": "2026-11-20T23:03:03.496Z",
           "architecturalStyle": "Historic Tudor / Art Deco"
         },
         {
@@ -47,7 +47,7 @@
           "finalPrice": 489000,
           "daysOnMarket": 9,
           "reason": "Pending Sale",
-          "removedAt": "2026-11-20T22:40:31.468Z",
+          "removedAt": "2026-11-20T23:03:03.496Z",
           "architecturalStyle": "Appalachian Contemporary"
         }
       ],
@@ -55,9 +55,9 @@
     },
     {
       "editionNumber": 1,
-      "syncedAt": "2026-11-19T22:40:31.468Z",
+      "syncedAt": "2026-11-19T23:03:03.496Z",
       "provider": "open-curated",
-      "addedCount": 13,
+      "addedCount": 47,
       "removedCount": 0,
       "priceDropsCount": 0,
       "added": [
@@ -87,7 +87,7 @@
         },
         {
           "id": "pl-detroit-art-deco-mansion",
-          "title": "1929 Pewabic-Tiled Tutor Revival Estate in Palmer Woods",
+          "title": "1929 Pewabic-Tiled Tudor Revival Estate in Palmer Woods",
           "city": "Detroit",
           "state": "MI",
           "price": 519000,
@@ -117,13 +117,13 @@
   "removedArchive": [
     {
       "id": "pl-detroit-art-deco-mansion",
-      "title": "1929 Pewabic-Tiled Tutor Revival Estate in Palmer Woods",
+      "title": "1929 Pewabic-Tiled Tudor Revival Estate in Palmer Woods",
       "city": "Detroit",
       "state": "MI",
       "finalPrice": 519000,
       "daysOnMarket": 10,
       "reason": "Pending Sale",
-      "removedAt": "2026-11-20T22:40:31.468Z",
+      "removedAt": "2026-11-20T23:03:03.496Z",
       "architecturalStyle": "Historic Tudor / Art Deco"
     },
     {
@@ -134,7 +134,7 @@
       "finalPrice": 489000,
       "daysOnMarket": 9,
       "reason": "Pending Sale",
-      "removedAt": "2026-11-20T22:40:31.468Z",
+      "removedAt": "2026-11-20T23:03:03.496Z",
       "architecturalStyle": "Appalachian Contemporary"
     },
     {
@@ -145,7 +145,7 @@
       "finalPrice": 1890000,
       "daysOnMarket": 4,
       "reason": "Under Contract",
-      "removedAt": "2026-11-18T20:40:31.468Z",
+      "removedAt": "2026-11-18T21:03:03.496Z",
       "architecturalStyle": "Mid-Century Modern"
     },
     {
@@ -156,7 +156,7 @@
       "finalPrice": 745000,
       "daysOnMarket": 6,
       "reason": "Pending Sale",
-      "removedAt": "2026-11-17T20:40:31.468Z",
+      "removedAt": "2026-11-17T21:03:03.496Z",
       "architecturalStyle": "Adaptive Reuse"
     },
     {
@@ -167,7 +167,7 @@
       "finalPrice": 549000,
       "daysOnMarket": 3,
       "reason": "Under Contract",
-      "removedAt": "2026-11-16T20:40:31.468Z",
+      "removedAt": "2026-11-16T21:03:03.496Z",
       "architecturalStyle": "Queen Anne Victorian"
     }
   ]

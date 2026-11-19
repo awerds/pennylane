@@ -1,4 +1,4 @@
-import type { CategoryKey, ChangelogFeed, ListingsFeed, PropertyListing, RemovedProperty } from '../types';
+import type { CategoryKey, ChangelogFeed, ListingsFeed, PropertyListing, RemovedProperty, StyleGroup } from '../types';
 
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -6,6 +6,42 @@ export function formatCurrency(amount: number): string {
     currency: 'USD',
     maximumFractionDigits: 0,
   }).format(amount);
+}
+
+export function formatPriceCompact(amount: number): string {
+  if (amount >= 1_000_000) {
+    const m = amount / 1_000_000;
+    return `$${m >= 10 ? m.toFixed(1) : m.toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')}M`;
+  }
+  return `$${Math.round(amount / 1000)}k`;
+}
+
+export function matchesStyleGroup(listing: PropertyListing, group: StyleGroup): boolean {
+  if (group === 'all') return true;
+  const hay = `${listing.architecturalStyle} ${listing.title}`.toLowerCase();
+  if (group === 'modern') {
+    return (
+      hay.includes('modern') ||
+      hay.includes('mid-century') ||
+      hay.includes('brutalis') ||
+      hay.includes('usonian') ||
+      hay.includes('contemporary') ||
+      hay.includes('googie')
+    );
+  }
+  if (group === 'historic') {
+    return listing.yearBuilt <= 1935 || hay.includes('historic') || hay.includes('victorian') || hay.includes('tudor');
+  }
+  if (group === 'reuse') {
+    return hay.includes('reuse') || hay.includes('mill') || hay.includes('firehouse') || hay.includes('chapel') || hay.includes('schoolhouse') || hay.includes('barn') || hay.includes('carriage') || hay.includes('studio');
+  }
+  if (group === 'desert') {
+    return hay.includes('desert') || hay.includes('adobe') || hay.includes('earthship') || hay.includes('geodesic');
+  }
+  if (group === 'coastal') {
+    return hay.includes('coastal') || hay.includes('cabin') || hay.includes('a-frame') || hay.includes('maritime') || hay.includes('alpine') || hay.includes('boathouse');
+  }
+  return true;
 }
 
 export function formatNumber(n: number): string {

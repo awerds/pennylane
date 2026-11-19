@@ -8,6 +8,8 @@
     "state": "WA",
     "zip": "98102",
     "region": "West",
+    "lat": 47.6416,
+    "lng": -122.3264,
     "price": 825000,
     "previousPrice": 895000,
     "zipMedianPricePerSqft": 695,
@@ -18,7 +20,7 @@
     "yearBuilt": 1984,
     "daysOnMarket": 2,
     "status": "FOR_SALE",
-    "architecturalStyle": "Maritime Modern",
+    "architecturalStyle": "Coastal / Cabin Maritime",
     "raritySignals": ["Owned Lake Union Moorage", "Private Kayak Launch", "Cedar Skylight Atrium", "Community Submission"],
     "editorialNote": "Submitted via open-source watchlist PR: owned slip floating home with cedar millwork and unobstructed Space Needle sunset views—listed $138/sqft below Eastlake's median.",
     "zillowUrl": "https://www.zillow.com/homes/Seattle-WA-98102_rb/",
@@ -28,6 +30,37 @@
     ],
     "source": "community-watchlist",
     "submittedBy": "pennylane-bot"
+  },
+  {
+    "id": "pl-community-miami-mimo-courtyard",
+    "zpid": "12904411",
+    "title": "1955 MiMo Concrete-Brise-Soleil Villa in Upper Eastside",
+    "address": "748 NE 72nd St",
+    "city": "Miami",
+    "state": "FL",
+    "zip": "33138",
+    "region": "South",
+    "lat": 25.8414,
+    "lng": -80.1815,
+    "price": 895000,
+    "previousPrice": 1045000,
+    "zipMedianPricePerSqft": 620,
+    "beds": 3,
+    "baths": 2.5,
+    "sqft": 2190,
+    "lotAcres": 0.21,
+    "yearBuilt": 1955,
+    "daysOnMarket": 1,
+    "status": "FOR_SALE",
+    "architecturalStyle": "Mid-Century Modernist",
+    "raritySignals": ["Original Concrete Brise-Soleil", "Polished Cuban Terrazzo", "Biscayne Bay Breeze Court", "Community Submission"],
+    "editorialNote": "Submitted via community watchlist: classic Miami Modern (MiMo) silhouette with sculptural sunscreens and untouched terrazzo—priced 34% below MiMo median $/sqft.",
+    "zillowUrl": "https://www.zillow.com/homes/Miami-FL-33138_rb/",
+    "images": [
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1400&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "source": "community-watchlist",
+    "submittedBy": "pennylane-bot"
   }
 ]
-

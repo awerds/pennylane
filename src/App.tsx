@@ -1,20 +1,35 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Masthead } from './components/Masthead';
 import { SyncTicker } from './components/SyncTicker';
 import { HeroSpotlight } from './components/HeroSpotlight';
 import { FilterBar } from './components/FilterBar';
 import { PropertyCard } from './components/PropertyCard';
+import { PropertyMap } from './components/PropertyMap';
 import { PropertyDossierModal } from './components/PropertyDossierModal';
 import { SyncLedgerModal } from './components/SyncLedgerModal';
-import type { ChangelogFeed, FilterState, ListingsFeed, PropertyListing } from './types';
-import { simulateNextDayClient } from './utils/format';
+import type {
+  ChangelogFeed,
+  FilterState,
+  ListingsFeed,
+  MapBounds,
+  PropertyListing,
+  ViewMode,
+} from './types';
+import { matchesStyleGroup, simulateNextDayClient } from './utils/format';
 
 const SAVED_STORAGE_KEY = 'pennylane:saved-listings:v1';
 
 const DEFAULT_FILTERS: FilterState = {
   lens: 'all',
   region: 'All',
+  minPrice: 0,
   maxPrice: 0,
+  minBeds: 0,
+  minBaths: 0,
+  minSqft: 0,
+  styleGroup: 'all',
+  priceCutsOnly: false,
+  belowMedianOnly: false,
   sort: 'score',
   query: '',
 };
@@ -45,6 +60,11 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
 
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
+  const [viewMode, setViewMode] = useState<ViewMode>('split');
+  const [filterByMap, setFilterByMap] = useState(true);
+  const [mapBounds, setMapBounds] = useState<MapBounds | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
   const [savedIds, setSavedIds] = useState<string[]>(() => loadSavedIds());
   const [selectedListing, setSelectedListing] = useState<PropertyListing | null>(null);
   const [ledgerOpen, setLedgerOpen] = useState(false);
@@ -63,7 +83,12 @@ export function App() {
         const listingsData: ListingsFeed = await listingsRes.json();
         const changelogData: ChangelogFeed = changelogRes.ok
           ? await changelogRes.json()
-          : { lastSyncedAt: listingsData.syncedAt, totalRemovedUnderContract: 0, runs: [], removedArchive: [] };
+          : {
+              lastSyncedAt: listingsData.syncedAt,
+              totalRemovedUnderContract: 0,
+              runs: [],
+              removedArchive: [],
+            };
         const reserveData: PropertyListing[] =
           reserveRes && reserveRes.ok ? await reserveRes.json() : [];
 
@@ -75,7 +100,6 @@ export function App() {
         setChangelog(changelogData);
         setReservePool(reserveData);
 
-        // Deep-link support (?property=<id>)
         const propertyId = new URLSearchParams(window.location.search).get('property');
         if (propertyId) {
           const match = listingsData.listings.find((l) => l.id === propertyId);
@@ -94,7 +118,6 @@ export function App() {
     };
   }, []);
 
-  // Persist saved watchlist
   useEffect(() => {
     try {
       localStorage.setItem(SAVED_STORAGE_KEY, JSON.stringify(savedIds));
@@ -105,25 +128,27 @@ export function App() {
 
   const savedSet = useMemo(() => new Set(savedIds), [savedIds]);
 
-  const toggleSave = (id: string) => {
-    setSavedIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
-  };
+  const toggleSave = useCallback((id: string) => {
+    setSavedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  }, []);
 
-  const handleInspect = (listing: PropertyListing) => {
+  const handleInspect = useCallback((listing: PropertyListing) => {
     setSelectedListing(listing);
     const url = new URL(window.location.href);
     url.searchParams.set('property', listing.id);
     window.history.replaceState({}, '', url);
-  };
+  }, []);
 
-  const handleCloseDossier = () => {
+  const handleCloseDossier = useCallback(() => {
     setSelectedListing(null);
     const url = new URL(window.location.href);
     if (url.searchParams.has('property')) {
       url.searchParams.delete('property');
       window.history.replaceState({}, '', url);
     }
-  };
+  }, []);
 
   const handleSimulateNextDay = () => {
     if (!feed || !changelog) return;
@@ -148,11 +173,29 @@ export function App() {
     setSimulationNotice(null);
   };
 
-  const allListings = feed?.listings ?? [];
+  const handleBoundsChange = useCallback((bounds: MapBounds) => {
+    setMapBounds(bounds);
+  }, []);
 
-  const regions = useMemo(() => {
-    return Array.from(new Set(allListings.map((l) => l.region))).sort();
-  }, [allListings]);
+  const handleResetBounds = useCallback(() => {
+    setMapBounds(null);
+  }, []);
+
+  const handleToggleFilterByMap = useCallback((enabled: boolean) => {
+    setFilterByMap(enabled);
+    if (!enabled) setMapBounds(null);
+  }, []);
+
+  const handleSelectRegion = useCallback((region: string) => {
+    setFilters((prev) => ({ ...prev, region }));
+  }, []);
+
+  const handleResetAll = useCallback(() => {
+    setFilters(DEFAULT_FILTERS);
+    setMapBounds(null);
+  }, []);
+
+  const allListings = feed?.listings ?? [];
 
   const counts = useMemo(
     () => ({
@@ -165,7 +208,8 @@ export function App() {
     [allListings, savedSet]
   );
 
-  const filteredListings = useMemo(() => {
+  // 1. Apply all attribute & pricing filters (before spatial bounds, so map shows markers smoothly)
+  const attributeFiltered = useMemo(() => {
     const q = filters.query.trim().toLowerCase();
     const list = allListings.filter((item) => {
       if (filters.lens === 'saved' && !savedSet.has(item.id)) return false;
@@ -177,9 +221,17 @@ export function App() {
         return false;
       }
       if (filters.region !== 'All' && item.region !== filters.region) return false;
+      if (filters.minPrice > 0 && item.price < filters.minPrice) return false;
       if (filters.maxPrice > 0 && item.price > filters.maxPrice) return false;
+      if (filters.minBeds > 0 && item.beds < filters.minBeds) return false;
+      if (filters.minBaths > 0 && item.baths < filters.minBaths) return false;
+      if (filters.minSqft > 0 && item.sqft < filters.minSqft) return false;
+      if (!matchesStyleGroup(item, filters.styleGroup)) return false;
+      if (filters.priceCutsOnly && item.priceCutPct <= 0) return false;
+      if (filters.belowMedianOnly && item.medianDeltaPct > -20) return false;
+
       if (q) {
-        const haystack = `${item.title} ${item.city} ${item.state} ${item.architecturalStyle} ${item.editorialNote} ${item.raritySignals.join(' ')}`.toLowerCase();
+        const haystack = `${item.title} ${item.city} ${item.state} ${item.zip} ${item.architecturalStyle} ${item.editorialNote} ${item.raritySignals.join(' ')}`.toLowerCase();
         if (!haystack.includes(q)) return false;
       }
       return true;
@@ -194,19 +246,41 @@ export function App() {
       sorted.sort((a, b) => a.price - b.price);
     } else if (filters.sort === 'price-desc') {
       sorted.sort((a, b) => b.price - a.price);
+    } else if (filters.sort === 'sqft-desc') {
+      sorted.sort((a, b) => b.sqft - a.sqft);
     } else {
       sorted.sort((a, b) => b.scores.overall - a.scores.overall || a.daysOnMarket - b.daysOnMarket);
     }
     return sorted;
   }, [allListings, filters, savedSet]);
 
-  const showHero =
-    filters.lens === 'all' &&
-    filters.region === 'All' &&
-    filters.maxPrice === 0 &&
-    filters.query.trim() === '' &&
-    filteredListings.length > 0;
+  // 2. Apply live map bounds filter when enabled
+  const filteredListings = useMemo(() => {
+    if (!filterByMap || !mapBounds) return attributeFiltered;
+    return attributeFiltered.filter(
+      (item) =>
+        item.lat >= mapBounds.south &&
+        item.lat <= mapBounds.north &&
+        item.lng >= mapBounds.west &&
+        item.lng <= mapBounds.east
+    );
+  }, [attributeFiltered, filterByMap, mapBounds]);
 
+  const hasNarrowingFilter =
+    filters.lens !== 'all' ||
+    filters.region !== 'All' ||
+    filters.minPrice > 0 ||
+    filters.maxPrice > 0 ||
+    filters.minBeds > 0 ||
+    filters.minBaths > 0 ||
+    filters.minSqft > 0 ||
+    filters.styleGroup !== 'all' ||
+    filters.priceCutsOnly ||
+    filters.belowMedianOnly ||
+    filters.query.trim() !== '' ||
+    Boolean(mapBounds);
+
+  const showHero = viewMode === 'grid' && !hasNarrowingFilter && filteredListings.length > 0;
   const heroListing = showHero ? filteredListings[0] : null;
   const gridListings = showHero ? filteredListings.slice(1) : filteredListings;
 
@@ -262,6 +336,18 @@ export function App() {
         onOpenLedger={() => setLedgerOpen(true)}
       />
 
+      <FilterBar
+        filters={filters}
+        viewMode={viewMode}
+        hasMapBounds={Boolean(mapBounds)}
+        counts={counts}
+        resultCount={filteredListings.length}
+        totalCount={allListings.length}
+        onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
+        onChangeView={setViewMode}
+        onReset={handleResetAll}
+      />
+
       <main>
         {heroListing && (
           <HeroSpotlight
@@ -272,72 +358,163 @@ export function App() {
           />
         )}
 
-        <FilterBar
-          filters={filters}
-          counts={counts}
-          regions={regions}
-          resultCount={filteredListings.length}
-          onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
-          onReset={() => setFilters(DEFAULT_FILTERS)}
-        />
-
         <section
-          aria-label="Active property listings"
-          className="mx-auto max-w-[1380px] px-5 py-8 sm:px-8 sm:py-10"
+          aria-label="Active property listings and map filter"
+          className="mx-auto max-w-[1440px] px-5 py-6 sm:px-8 sm:py-8"
         >
-          <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-[var(--rule)] pb-3">
-            <h2 className="font-serif-editorial text-2xl text-[var(--ink)] sm:text-3xl">
-              {filters.lens === 'all'
-                ? 'Active Market Dispatch'
-                : filters.lens === 'exceptional'
-                ? 'Architectural Outliers & Rare Finds'
-                : filters.lens === 'deal'
-                ? 'Below-Median Deals & Steep Price Cuts'
-                : filters.lens === 'new'
-                ? 'Fresh to Market (Last 72 Hours)'
-                : 'Your Saved Watchlist'}
-            </h2>
-            <span className="font-mono-tech text-xs text-[var(--ink-soft)]">
-              Showing {filteredListings.length} of {allListings.length}
-            </span>
-          </div>
+          {/* Full Map View */}
+          {viewMode === 'map' && (
+            <div className="space-y-4">
+              <PropertyMap
+                allMatchingListings={attributeFiltered}
+                visibleListings={filteredListings}
+                hoveredId={hoveredId}
+                filterByMap={filterByMap}
+                hasActiveBounds={Boolean(mapBounds)}
+                activeRegion={filters.region}
+                heightClassName="h-[68dvh] min-h-[520px]"
+                onBoundsChange={handleBoundsChange}
+                onToggleFilterByMap={handleToggleFilterByMap}
+                onResetBounds={handleResetBounds}
+                onSelectRegion={handleSelectRegion}
+                onHoverListing={setHoveredId}
+                onInspectListing={handleInspect}
+              />
+            </div>
+          )}
 
-          {gridListings.length === 0 && !heroListing ? (
-            <div className="border border-[var(--rule)] bg-[var(--paper-raised)] px-6 py-16 text-center">
-              <p className="font-serif-editorial text-2xl text-[var(--ink)]">
-                No matching properties in today&apos;s edition.
-              </p>
-              <p className="mt-2 text-sm text-[var(--ink-soft)]">
-                {filters.lens === 'saved'
-                  ? 'Bookmark listings as you browse to track them here until they go under contract.'
-                  : 'Try widening your price ceiling or clearing your search filters.'}
-              </p>
-              <button
-                type="button"
-                onClick={() => setFilters(DEFAULT_FILTERS)}
-                className="mt-5 cursor-pointer border border-[var(--ink)] bg-[var(--ink)] px-4 py-2 text-xs font-medium text-[var(--paper)] hover:bg-[#2a2926]"
-              >
-                Reset All Filters
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {gridListings.map((listing) => (
-                <PropertyCard
-                  key={listing.id}
-                  listing={listing}
-                  isSaved={savedSet.has(listing.id)}
-                  onInspect={handleInspect}
-                  onToggleSave={toggleSave}
+          {/* Split Map + Editorial Grid View */}
+          {viewMode === 'split' && (
+            <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
+              <div className="lg:sticky lg:top-[152px] lg:col-span-5 xl:col-span-5">
+                <PropertyMap
+                  allMatchingListings={attributeFiltered}
+                  visibleListings={filteredListings}
+                  hoveredId={hoveredId}
+                  filterByMap={filterByMap}
+                  hasActiveBounds={Boolean(mapBounds)}
+                  activeRegion={filters.region}
+                  heightClassName="h-[400px] sm:h-[460px] lg:h-[calc(100dvh-185px)] lg:min-h-[520px]"
+                  onBoundsChange={handleBoundsChange}
+                  onToggleFilterByMap={handleToggleFilterByMap}
+                  onResetBounds={handleResetBounds}
+                  onSelectRegion={handleSelectRegion}
+                  onHoverListing={setHoveredId}
+                  onInspectListing={handleInspect}
                 />
-              ))}
+              </div>
+
+              <div className="lg:col-span-7 xl:col-span-7">
+                <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-[var(--rule)] pb-2.5">
+                  <h2 className="font-serif-editorial text-2xl text-[var(--ink)] sm:text-3xl">
+                    {filters.lens === 'all'
+                      ? mapBounds
+                        ? 'Finds in Selected Map Area'
+                        : 'Active Market Dispatch'
+                      : filters.lens === 'exceptional'
+                      ? 'Architectural Outliers'
+                      : filters.lens === 'deal'
+                      ? 'Below-Median Deals'
+                      : filters.lens === 'new'
+                      ? 'Fresh to Market'
+                      : 'Saved Watchlist'}
+                  </h2>
+                  <span className="font-mono-tech text-xs text-[var(--ink-soft)]">
+                    {filteredListings.length} {filteredListings.length === 1 ? 'home' : 'homes'}
+                  </span>
+                </div>
+
+                {gridListings.length === 0 ? (
+                  <div className="border border-[var(--rule)] bg-[var(--paper-raised)] px-6 py-16 text-center">
+                    <p className="font-serif-editorial text-2xl text-[var(--ink)]">
+                      No properties match your current map area &amp; filters.
+                    </p>
+                    <p className="mt-2 text-sm text-[var(--ink-soft)]">
+                      Zoom out on the map or reset filters to browse all {allListings.length} active finds.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={handleResetAll}
+                      className="mt-5 cursor-pointer border border-[var(--ink)] bg-[var(--ink)] px-4 py-2 text-xs font-medium text-[var(--paper)] hover:bg-[#2a2926]"
+                    >
+                      Reset Filters &amp; Map Area
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    {gridListings.map((listing) => (
+                      <PropertyCard
+                        key={listing.id}
+                        listing={listing}
+                        isSaved={savedSet.has(listing.id)}
+                        isHighlighted={hoveredId === listing.id}
+                        onInspect={handleInspect}
+                        onToggleSave={toggleSave}
+                        onHover={setHoveredId}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
+          )}
+
+          {/* Classic Broadsheet 3-Column Grid View */}
+          {viewMode === 'grid' && (
+            <>
+              <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-[var(--rule)] pb-3">
+                <h2 className="font-serif-editorial text-2xl text-[var(--ink)] sm:text-3xl">
+                  {filters.lens === 'all'
+                    ? 'Active Market Dispatch'
+                    : filters.lens === 'exceptional'
+                    ? 'Architectural Outliers & Rare Finds'
+                    : filters.lens === 'deal'
+                    ? 'Below-Median Deals & Steep Price Cuts'
+                    : filters.lens === 'new'
+                    ? 'Fresh to Market (Last 72 Hours)'
+                    : 'Your Saved Watchlist'}
+                </h2>
+                <span className="font-mono-tech text-xs text-[var(--ink-soft)]">
+                  Showing {filteredListings.length} of {allListings.length}
+                </span>
+              </div>
+
+              {gridListings.length === 0 && !heroListing ? (
+                <div className="border border-[var(--rule)] bg-[var(--paper-raised)] px-6 py-16 text-center">
+                  <p className="font-serif-editorial text-2xl text-[var(--ink)]">
+                    No matching properties in today&apos;s edition.
+                  </p>
+                  <p className="mt-2 text-sm text-[var(--ink-soft)]">
+                    Try widening your price range, beds/baths, or clearing filters.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleResetAll}
+                    className="mt-5 cursor-pointer border border-[var(--ink)] bg-[var(--ink)] px-4 py-2 text-xs font-medium text-[var(--paper)] hover:bg-[#2a2926]"
+                  >
+                    Reset All Filters
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {gridListings.map((listing) => (
+                    <PropertyCard
+                      key={listing.id}
+                      listing={listing}
+                      isSaved={savedSet.has(listing.id)}
+                      onInspect={handleInspect}
+                      onToggleSave={toggleSave}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </section>
       </main>
 
       <footer className="mt-12 border-t border-[var(--rule)] bg-[var(--paper-raised)]">
-        <div className="mx-auto flex max-w-[1380px] flex-col gap-4 px-5 py-8 text-xs text-[var(--ink-soft)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-4 px-5 py-8 text-xs text-[var(--ink-soft)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <div>
             <span className="font-serif-editorial text-xl text-[var(--ink)]">PennyLane</span>
             <span className="mx-2 text-[var(--rule)]">·</span>
@@ -375,4 +552,3 @@ export function App() {
 }
 
 export default App;
-
