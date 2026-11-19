@@ -2,8 +2,8 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowUpRight, Bookmark, Check, Copy, MapPin, X } from 'lucide-react';
 import type { PropertyListing } from '../types';
 import {
-  categoryBadgeClasses,
   categoryLabel,
+  categoryPillClasses,
   formatCurrency,
   formatNumber,
 } from '../utils/format';
@@ -106,17 +106,15 @@ export function PropertyDossierModal({
       ref={dialogRef}
       {...({ closedby: 'any' } as Record<string, string>)}
       aria-labelledby={titleId}
-      className="editorial-modal"
+      className="modern-modal"
     >
       {listing && (
         <div className="flex flex-col">
-          {/* Top bar */}
-          <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-[var(--rule)] bg-[var(--paper-raised)] px-6 py-4">
-            <div className="flex flex-wrap items-center gap-2 font-mono-tech text-[11px] uppercase tracking-[0.12em] text-[var(--ink-soft)]">
-              <span>Dossier #{listing.zpid}</span>
-              <span className="text-[var(--rule)]">/</span>
-              <span className="inline-flex items-center gap-1 text-[var(--ink)]">
-                <MapPin className="h-3 w-3" />
+          {/* Sticky Top Bar */}
+          <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-zinc-100 bg-white/95 px-6 py-4 backdrop-blur-md">
+            <div className="flex min-w-0 items-center gap-2 text-xs text-zinc-500">
+              <MapPin className="h-3.5 w-3.5 shrink-0 text-zinc-400" />
+              <span className="truncate font-medium text-zinc-800">
                 {listing.address}, {listing.city}, {listing.state} {listing.zip}
               </span>
             </div>
@@ -125,8 +123,8 @@ export function PropertyDossierModal({
               type="button"
               autoFocus
               onClick={handleCloseClick}
-              aria-label="Close property dossier"
-              className="inline-flex cursor-pointer items-center justify-center border border-[var(--rule)] bg-[var(--paper)] p-1.5 text-[var(--ink)] transition-colors hover:border-[var(--ink)]"
+              aria-label="Close property details"
+              className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-colors hover:bg-zinc-950 hover:text-white"
             >
               <X className="h-4 w-4" />
             </button>
@@ -134,8 +132,8 @@ export function PropertyDossierModal({
 
           <div className="grid grid-cols-1 lg:grid-cols-12">
             {/* Gallery Column */}
-            <div className="border-b border-[var(--rule)] bg-[var(--paper-inset)] lg:col-span-7 lg:border-r lg:border-b-0">
-              <div className="aspect-[16/11] w-full overflow-hidden">
+            <div className="p-6 lg:col-span-7 lg:pr-3">
+              <div className="aspect-[16/11] w-full overflow-hidden rounded-2xl bg-zinc-100">
                 <PropertyImage
                   src={activePhoto}
                   alt={`${listing.title} — photo ${activePhotoIndex + 1}`}
@@ -145,7 +143,7 @@ export function PropertyDossierModal({
               </div>
 
               {images.length > 1 && (
-                <div className="flex gap-2 border-t border-[var(--rule)] bg-[var(--paper)] p-3">
+                <div className="mt-3 flex gap-2">
                   {images.map((img, idx) => (
                     <button
                       key={`${img}-${idx}`}
@@ -153,10 +151,10 @@ export function PropertyDossierModal({
                       onClick={() => setActivePhotoIndex(idx)}
                       aria-label={`View photo ${idx + 1}`}
                       aria-current={idx === activePhotoIndex ? 'true' : undefined}
-                      className={`h-16 w-24 cursor-pointer overflow-hidden border transition-opacity ${
+                      className={`h-16 w-24 cursor-pointer overflow-hidden rounded-xl ring-2 transition-all ${
                         idx === activePhotoIndex
-                          ? 'border-[var(--ink)] opacity-100'
-                          : 'border-[var(--rule)] opacity-60 hover:opacity-100'
+                          ? 'ring-zinc-950 opacity-100'
+                          : 'ring-transparent opacity-60 hover:opacity-100'
                       }`}
                     >
                       <PropertyImage
@@ -173,11 +171,11 @@ export function PropertyDossierModal({
               )}
 
               {/* Editorial Assessment */}
-              <div className="border-t border-[var(--rule)] bg-[var(--paper-raised)] p-6">
-                <div className="font-mono-tech text-[10px] uppercase tracking-[0.14em] text-[var(--ink-soft)]">
+              <div className="mt-5 rounded-2xl bg-zinc-50 p-5">
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
                   Why It Made the Cut
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--ink)]">
+                <p className="mt-2 text-sm leading-relaxed text-zinc-700">
                   {listing.editorialNote}
                 </p>
 
@@ -185,7 +183,7 @@ export function PropertyDossierModal({
                   {listing.raritySignals.map((sig) => (
                     <span
                       key={sig}
-                      className="border border-[var(--rule)] bg-[var(--paper)] px-2.5 py-1 text-xs text-[var(--ink)]"
+                      className="rounded-full bg-white px-3 py-1 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200/80"
                     >
                       {sig}
                     </span>
@@ -194,14 +192,14 @@ export function PropertyDossierModal({
               </div>
             </div>
 
-            {/* Telemetry & Action Column */}
-            <div className="flex flex-col justify-between p-6 lg:col-span-5">
+            {/* Details & Telemetry Column */}
+            <div className="flex flex-col justify-between p-6 pt-0 lg:col-span-5 lg:pt-6">
               <div>
                 <div className="flex flex-wrap items-center gap-1.5">
                   {listing.categories.map((cat) => (
                     <span
                       key={cat}
-                      className={`px-2 py-0.5 font-mono-tech text-[10px] uppercase tracking-wider ${categoryBadgeClasses(
+                      className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${categoryPillClasses(
                         cat
                       )}`}
                     >
@@ -212,37 +210,37 @@ export function PropertyDossierModal({
 
                 <h2
                   id={titleId}
-                  className="mt-3 font-serif-editorial text-3xl leading-[1.08] text-[var(--ink)]"
+                  className="mt-3 text-2xl font-semibold tracking-[-0.025em] text-zinc-950 leading-snug"
                 >
                   {listing.title}
                 </h2>
 
-                <div className="mt-1 font-mono-tech text-xs text-[var(--ink-soft)]">
+                <div className="mt-1 text-xs font-medium text-zinc-500">
                   {listing.architecturalStyle} · Built {listing.yearBuilt}
                 </div>
 
                 {/* Price Block */}
-                <div className="mt-5 border-y border-[var(--rule)] py-4">
+                <div className="mt-5 border-y border-zinc-100 py-4">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="font-mono-tech text-3xl font-medium text-[var(--ink)]">
+                    <span className="text-3xl font-bold tracking-[-0.03em] text-zinc-950 tabular-nums">
                       {formatCurrency(listing.price)}
                     </span>
                     {listing.priceCutPct > 0 && (
-                      <span className="font-mono-tech text-xs text-[var(--vermilion)]">
-                        Cut {listing.priceCutPct}% from {formatCurrency(listing.previousPrice)}
+                      <span className="rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-semibold text-rose-600 tabular-nums">
+                        −{listing.priceCutPct}% from {formatCurrency(listing.previousPrice)}
                       </span>
                     )}
                   </div>
 
-                  <div className="mt-2 flex items-center justify-between font-mono-tech text-xs">
-                    <span className="text-[var(--ink-soft)]">
-                      ${listing.pricePerSqft}/sqft vs ${listing.zipMedianPricePerSqft}/sqft zip median
+                  <div className="mt-2 flex items-center justify-between text-xs tabular-nums">
+                    <span className="text-zinc-500">
+                      ${listing.pricePerSqft}/sf vs ${listing.zipMedianPricePerSqft}/sf zip median
                     </span>
                     <span
                       className={
                         listing.medianDeltaPct <= 0
-                          ? 'font-medium text-[var(--sage)]'
-                          : 'text-[var(--ink)]'
+                          ? 'font-semibold text-emerald-600'
+                          : 'font-medium text-zinc-700'
                       }
                     >
                       {listing.medianDeltaPct > 0 ? '+' : ''}
@@ -252,64 +250,57 @@ export function PropertyDossierModal({
                 </div>
 
                 {/* Property Specs Grid */}
-                <dl className="mt-4 grid grid-cols-2 gap-3 font-mono-tech text-xs">
-                  <div className="border border-[var(--rule)] bg-[var(--paper)] p-3">
-                    <dt className="text-[10px] uppercase tracking-wider text-[var(--ink-soft)]">
-                      Layout
-                    </dt>
-                    <dd className="mt-1 text-sm text-[var(--ink)]">
+                <dl className="mt-4 grid grid-cols-2 gap-2.5 text-xs tabular-nums">
+                  <div className="rounded-xl bg-zinc-50 p-3">
+                    <dt className="text-[11px] text-zinc-500">Layout</dt>
+                    <dd className="mt-0.5 text-sm font-semibold text-zinc-950">
                       {listing.beds} bd · {listing.baths} ba
                     </dd>
                   </div>
-                  <div className="border border-[var(--rule)] bg-[var(--paper)] p-3">
-                    <dt className="text-[10px] uppercase tracking-wider text-[var(--ink-soft)]">
-                      Interior
-                    </dt>
-                    <dd className="mt-1 text-sm text-[var(--ink)]">
+                  <div className="rounded-xl bg-zinc-50 p-3">
+                    <dt className="text-[11px] text-zinc-500">Interior</dt>
+                    <dd className="mt-0.5 text-sm font-semibold text-zinc-950">
                       {formatNumber(listing.sqft)} sqft
                     </dd>
                   </div>
-                  <div className="border border-[var(--rule)] bg-[var(--paper)] p-3">
-                    <dt className="text-[10px] uppercase tracking-wider text-[var(--ink-soft)]">
-                      Lot Size
-                    </dt>
-                    <dd className="mt-1 text-sm text-[var(--ink)]">{listing.lotAcres} acres</dd>
+                  <div className="rounded-xl bg-zinc-50 p-3">
+                    <dt className="text-[11px] text-zinc-500">Lot Size</dt>
+                    <dd className="mt-0.5 text-sm font-semibold text-zinc-950">
+                      {listing.lotAcres} acres
+                    </dd>
                   </div>
-                  <div className="border border-[var(--rule)] bg-[var(--paper)] p-3">
-                    <dt className="text-[10px] uppercase tracking-wider text-[var(--ink-soft)]">
-                      Market Tenure
-                    </dt>
-                    <dd className="mt-1 text-sm text-[var(--ink)]">
+                  <div className="rounded-xl bg-zinc-50 p-3">
+                    <dt className="text-[11px] text-zinc-500">On Market</dt>
+                    <dd className="mt-0.5 text-sm font-semibold text-zinc-950">
                       {listing.daysOnMarket === 0 ? 'Listed Today' : `${listing.daysOnMarket} days`}
                     </dd>
                   </div>
                 </dl>
 
                 {/* PennyLane Index Breakdown */}
-                <div className="mt-5 border border-[var(--rule)] bg-[var(--paper)] p-4">
+                <div className="mt-4 rounded-2xl border border-zinc-200/80 p-4">
                   <div className="flex items-baseline justify-between">
-                    <span className="font-mono-tech text-[10px] uppercase tracking-[0.14em] text-[var(--ink-soft)]">
-                      PennyLane Score
-                    </span>
-                    <span className="font-mono-tech text-lg font-medium text-[var(--ink)]">
-                      {listing.scores.overall} / 100
+                    <span className="text-xs font-semibold text-zinc-950">PennyLane Score</span>
+                    <span className="text-base font-bold text-zinc-950 tabular-nums">
+                      {listing.scores.overall}
+                      <span className="text-xs font-normal text-zinc-400"> / 100</span>
                     </span>
                   </div>
 
-                  <div className="mt-3 space-y-2.5 text-xs">
+                  <div className="mt-3 space-y-2.5">
                     {[
-                      { label: 'Architectural Rarity', value: listing.scores.rarity, color: 'bg-[var(--ochre)]' },
-                      { label: 'Deal / Median Value', value: listing.scores.deal, color: 'bg-[var(--sage)]' },
-                      { label: 'Market Freshness', value: listing.scores.freshness, color: 'bg-[var(--vermilion)]' },
+                      { label: 'Architectural Rarity', value: listing.scores.rarity, color: 'bg-amber-500' },
+                      { label: 'Deal / Zip Value', value: listing.scores.deal, color: 'bg-emerald-500' },
+                      { label: 'Market Freshness', value: listing.scores.freshness, color: 'bg-rose-500' },
                     ].map((row) => (
                       <div key={row.label}>
-                        <div className="flex justify-between font-mono-tech text-[11px]">
-                          <span className="text-[var(--ink-soft)]">{row.label}</span>
-                          <span className="text-[var(--ink)]">{row.value}</span>
+                        <div className="flex justify-between text-[11.5px] tabular-nums">
+                          <span className="text-zinc-500">{row.label}</span>
+                          <span className="font-semibold text-zinc-900">{row.value}</span>
                         </div>
-                        <div className="mt-1 h-1.5 w-full bg-[var(--rule)]">
+                        <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
                           <div
-                            className={`h-full ${row.color}`}
+                            className={`h-full rounded-full ${row.color}`}
                             style={{ width: `${Math.min(100, row.value)}%` }}
                           />
                         </div>
@@ -325,7 +316,7 @@ export function PropertyDossierModal({
                   href={listing.zillowUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 border border-[var(--ink)] bg-[var(--ink)] px-4 py-3 text-xs font-medium tracking-wide text-[var(--paper)] transition-colors hover:bg-[#2a2926]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-950 px-5 py-3 text-xs font-semibold text-white transition-colors hover:bg-zinc-800"
                 >
                   <span>View Listing on Zillow</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
@@ -336,28 +327,28 @@ export function PropertyDossierModal({
                     type="button"
                     onClick={() => onToggleSave(listing.id)}
                     aria-pressed={isSaved}
-                    className={`inline-flex cursor-pointer items-center justify-center gap-1.5 border px-3 py-2 text-xs font-medium transition-colors ${
+                    className={`inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full border px-4 py-2.5 text-xs font-semibold transition-colors ${
                       isSaved
-                        ? 'border-[var(--vermilion)] bg-[var(--vermilion-soft)] text-[var(--vermilion)]'
-                        : 'border-[var(--rule)] bg-[var(--paper)] text-[var(--ink)] hover:border-[var(--ink)]'
+                        ? 'border-rose-200 bg-rose-50 text-rose-600'
+                        : 'border-zinc-200 bg-white text-zinc-800 hover:bg-zinc-50'
                     }`}
                   >
                     <Bookmark className="h-3.5 w-3.5" fill={isSaved ? 'currentColor' : 'none'} />
-                    <span>{isSaved ? 'Saved' : 'Save Find'}</span>
+                    <span>{isSaved ? 'Saved' : 'Save'}</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={handleCopyShareLink}
-                    className="inline-flex cursor-pointer items-center justify-center gap-1.5 border border-[var(--rule)] bg-[var(--paper)] px-3 py-2 text-xs font-medium text-[var(--ink)] transition-colors hover:border-[var(--ink)]"
+                    className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2.5 text-xs font-semibold text-zinc-800 transition-colors hover:bg-zinc-50"
                   >
-                    {copied ? <Check className="h-3.5 w-3.5 text-[var(--sage)]" /> : <Copy className="h-3.5 w-3.5" />}
-                    <span>{copied ? 'Copied Link' : 'Share Link'}</span>
+                    {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
+                    <span>{copied ? 'Copied' : 'Share'}</span>
                   </button>
                 </div>
 
-                <p className="mt-1 text-center font-mono-tech text-[10px] text-[var(--ink-soft)]">
-                  Auto-removed during daily sync once status changes to Under Contract or Pending.
+                <p className="mt-1 text-center text-[11px] text-zinc-400">
+                  Auto-removed in daily sync once marked Under Contract or Pending.
                 </p>
               </div>
             </div>
@@ -367,4 +358,3 @@ export function PropertyDossierModal({
     </dialog>
   );
 }
-

@@ -23,21 +23,15 @@ export function PropertyImage({
   if (failed || !src) {
     return (
       <div
-        className={`flex flex-col items-center justify-center bg-[var(--paper-inset)] text-[var(--ink-soft)] ${className}`}
+        className={`flex flex-col items-center justify-center bg-zinc-100 text-zinc-400 ${className}`}
         aria-label={alt}
       >
-        <Home className="h-7 w-7 opacity-45" strokeWidth={1.25} />
-        <span className="mt-2 font-mono-tech text-[11px] uppercase tracking-widest opacity-60">
-          Architectural Plate
-        </span>
+        <Home className="h-7 w-7 opacity-50" strokeWidth={1.5} />
+        <span className="mt-1.5 text-[11px] font-medium">Photo Unavailable</span>
       </div>
     );
   }
 
-  // Strictly follow modern-web-guidance `optimize-image-priority`:
-  // - LCP hero: fetchPriority="high", NO loading="lazy"
-  // - Below-the-fold grid cards: loading="lazy" ALONE (omit fetchPriority)
-  // - Initially hidden / modal gallery thumbnails: fetchPriority="low"
   const imgPriorityProps: Record<string, string> =
     priority === 'lcp'
       ? { fetchPriority: 'high', decoding: 'async' }
@@ -57,4 +51,3 @@ export function PropertyImage({
     />
   );
 }
-

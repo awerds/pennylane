@@ -1,15 +1,7 @@
 export type CategoryKey = 'exceptional' | 'deal' | 'new';
 export type FilterLens = 'all' | CategoryKey | 'saved';
 export type SortMode = 'score' | 'newest' | 'discount' | 'price-asc' | 'price-desc' | 'sqft-desc';
-export type ViewMode = 'split' | 'grid' | 'map';
 export type StyleGroup = 'all' | 'modern' | 'historic' | 'reuse' | 'desert' | 'coastal';
-
-export interface MapBounds {
-  north: number;
-  south: number;
-  east: number;
-  west: number;
-}
 
 export interface ScoreBreakdown {
   overall: number;
@@ -122,7 +114,7 @@ export interface ChangelogFeed {
 
 export interface FilterState {
   lens: FilterLens;
-  region: string;
+  locationQuery: string;
   minPrice: number;
   maxPrice: number;
   minBeds: number;
@@ -132,5 +124,4 @@ export interface FilterState {
   priceCutsOnly: boolean;
   belowMedianOnly: boolean;
   sort: SortMode;
-  query: string;
 }

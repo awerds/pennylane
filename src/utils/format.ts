@@ -1,4 +1,43 @@
-import type { CategoryKey, ChangelogFeed, ListingsFeed, PropertyListing, RemovedProperty, StyleGroup } from '../types';
+import type {
+  CategoryKey,
+  ChangelogFeed,
+  ListingsFeed,
+  PropertyListing,
+  RemovedProperty,
+  StyleGroup,
+} from '../types';
+
+export const STATE_NAMES: Record<string, string> = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
+  CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', FL: 'Florida', GA: 'Georgia',
+  HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa',
+  KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana', ME: 'Maine', MD: 'Maryland',
+  MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MS: 'Mississippi', MO: 'Missouri',
+  MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire', NJ: 'New Jersey',
+  NM: 'New Mexico', NY: 'New York', NC: 'North Carolina', ND: 'North Dakota', OH: 'Ohio',
+  OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania', RI: 'Rhode Island', SC: 'South Carolina',
+  SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont',
+  VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
+};
+
+export function getStateName(code: string): string {
+  return STATE_NAMES[code.toUpperCase()] || code;
+}
+
+export function matchesLocationQuery(listing: PropertyListing, rawQuery: string): boolean {
+  const q = rawQuery.trim().toLowerCase();
+  if (!q) return true;
+
+  const stateFull = getStateName(listing.state).toLowerCase();
+  const cityState = `${listing.city}, ${listing.state}`.toLowerCase();
+  const cityStateFull = `${listing.city}, ${stateFull}`.toLowerCase();
+
+  // Support multi-token queries like "Garrison NY 10524" or "California modern"
+  const tokens = q.split(/[\s,]+/).filter(Boolean);
+  const searchable = `${listing.city} ${listing.state} ${stateFull} ${listing.zip} ${listing.region} ${cityState} ${cityStateFull} ${listing.title} ${listing.architecturalStyle} ${listing.raritySignals.join(' ')}`.toLowerCase();
+
+  return tokens.every((token) => searchable.includes(token));
+}
 
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', {
@@ -30,16 +69,42 @@ export function matchesStyleGroup(listing: PropertyListing, group: StyleGroup): 
     );
   }
   if (group === 'historic') {
-    return listing.yearBuilt <= 1935 || hay.includes('historic') || hay.includes('victorian') || hay.includes('tudor');
+    return (
+      listing.yearBuilt <= 1935 ||
+      hay.includes('historic') ||
+      hay.includes('victorian') ||
+      hay.includes('tudor')
+    );
   }
   if (group === 'reuse') {
-    return hay.includes('reuse') || hay.includes('mill') || hay.includes('firehouse') || hay.includes('chapel') || hay.includes('schoolhouse') || hay.includes('barn') || hay.includes('carriage') || hay.includes('studio');
+    return (
+      hay.includes('reuse') ||
+      hay.includes('mill') ||
+      hay.includes('firehouse') ||
+      hay.includes('chapel') ||
+      hay.includes('schoolhouse') ||
+      hay.includes('barn') ||
+      hay.includes('carriage') ||
+      hay.includes('studio')
+    );
   }
   if (group === 'desert') {
-    return hay.includes('desert') || hay.includes('adobe') || hay.includes('earthship') || hay.includes('geodesic');
+    return (
+      hay.includes('desert') ||
+      hay.includes('adobe') ||
+      hay.includes('earthship') ||
+      hay.includes('geodesic')
+    );
   }
   if (group === 'coastal') {
-    return hay.includes('coastal') || hay.includes('cabin') || hay.includes('a-frame') || hay.includes('maritime') || hay.includes('alpine') || hay.includes('boathouse');
+    return (
+      hay.includes('coastal') ||
+      hay.includes('cabin') ||
+      hay.includes('a-frame') ||
+      hay.includes('maritime') ||
+      hay.includes('alpine') ||
+      hay.includes('boathouse')
+    );
   }
   return true;
 }
@@ -54,7 +119,6 @@ export function formatDateShort(iso: string): string {
   return new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
-    year: 'numeric',
   }).format(date);
 }
 
@@ -75,23 +139,16 @@ export function categoryLabel(category: CategoryKey): string {
   return 'New to Market';
 }
 
-export function categoryBadgeClasses(category: CategoryKey): string {
+export function categoryPillClasses(category: CategoryKey): string {
   if (category === 'deal') {
-    return 'bg-[var(--sage-soft)] text-[var(--sage)] border border-[#c3dccf]';
+    return 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/15';
   }
   if (category === 'new') {
-    return 'bg-[var(--vermilion-soft)] text-[var(--vermilion)] border border-[#ecc9c1]';
+    return 'bg-rose-50 text-rose-700 ring-1 ring-rose-600/15';
   }
-  return 'bg-[var(--ochre-soft)] text-[var(--ochre)] border border-[#e6d3b3]';
+  return 'bg-amber-50 text-amber-800 ring-1 ring-amber-600/15';
 }
 
-/**
- * Interactive sandbox simulation for the GitHub Pages demo:
- * Advances the edition by +24h in-memory so visitors can witness:
- *  - older listings automatically removed as Under Contract
- *  - fresh finds rotating in from the reserve pool
- *  - organic price drops recalculating deal scores
- */
 export function simulateNextDayClient(
   feed: ListingsFeed,
   changelog: ChangelogFeed,
@@ -107,7 +164,6 @@ export function simulateNextDayClient(
   const isoNow = nextDate.toISOString();
   const nextEdition = feed.editionNumber + 1;
 
-  // Prune up to 2 highest-DOM listings as Under Contract / Pending Sale
   const sortedByDom = [...feed.listings].sort((a, b) => b.daysOnMarket - a.daysOnMarket);
   const toRemove = sortedByDom.slice(0, Math.min(2, Math.max(1, feed.listings.length > 6 ? 2 : 1)));
   const removeIds = new Set(toRemove.map((r) => r.id));
@@ -154,7 +210,9 @@ export function simulateNextDayClient(
       }
 
       const pricePerSqft = Math.round(price / Math.max(item.sqft, 400));
-      const medianDeltaPct = Math.round(((pricePerSqft - item.zipMedianPricePerSqft) / item.zipMedianPricePerSqft) * 100);
+      const medianDeltaPct = Math.round(
+        ((pricePerSqft - item.zipMedianPricePerSqft) / item.zipMedianPricePerSqft) * 100
+      );
       const nextCategories: CategoryKey[] = Array.from(
         new Set([
           ...item.categories.filter((c) => c !== 'new' || nextDom <= 3),
@@ -177,7 +235,6 @@ export function simulateNextDayClient(
       };
     });
 
-  // Pull up to 2 fresh listings from reserve pool
   const incoming = reservePool.slice(0, 2).map((item) => ({
     ...item,
     daysOnMarket: 0,
@@ -188,7 +245,6 @@ export function simulateNextDayClient(
   }));
   const remainingReserve = [
     ...reservePool.slice(2),
-    // Recycle removed listings back to tail of reserve only for endless interactive demo exploration
     ...toRemove.map((r) => ({ ...r, daysOnMarket: 0, isNewToday: true })),
   ];
 
@@ -245,10 +301,7 @@ export function simulateNextDayClient(
   };
 
   const removedNames = removedEntries.map((r) => `${r.city}, ${r.state}`).join(' & ');
-  const summaryText = `Edition #${nextEdition}: +${incoming.length} fresh finds added · −${removedEntries.length} removed under contract (${removedNames})${
-    priceDrops.length > 0 ? ` · ${priceDrops.length} price drop` : ''
-  }`;
+  const summaryText = `Edition #${nextEdition}: +${incoming.length} new finds · −${removedEntries.length} removed under contract (${removedNames})`;
 
   return { nextFeed, nextChangelog, nextReserve: remainingReserve, summaryText };
 }
-

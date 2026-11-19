@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { CalendarClock, GitBranch, ShieldCheck, X } from 'lucide-react';
+import { CalendarClock, FastForward, GitBranch, RotateCcw, ShieldCheck, X } from 'lucide-react';
 import type { ChangelogFeed } from '../types';
 import { formatCurrency, formatTimeUtc } from '../utils/format';
 import {
@@ -12,6 +12,10 @@ interface SyncLedgerModalProps {
   open: boolean;
   changelog: ChangelogFeed | null;
   provider: string;
+  editionNumber: number;
+  isSimulated: boolean;
+  onSimulateNextDay: () => void;
+  onResetSimulation: () => void;
   onClose: () => void;
 }
 
@@ -19,6 +23,10 @@ export function SyncLedgerModal({
   open,
   changelog,
   provider,
+  editionNumber,
+  isSimulated,
+  onSimulateNextDay,
+  onResetSimulation,
   onClose,
 }: SyncLedgerModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -78,15 +86,16 @@ export function SyncLedgerModal({
       ref={dialogRef}
       {...({ closedby: 'any' } as Record<string, string>)}
       aria-labelledby={titleId}
-      className="editorial-modal editorial-modal--narrow"
+      className="modern-modal modern-modal--narrow"
     >
-      <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-[var(--rule)] bg-[var(--paper-raised)] px-6 py-4">
+      <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-zinc-100 bg-white/95 px-6 py-4 backdrop-blur-md">
         <div>
-          <span className="font-mono-tech text-[10px] uppercase tracking-[0.14em] text-[var(--vermilion)]">
-            Automated Lifecycle Log
-          </span>
-          <h2 id={titleId} className="font-serif-editorial text-2xl text-[var(--ink)]">
-            Contract Removal Ledger &amp; Open-Source Pipeline
+          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-rose-600">
+            <span className="live-dot inline-block h-1.5 w-1.5 rounded-full bg-rose-500" />
+            Edition #{editionNumber} · Automated Daily Sync
+          </div>
+          <h2 id={titleId} className="mt-0.5 text-xl font-semibold tracking-[-0.02em] text-zinc-950">
+            Contract Removal Log &amp; Open Pipeline
           </h2>
         </div>
 
@@ -94,76 +103,95 @@ export function SyncLedgerModal({
           type="button"
           autoFocus
           onClick={handleCloseClick}
-          aria-label="Close contract removal ledger"
-          className="inline-flex cursor-pointer items-center justify-center border border-[var(--rule)] bg-[var(--paper)] p-1.5 text-[var(--ink)] transition-colors hover:border-[var(--ink)]"
+          aria-label="Close daily sync log"
+          className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-colors hover:bg-zinc-950 hover:text-white"
         >
           <X className="h-4 w-4" />
         </button>
       </div>
 
-      {/* Mode tabs */}
-      <div className="flex border-b border-[var(--rule)] bg-[var(--paper)] px-6">
-        <button
-          type="button"
-          onClick={() => setTab('removed')}
-          className={`cursor-pointer border-b-2 px-3 py-3 font-mono-tech text-xs uppercase tracking-wider transition-colors ${
-            tab === 'removed'
-              ? 'border-[var(--ink)] text-[var(--ink)]'
-              : 'border-transparent text-[var(--ink-soft)] hover:text-[var(--ink)]'
-          }`}
-        >
-          Removed Under Contract ({changelog?.removedArchive.length ?? 0})
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab('architecture')}
-          className={`cursor-pointer border-b-2 px-3 py-3 font-mono-tech text-xs uppercase tracking-wider transition-colors ${
-            tab === 'architecture'
-              ? 'border-[var(--ink)] text-[var(--ink)]'
-              : 'border-transparent text-[var(--ink-soft)] hover:text-[var(--ink)]'
-          }`}
-        >
-          Free GitHub Pages Architecture
-        </button>
+      {/* Action Bar + Mode Switcher */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-100 bg-zinc-50/70 px-6 py-3">
+        <div className="inline-flex rounded-full bg-zinc-200/70 p-0.5">
+          <button
+            type="button"
+            onClick={() => setTab('removed')}
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
+              tab === 'removed' ? 'bg-white text-zinc-950 shadow-xs' : 'text-zinc-600 hover:text-zinc-950'
+            }`}
+          >
+            Under Contract ({changelog?.removedArchive.length ?? 0})
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab('architecture')}
+            className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
+              tab === 'architecture' ? 'bg-white text-zinc-950 shadow-xs' : 'text-zinc-600 hover:text-zinc-950'
+            }`}
+          >
+            How It Works
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onSimulateNextDay}
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-zinc-950 px-3.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-800"
+          >
+            <FastForward className="h-3.5 w-3.5 text-rose-400" />
+            <span>Preview +1 Day Sync</span>
+          </button>
+          {isSimulated && (
+            <button
+              type="button"
+              onClick={onResetSimulation}
+              className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-950"
+            >
+              <RotateCcw className="h-3 w-3" />
+              <span>Reset</span>
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="p-6">
         {tab === 'removed' ? (
           <div className="space-y-4">
-            <p className="text-sm leading-relaxed text-[var(--ink-soft)]">
-              Every 24 hours, the GitHub Actions worker checks active listing status. Properties marked{' '}
-              <strong className="font-medium text-[var(--ink)]">Pending</strong>,{' '}
-              <strong className="font-medium text-[var(--ink)]">Contingent</strong>,{' '}
-              <strong className="font-medium text-[var(--ink)]">Under Contract</strong>, or{' '}
-              <strong className="font-medium text-[var(--ink)]">Sold</strong> are automatically purged from the live catalog and logged below.
+            <p className="text-sm leading-relaxed text-zinc-500">
+              Every 24 hours, the sync job checks listing status and automatically purges any home marked{' '}
+              <strong className="font-medium text-zinc-900">Pending</strong>,{' '}
+              <strong className="font-medium text-zinc-900">Contingent</strong>,{' '}
+              <strong className="font-medium text-zinc-900">Under Contract</strong>, or{' '}
+              <strong className="font-medium text-zinc-900">Sold</strong>.
             </p>
 
-            <div className="divide-y divide-[var(--rule)] border border-[var(--rule)] bg-[var(--paper)]">
+            <div className="divide-y divide-zinc-100 overflow-hidden rounded-2xl border border-zinc-200/80">
               {(changelog?.removedArchive ?? []).map((item) => (
                 <div
                   key={`${item.id}-${item.removedAt}`}
-                  className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-2 bg-white p-4 sm:flex-row sm:items-center sm:justify-between"
                 >
-                  <div>
+                  <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="bg-[var(--vermilion-soft)] px-2 py-0.5 font-mono-tech text-[10px] uppercase tracking-wider text-[var(--vermilion)]">
+                      <span className="rounded-full bg-rose-50 px-2 py-0.5 text-[10.5px] font-semibold text-rose-600">
                         {item.reason}
                       </span>
-                      <span className="font-mono-tech text-[11px] text-[var(--ink-soft)]">
+                      <span className="text-xs text-zinc-500">
                         {item.city}, {item.state} · {item.architecturalStyle}
                       </span>
                     </div>
-                    <div className="mt-1.5 font-serif-editorial text-xl text-[var(--ink)] line-through decoration-[var(--vermilion)]/55">
+                    <div className="mt-1 truncate text-sm font-medium text-zinc-800 line-through decoration-rose-400/70">
                       {item.title}
                     </div>
                   </div>
 
-                  <div className="shrink-0 font-mono-tech text-xs sm:text-right">
-                    <div className="text-[var(--ink)] line-through opacity-75">
+                  <div className="shrink-0 text-xs tabular-nums sm:text-right">
+                    <div className="font-semibold text-zinc-400 line-through">
                       {formatCurrency(item.finalPrice)}
                     </div>
-                    <div className="mt-0.5 text-[11px] text-[var(--ink-soft)]">
-                      Contracted in {item.daysOnMarket}d · {formatTimeUtc(item.removedAt)}
+                    <div className="mt-0.5 text-[11px] text-zinc-400">
+                      {item.daysOnMarket}d on market · {formatTimeUtc(item.removedAt)}
                     </div>
                   </div>
                 </div>
@@ -171,46 +199,35 @@ export function SyncLedgerModal({
             </div>
           </div>
         ) : (
-          <div className="space-y-4 text-sm leading-relaxed text-[var(--ink-soft)]">
+          <div className="space-y-4 text-sm leading-relaxed text-zinc-500">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="border border-[var(--rule)] bg-[var(--paper)] p-4">
-                <CalendarClock className="h-4 w-4 text-[var(--vermilion)]" />
-                <div className="mt-2 font-mono-tech text-xs uppercase tracking-wider text-[var(--ink)]">
-                  1. Daily Cron Action
-                </div>
-                <p className="mt-1 text-xs">
-                  <code>.github/workflows/daily-sync.yml</code> runs at 13:00 UTC free on public repos, updating <code>public/data/listings.json</code>.
+              <div className="rounded-2xl bg-zinc-50 p-4">
+                <CalendarClock className="h-4 w-4 text-rose-500" />
+                <div className="mt-2.5 text-xs font-semibold text-zinc-950">Daily Cron Sync</div>
+                <p className="mt-1 text-xs leading-relaxed">
+                  Runs daily via GitHub Actions on public repos, updating static JSON editions with zero backend costs.
                 </p>
               </div>
-              <div className="border border-[var(--rule)] bg-[var(--paper)] p-4">
-                <ShieldCheck className="h-4 w-4 text-[var(--sage)]" />
-                <div className="mt-2 font-mono-tech text-xs uppercase tracking-wider text-[var(--ink)]">
-                  2. Pluggable Free APIs
-                </div>
-                <p className="mt-1 text-xs">
-                  Zero-key open curated mode works out of the box, or drop in a free-tier <code>ZILLOW_API_KEY</code> (RapidAPI) or <code>RENTCAST_API_KEY</code> secret.
+              <div className="rounded-2xl bg-zinc-50 p-4">
+                <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                <div className="mt-2.5 text-xs font-semibold text-zinc-950">Pluggable Free APIs</div>
+                <p className="mt-1 text-xs leading-relaxed">
+                  Works free with zero keys, or add a free-tier <code className="text-zinc-800">ZILLOW_API_KEY</code> or <code className="text-zinc-800">RENTCAST_API_KEY</code> secret.
                 </p>
               </div>
-              <div className="border border-[var(--rule)] bg-[var(--paper)] p-4">
-                <GitBranch className="h-4 w-4 text-[var(--ochre)]" />
-                <div className="mt-2 font-mono-tech text-xs uppercase tracking-wider text-[var(--ink)]">
-                  3. PR Watchlist
-                </div>
-                <p className="mt-1 text-xs">
-                  Open-source contributors submit wild finds via pull requests to <code>data/watchlist.json</code>; the scorer indexes them automatically.
+              <div className="rounded-2xl bg-zinc-50 p-4">
+                <GitBranch className="h-4 w-4 text-amber-600" />
+                <div className="mt-2.5 text-xs font-semibold text-zinc-950">Open PR Watchlist</div>
+                <p className="mt-1 text-xs leading-relaxed">
+                  Anyone can submit wild finds via pull requests to <code className="text-zinc-800">data/watchlist.json</code>.
                 </p>
               </div>
             </div>
 
-            <div className="border border-[var(--rule)] bg-[var(--paper)] p-4 font-mono-tech text-xs">
-              <div className="text-[10px] uppercase tracking-wider text-[var(--ink-soft)]">
-                Active Edition Telemetry
-              </div>
-              <div className="mt-2 grid grid-cols-2 gap-2 text-[var(--ink)] sm:grid-cols-3">
-                <div>Provider: {provider}</div>
-                <div>Runs Logged: {changelog?.runs.length ?? 0}</div>
-                <div>Total Pruned: {changelog?.totalRemovedUnderContract ?? 0}</div>
-              </div>
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-zinc-200/80 px-4 py-3 text-xs text-zinc-600 tabular-nums">
+              <span>Provider: <strong className="font-semibold text-zinc-950">{provider}</strong></span>
+              <span>Runs Logged: <strong className="font-semibold text-zinc-950">{changelog?.runs.length ?? 0}</strong></span>
+              <span>Total Pruned: <strong className="font-semibold text-zinc-950">{changelog?.totalRemovedUnderContract ?? 0}</strong></span>
             </div>
           </div>
         )}
@@ -218,4 +235,3 @@ export function SyncLedgerModal({
     </dialog>
   );
 }
-

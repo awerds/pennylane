@@ -1,49 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f6f3ec;
-  --paper-raised: #fcfbf8;
-  --paper-inset: #ede8dc;
-  --ink: #121211;
-  --ink-soft: #59564f;
-  --rule: #ddd7cb;
-  --vermilion: #c6462b;
-  --vermilion-soft: #f7e6e2;
-  --sage: #245942;
-  --sage-soft: #e3efe9;
-  --ochre: #8c5f18;
-  --ochre-soft: #f5ecdc;
-
-  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --surface: #ffffff;
+  --surface-subtle: #f4f4f5;
+  --ink: #09090b;
+  --ink-muted: #71717a;
+  --border: rgba(9, 9, 11, 0.08);
+  --accent: #e11d48;
+  --deal: #059669;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 @layer base {
   html {
-    background-color: var(--paper);
+    background-color: var(--surface);
     color: var(--ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
   body {
     margin: 0;
     min-height: 100dvh;
-    background-color: var(--paper);
+    background-color: var(--surface);
     color: var(--ink);
-    accent-color: var(--vermilion);
+    accent-color: var(--ink);
   }
 
   ::selection {
     background-color: var(--ink);
-    color: var(--paper);
+    color: #ffffff;
   }
 }
 
-/* Brand-consistent form fallback when accent-color is unsupported */
-@supports not (accent-color: #c6462b) {
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Brand-consistent checkbox fallback when accent-color is unsupported */
+@supports not (accent-color: #09090b) {
   .pl-native-check {
     position: absolute !important;
     clip-path: inset(50%) !important;
@@ -58,7 +64,7 @@
 
   .pl-check-label {
     position: relative;
-    padding-left: 1.35rem;
+    padding-left: 1.45rem;
   }
 
   .pl-native-check + span::before {
@@ -67,156 +73,74 @@
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 0.9rem;
-    height: 0.9rem;
-    border: 1.5px solid var(--ink-soft);
-    background: var(--paper-raised);
+    width: 0.95rem;
+    height: 0.95rem;
+    border-radius: 0.25rem;
+    border: 1.5px solid #a1a1aa;
+    background: #ffffff;
   }
 
   .pl-native-check:focus-visible + span::before {
-    outline: 2px solid var(--ink);
+    outline: 2px solid #09090b;
     outline-offset: 2px;
   }
 
   .pl-native-check:checked + span::before {
-    background-color: var(--vermilion);
-    border-color: var(--vermilion);
+    background-color: #09090b;
+    border-color: #09090b;
   }
 
   .pl-native-check:checked + span::after {
     content: "✓";
     position: absolute;
-    left: 0.14rem;
+    left: 0.16rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #fff;
+    color: #ffffff;
     font-size: 0.68rem;
     font-weight: 700;
   }
 }
 
-/* Archival Editorial Leaflet Map Styling */
-.leaflet-container {
-  background: #eae5d9;
-  font-family: var(--font-sans);
-}
-
-.leaflet-tile-pane {
-  filter: sepia(14%) saturate(85%) contrast(98%) brightness(99%);
-}
-
-.leaflet-control-zoom {
-  border: 1px solid var(--rule) !important;
-  border-radius: 0 !important;
-  box-shadow: 0 4px 12px rgb(18 18 17 / 0.08) !important;
-}
-
-.leaflet-control-zoom a {
-  background-color: var(--paper-raised) !important;
-  color: var(--ink) !important;
-  border-bottom-color: var(--rule) !important;
-  border-radius: 0 !important;
-  font-family: var(--font-mono);
-}
-
-.leaflet-control-zoom a:hover {
-  background-color: var(--ink) !important;
-  color: var(--paper) !important;
-}
-
-.leaflet-control-attribution {
-  background: rgb(252 251 248 / 0.85) !important;
-  color: var(--ink-soft) !important;
-  font-family: var(--font-mono);
-  font-size: 9px !important;
-}
-
-.pl-map-marker-wrapper {
-  background: transparent;
-  border: 0;
-}
-
-.pl-price-pin {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  transform: translate(-50%, -50%);
-  padding: 3px 7px;
-  border: 1px solid var(--ink);
-  background: var(--paper-raised);
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1;
-  white-space: nowrap;
-  box-shadow: 0 3px 10px rgb(18 18 17 / 0.16);
-  transition: transform 0.14s ease, background-color 0.14s ease, color 0.14s ease;
-  cursor: pointer;
-}
-
-.pl-price-pin:hover,
-.pl-price-pin--active {
-  background: var(--ink);
-  color: var(--paper);
-  transform: translate(-50%, -54%) scale(1.1);
-}
-
-.pl-pin-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 9999px;
-  flex-shrink: 0;
-}
-
-.font-serif-editorial {
-  font-family: var(--font-serif);
-}
-
-.font-mono-tech {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
 /* Native Modal Dialog: scroll containment & top-layer entry/exit transitions */
-dialog.editorial-modal {
+dialog.modern-modal {
   padding: 0;
-  border: 1px solid var(--rule);
-  background: var(--paper-raised);
+  border: 1px solid rgba(9, 9, 11, 0.08);
+  border-radius: 1.5rem;
+  background: #ffffff;
   color: var(--ink);
-  max-width: min(1040px, calc(100vw - 2rem));
-  max-height: min(90dvh, 880px);
+  max-width: min(1040px, calc(100vw - 1.5rem));
+  max-height: min(92dvh, 880px);
   width: 100%;
   margin: auto;
   overflow: auto;
-  box-shadow: 0 32px 80px -20px rgb(18 18 17 / 0.34);
+  box-shadow: 0 32px 96px -24px rgba(9, 9, 11, 0.28), 0 0 0 1px rgba(9, 9, 11, 0.05);
 
   opacity: 0;
   transition-property: opacity, transform, display, overlay;
   transition-duration: 0.24s;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   transition-behavior: allow-discrete;
 }
 
-dialog.editorial-modal.editorial-modal--narrow {
-  max-width: min(760px, calc(100vw - 2rem));
+dialog.modern-modal.modern-modal--narrow {
+  max-width: min(740px, calc(100vw - 1.5rem));
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  dialog.editorial-modal {
-    transform: translateY(10px) scale(0.985);
+  dialog.modern-modal {
+    transform: translateY(14px) scale(0.98);
   }
 }
 
-dialog.editorial-modal:modal {
+dialog.modern-modal:modal {
   overscroll-behavior: contain;
 }
 
-dialog.editorial-modal::backdrop {
+dialog.modern-modal::backdrop {
   overflow: hidden;
   overscroll-behavior: contain;
-  background-color: rgb(18 18 17 / 0);
+  background-color: rgba(9, 9, 11, 0);
   backdrop-filter: blur(0px);
   transition-property: background-color, backdrop-filter, display, overlay;
   transition-duration: 0.24s;
@@ -224,12 +148,12 @@ dialog.editorial-modal::backdrop {
   transition-behavior: allow-discrete;
 }
 
-dialog.editorial-modal[open] {
+dialog.modern-modal[open] {
   display: flex;
   flex-direction: column;
 }
 
-:is(dialog.editorial-modal[open]):where(:not([data-closing])) {
+:is(dialog.modern-modal[open]):where(:not([data-closing])) {
   opacity: 1;
 
   @starting-style {
@@ -240,47 +164,45 @@ dialog.editorial-modal[open] {
     transform: translateY(0) scale(1);
 
     @starting-style {
-      transform: translateY(10px) scale(0.985);
+      transform: translateY(14px) scale(0.98);
     }
   }
 
   &::backdrop {
-    background-color: rgb(18 18 17 / 0.56);
-    backdrop-filter: blur(3px);
+    background-color: rgba(9, 9, 11, 0.48);
+    backdrop-filter: blur(6px);
 
     @starting-style {
-      background-color: rgb(18 18 17 / 0);
+      background-color: rgba(9, 9, 11, 0);
       backdrop-filter: blur(0px);
     }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  dialog.editorial-modal,
-  dialog.editorial-modal::backdrop {
+  dialog.modern-modal,
+  dialog.modern-modal::backdrop {
     transition-duration: 0.1s;
   }
 }
 
-/* Subtle live pulse for sync telemetry */
-@keyframes pulse-dot {
+@keyframes live-pulse {
   0%, 100% {
     opacity: 1;
     transform: scale(1);
   }
   50% {
-    opacity: 0.45;
-    transform: scale(0.82);
+    opacity: 0.4;
+    transform: scale(0.8);
   }
 }
 
-.sync-dot {
-  animation: pulse-dot 2.4s ease-in-out infinite;
+.live-dot {
+  animation: live-pulse 2.2s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sync-dot {
+  .live-dot {
     animation: none;
   }
 }
-
