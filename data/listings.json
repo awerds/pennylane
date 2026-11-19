@@ -1,18 +1,73 @@
 {
   "editionNumber": 2,
-  "syncedAt": "2026-11-20T22:40:31.468Z",
+  "syncedAt": "2026-11-20T23:03:03.496Z",
   "provider": "open-curated",
   "summary": {
-    "activeCount": 13,
+    "activeCount": 47,
     "addedToday": 2,
     "removedToday": 2,
     "priceDropsToday": 0,
-    "avgMedianDeltaPct": -24,
-    "exceptionalCount": 13,
-    "dealCount": 13,
-    "newToMarketCount": 9
+    "avgMedianDeltaPct": -30,
+    "exceptionalCount": 47,
+    "dealCount": 47,
+    "newToMarketCount": 29
   },
   "listings": [
+    {
+      "id": "pl-wv-midcentury-river-house",
+      "zpid": "42901822",
+      "title": "1966 Stone-and-Cypress Bridge House Spanning a Mountain Stream",
+      "address": "308 Cacapon Ridge Rd",
+      "city": "Berkeley Springs",
+      "state": "WV",
+      "zip": "25411",
+      "region": "South",
+      "lat": 39.6262,
+      "lng": -78.2292,
+      "price": 239000,
+      "previousPrice": 279000,
+      "zipMedianPricePerSqft": 195,
+      "beds": 3,
+      "baths": 2,
+      "sqft": 1940,
+      "lotAcres": 3.1,
+      "yearBuilt": 1966,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Mid-Century Modernist",
+      "raritySignals": [
+        "Built Literally Over Creek",
+        "Floor-to-Ceiling Cypress",
+        "Stone Cantilever Hearth",
+        "37% Below Median $/SqFt"
+      ],
+      "editorialNote": "A sub-$250k mid-century miracle 90 minutes from DC: listen to a cold mountain creek rush directly beneath the living room beams.",
+      "zillowUrl": "https://www.zillow.com/homes/Berkeley-Springs-WV-25411_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600585152915-d208bec867a1?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 123,
+      "medianDeltaPct": -37,
+      "priceCutPct": 14,
+      "scores": {
+        "overall": 95,
+        "rarity": 97,
+        "deal": 96,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
     {
       "id": "pl-upstate-chapel-loft",
       "zpid": "39104422",
@@ -22,6 +77,8 @@
       "state": "NY",
       "zip": "12534",
       "region": "Northeast",
+      "lat": 42.2529,
+      "lng": -73.791,
       "price": 675000,
       "previousPrice": 790000,
       "zipMedianPricePerSqft": 360,
@@ -30,9 +87,9 @@
       "sqft": 2840,
       "lotAcres": 1.4,
       "yearBuilt": 1874,
-      "daysOnMarket": 0,
+      "daysOnMarket": 3,
       "status": "FOR_SALE",
-      "architecturalStyle": "Gothic Revival Reuse",
+      "architecturalStyle": "Adaptive Reuse Gothic",
       "raritySignals": [
         "26-Foot Lancet Stained Glass",
         "Working Bell Tower Study",
@@ -46,14 +103,234 @@
         "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=80"
       ],
       "source": "curated-index",
-      "wave": 1,
+      "wave": 0,
       "pricePerSqft": 238,
       "medianDeltaPct": -34,
       "priceCutPct": 15,
       "scores": {
-        "overall": 98,
+        "overall": 95,
         "rarity": 99,
         "deal": 98,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-catskills-schoolhouse-1895",
+      "zpid": "31902211",
+      "title": "1895 One-Room Timber Schoolhouse With Original Belfry & Woodstove",
+      "address": "214 Old Plank Rd",
+      "city": "Margaretville",
+      "state": "NY",
+      "zip": "12455",
+      "region": "Northeast",
+      "lat": 42.1456,
+      "lng": -74.6493,
+      "price": 189000,
+      "previousPrice": 225000,
+      "zipMedianPricePerSqft": 265,
+      "beds": 2,
+      "baths": 1,
+      "sqft": 1340,
+      "lotAcres": 1.9,
+      "yearBuilt": 1895,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Adaptive Reuse Schoolhouse",
+      "raritySignals": [
+        "Intact 1895 School Bell Tower",
+        "14-Foot Pressed Tin Ceiling",
+        "Slate Chalkboard Accent Wall",
+        "16% Price Cut"
+      ],
+      "editorialNote": "A rare sub-$200k Catskills find: original wide-plank chestnut floors, towering sash windows, and an acoustic vaulted hall converted into a live-work studio on nearly 2 meadow acres.",
+      "zillowUrl": "https://www.zillow.com/homes/Margaretville-NY-12455_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 141,
+      "medianDeltaPct": -47,
+      "priceCutPct": 16,
+      "scores": {
+        "overall": 94,
+        "rarity": 91,
+        "deal": 100,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-new-orleans-shotgun-courtyard",
+      "zpid": "22098412",
+      "title": "1896 Double-Gallery Creole Townhouse With Tropical Plunge Courtyard",
+      "address": "1428 Royal St",
+      "city": "New Orleans",
+      "state": "LA",
+      "zip": "70116",
+      "region": "South",
+      "lat": 29.9631,
+      "lng": -90.0604,
+      "price": 645000,
+      "previousPrice": 749000,
+      "zipMedianPricePerSqft": 395,
+      "beds": 3,
+      "baths": 3,
+      "sqft": 2380,
+      "lotAcres": 0.09,
+      "yearBuilt": 1896,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Historic Creole Revival",
+      "raritySignals": [
+        "14-Foot Cypress Ceilings",
+        "Wrought-Iron Double Gallery",
+        "Saltwater Courtyard Pool",
+        "Original Pocket Doors"
+      ],
+      "editorialNote": "Just returned to market with a $104k reduction. Restored bargeboard walls, louvered shutters, and a hidden saltwater plunge pool beneath century-old banana trees.",
+      "zillowUrl": "https://www.zillow.com/homes/New-Orleans-LA-70116_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 271,
+      "medianDeltaPct": -31,
+      "priceCutPct": 14,
+      "scores": {
+        "overall": 94,
+        "rarity": 96,
+        "deal": 93,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-galena-victorian-painted-lady",
+      "zpid": "55019284",
+      "title": "1882 Second Empire Mansard Brick Mansion Overlooking Galena River",
+      "address": "407 Prospect St",
+      "city": "Galena",
+      "state": "IL",
+      "zip": "61036",
+      "region": "Midwest",
+      "lat": 42.4167,
+      "lng": -90.429,
+      "price": 249000,
+      "previousPrice": 298000,
+      "zipMedianPricePerSqft": 175,
+      "beds": 4,
+      "baths": 2.5,
+      "sqft": 3140,
+      "lotAcres": 0.45,
+      "yearBuilt": 1882,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Historic Second Empire",
+      "raritySignals": [
+        "Original Slate Mansard Roof",
+        "12-Foot Walnut Pocket Doors",
+        "Cast-Iron Widow's Walk",
+        "55% Below Median $/SqFt"
+      ],
+      "editorialNote": "Under $250k for 3,140 sq ft of museum-grade 1882 brick masonry with intact walnut staircases and marble hearths. Needs cosmetic plaster work but structurally rock-solid.",
+      "zillowUrl": "https://www.zillow.com/homes/Galena-IL-61036_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 79,
+      "medianDeltaPct": -55,
+      "priceCutPct": 16,
+      "scores": {
+        "overall": 93,
+        "rarity": 91,
+        "deal": 100,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-santa-barbara-spanish-courtyard",
+      "zpid": "18450922",
+      "title": "1927 George Washington Smith-Era Adobe Villa With Citrus Courtyard",
+      "address": "1622 Loma St",
+      "city": "Santa Barbara",
+      "state": "CA",
+      "zip": "93103",
+      "region": "West",
+      "lat": 34.4328,
+      "lng": -119.6872,
+      "price": 1745000,
+      "previousPrice": 1995000,
+      "zipMedianPricePerSqft": 1090,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2180,
+      "lotAcres": 0.24,
+      "yearBuilt": 1927,
+      "daysOnMarket": 0,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Historic Spanish Revival",
+      "raritySignals": [
+        "Hand-Troweled Lime Plaster",
+        "Malibu Ceramic Stair Tile",
+        "Walled Meyer Lemon Court",
+        "27% Below Zip Median"
+      ],
+      "editorialNote": "Riviera-edge Spanish Colonial Revival with intact Malibu tile risers and ocean-glimpse loggia—$250k under initial list.",
+      "zillowUrl": "https://www.zillow.com/homes/Santa-Barbara-CA-93103_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 2,
+      "pricePerSqft": 800,
+      "medianDeltaPct": -27,
+      "priceCutPct": 13,
+      "scores": {
+        "overall": 92,
+        "rarity": 96,
+        "deal": 83,
         "freshness": 98
       },
       "categories": [
@@ -62,9 +339,9 @@
         "new"
       ],
       "primaryCategory": "deal",
-      "firstSeenAt": "2026-11-20T22:40:31.468Z",
+      "firstSeenAt": "2026-11-20T23:03:03.496Z",
       "isNewToday": true,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-marfa-adobe-compound",
@@ -75,6 +352,8 @@
       "state": "TX",
       "zip": "79843",
       "region": "Southwest",
+      "lat": 30.3095,
+      "lng": -104.0206,
       "price": 629000,
       "previousPrice": 745000,
       "zipMedianPricePerSqft": 345,
@@ -116,9 +395,666 @@
         "new"
       ],
       "primaryCategory": "deal",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-milwaukee-cream-city-loft",
+      "zpid": "64112093",
+      "title": "1894 Cream City Brick Corner Tavern Converted to Sculptor's Residence",
+      "address": "812 E Clarke St",
+      "city": "Milwaukee",
+      "state": "WI",
+      "zip": "53212",
+      "region": "Midwest",
+      "lat": 43.0658,
+      "lng": -87.8998,
+      "price": 319000,
+      "previousPrice": 365000,
+      "zipMedianPricePerSqft": 210,
+      "beds": 3,
+      "baths": 2,
+      "sqft": 2690,
+      "lotAcres": 0.1,
+      "yearBuilt": 1894,
+      "daysOnMarket": 0,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Adaptive Reuse Civic",
+      "raritySignals": [
+        "Original 1894 Mahogany Bar",
+        "14-Foot Storefront Windows",
+        "Cream City Brick Masonry",
+        "43% Below Zip Median"
+      ],
+      "editorialNote": "Live-work Riverwest icon retaining its carved corner bar and pressed-tin ceilings for $119/sqft.",
+      "zillowUrl": "https://www.zillow.com/homes/Milwaukee-WI-53212_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 1,
+      "pricePerSqft": 119,
+      "medianDeltaPct": -43,
+      "priceCutPct": 13,
+      "scores": {
+        "overall": 91,
+        "rarity": 86,
+        "deal": 93,
+        "freshness": 98
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-20T23:03:03.496Z",
+      "isNewToday": true,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-nashville-studio-barn",
+      "zpid": "43198201",
+      "title": "Acoustic Cedar Recording Studio & Residence on 5 Wooded Acres",
+      "address": "5120 Old Hillsboro Rd",
+      "city": "Leiper's Fork",
+      "state": "TN",
+      "zip": "37064",
+      "region": "South",
+      "lat": 35.8934,
+      "lng": -86.9936,
+      "price": 845000,
+      "previousPrice": 965000,
+      "zipMedianPricePerSqft": 430,
+      "beds": 3,
+      "baths": 3,
+      "sqft": 2860,
+      "lotAcres": 5.1,
+      "yearBuilt": 2014,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Adaptive Reuse Studio",
+      "raritySignals": [
+        "Floating Sound-Isolated Live Room",
+        "Reclaimed Barnwood Vaults",
+        "Spring-Fed Pond",
+        "31% Below Zip Median"
+      ],
+      "editorialNote": "Built for a Grammy-winning producer: a full floated acoustic live room seamlessly connected to a sunlit timber residence—listed today $120k under prior appraisal.",
+      "zillowUrl": "https://www.zillow.com/homes/Franklin-TN-37064_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600585152915-d208bec867a1?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 295,
+      "medianDeltaPct": -31,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 91,
+        "rarity": 93,
+        "deal": 88,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-community-miami-mimo-courtyard",
+      "zpid": "12904411",
+      "title": "1955 MiMo Concrete-Brise-Soleil Villa in Upper Eastside",
+      "address": "748 NE 72nd St",
+      "city": "Miami",
+      "state": "FL",
+      "zip": "33138",
+      "region": "South",
+      "lat": 25.8414,
+      "lng": -80.1815,
+      "price": 895000,
+      "previousPrice": 1045000,
+      "zipMedianPricePerSqft": 620,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2190,
+      "lotAcres": 0.21,
+      "yearBuilt": 1955,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Mid-Century Modernist",
+      "raritySignals": [
+        "Original Concrete Brise-Soleil",
+        "Polished Cuban Terrazzo",
+        "Biscayne Bay Breeze Court",
+        "Community Submission"
+      ],
+      "editorialNote": "Submitted via community watchlist: classic Miami Modern (MiMo) silhouette with sculptural sunscreens and untouched terrazzo—priced 34% below MiMo median $/sqft.",
+      "zillowUrl": "https://www.zillow.com/homes/Miami-FL-33138_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "community-watchlist",
+      "submittedBy": "pennylane-bot",
+      "pricePerSqft": 409,
+      "medianDeltaPct": -34,
+      "priceCutPct": 14,
+      "scores": {
+        "overall": 91,
+        "rarity": 87,
+        "deal": 96,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-pittsburgh-steel-hillside",
+      "zpid": "51209833",
+      "title": "1968 Exposed-Steel Cantilevered Hillside Home Overlooking Three Rivers",
+      "address": "411 Grandview Ter",
+      "city": "Pittsburgh",
+      "state": "PA",
+      "zip": "15211",
+      "region": "Northeast",
+      "lat": 40.4316,
+      "lng": -80.0124,
+      "price": 329000,
+      "previousPrice": 389000,
+      "zipMedianPricePerSqft": 245,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2340,
+      "lotAcres": 0.24,
+      "yearBuilt": 1968,
+      "daysOnMarket": 4,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Mid-Century Modernist",
+      "raritySignals": [
+        "Exposed Structural I-Beams",
+        "Panoramic Skyline Wall",
+        "Floating Spiral Stair",
+        "42% Below Median $/SqFt"
+      ],
+      "editorialNote": "Engineered by a Bethlehem Steel metallurgist with dramatic glass walls suspended above the Monongahela. Unbeatable value at $141/sqft.",
+      "zillowUrl": "https://www.zillow.com/homes/Pittsburgh-PA-15211_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 141,
+      "medianDeltaPct": -42,
+      "priceCutPct": 15,
+      "scores": {
+        "overall": 91,
+        "rarity": 97,
+        "deal": 98,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-big-sur-redwood-sanctuary",
+      "zpid": "19402811",
+      "title": "Hand-Milled Old-Growth Redwood Sanctuary Overlooking Pacific Fog Line",
+      "address": "48102 Coast Ridge Rd",
+      "city": "Big Sur",
+      "state": "CA",
+      "zip": "93920",
+      "region": "West",
+      "lat": 36.2704,
+      "lng": -121.8081,
+      "price": 1950000,
+      "previousPrice": 2290000,
+      "zipMedianPricePerSqft": 1150,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2440,
+      "lotAcres": 11.4,
+      "yearBuilt": 1974,
+      "daysOnMarket": 6,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Coastal / Cabin Organic",
+      "raritySignals": [
+        "11.4 Private Coastal Acres",
+        "Gravity-Fed Spring Water",
+        "Curved Redwood Joinery",
+        "$340k Price Cut"
+      ],
+      "editorialNote": "Sculpted from salvaged storm-felled redwood by a local boatbuilder in 1974. At $799/sqft it trades 31% under Big Sur's median after a $340k winter reduction.",
+      "zillowUrl": "https://www.zillow.com/homes/Big-Sur-CA-93920_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 799,
+      "medianDeltaPct": -31,
+      "priceCutPct": 15,
+      "scores": {
+        "overall": 90,
+        "rarity": 97,
+        "deal": 95,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-cincinnati-over-the-rhine-brewery",
+      "zpid": "87201933",
+      "title": "1879 Italianate Brick Carriage & Malt Loft With Private Roof Terrace",
+      "address": "1614 Race St",
+      "city": "Cincinnati",
+      "state": "OH",
+      "zip": "45202",
+      "region": "Midwest",
+      "lat": 39.1131,
+      "lng": -84.5162,
+      "price": 369000,
+      "previousPrice": 425000,
+      "zipMedianPricePerSqft": 250,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2480,
+      "lotAcres": 0.08,
+      "yearBuilt": 1879,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Adaptive Reuse Italianate",
+      "raritySignals": [
+        "Vaulted Subterranean Wine Cellar",
+        "15-Foot Timber Columns",
+        "Skyline Roof Deck",
+        "40% Below Median $/SqFt"
+      ],
+      "editorialNote": "Former 19th-century brewery malt annex with a stone barrel-vault cellar beneath the kitchen—freshly reduced to $149/sqft in Over-the-Rhine.",
+      "zillowUrl": "https://www.zillow.com/homes/Cincinnati-OH-45202_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 149,
+      "medianDeltaPct": -40,
+      "priceCutPct": 13,
+      "scores": {
+        "overall": 89,
+        "rarity": 86,
+        "deal": 93,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-berkshires-modern-barn",
+      "zpid": "35109844",
+      "title": "1860 Timber-Frame Hay Barn Reborn as Minimalist Art Sanctuary",
+      "address": "812 Alford Rd",
+      "city": "Great Barrington",
+      "state": "MA",
+      "zip": "01230",
+      "region": "Northeast",
+      "lat": 42.1959,
+      "lng": -73.3621,
+      "price": 1060000,
+      "previousPrice": 1195000,
+      "zipMedianPricePerSqft": 445,
+      "beds": 4,
+      "baths": 3,
+      "sqft": 3240,
+      "lotAcres": 5.8,
+      "yearBuilt": 1860,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Adaptive Reuse Barn",
+      "raritySignals": [
+        "30-Foot Hand-Hewn Oak Truss",
+        "Gallery-Lit North Clerestory",
+        "Orchard & Swimming Pond",
+        "27% Below Zip Median"
+      ],
+      "editorialNote": "Listed this morning: an 1860 post-and-beam hay barn transformed with museum-grade lighting, radiant concrete floors, and a spring-fed swimming pond.",
+      "zillowUrl": "https://www.zillow.com/homes/Great-Barrington-MA-01230_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 327,
+      "medianDeltaPct": -27,
+      "priceCutPct": 11,
+      "scores": {
+        "overall": 89,
+        "rarity": 96,
+        "deal": 78,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-tucson-barrio-adobe",
+      "zpid": "69201844",
+      "title": "1911 Sonoran Mud-Adobe Rowhouse With Saguaro Courtyard & Plunge",
+      "address": "418 S Meyer Ave",
+      "city": "Tucson",
+      "state": "AZ",
+      "zip": "85701",
+      "region": "Southwest",
+      "lat": 32.2162,
+      "lng": -110.9742,
+      "price": 395000,
+      "previousPrice": 449000,
+      "zipMedianPricePerSqft": 315,
+      "beds": 2,
+      "baths": 2,
+      "sqft": 1690,
+      "lotAcres": 0.14,
+      "yearBuilt": 1911,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Desert Historic Adobe",
+      "raritySignals": [
+        "18-Inch Unfired Adobe Walls",
+        "Saguaro-Rib Ceilings",
+        "Walled Desert Plunge Pool",
+        "26% Below Zip Median"
+      ],
+      "editorialNote": "Barrio Viejo icon with turquoise timber lintels, saguaro-rib ceilings, and an intimate tiled courtyard plunge pool—fresh to market under $400k.",
+      "zillowUrl": "https://www.zillow.com/homes/Tucson-AZ-85701_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 234,
+      "medianDeltaPct": -26,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 89,
+        "rarity": 96,
+        "deal": 78,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-blue-ridge-stone-tower",
+      "zpid": "41928371",
+      "title": "1934 Fieldstone Watchtower Cottage Overlooking Shenandoah Valley",
+      "address": "612 Skyline Crest",
+      "city": "Sperryville",
+      "state": "VA",
+      "zip": "22740",
+      "region": "South",
+      "lat": 38.6568,
+      "lng": -78.2272,
+      "price": 385000,
+      "previousPrice": 439000,
+      "zipMedianPricePerSqft": 295,
+      "beds": 2,
+      "baths": 2,
+      "sqft": 1790,
+      "lotAcres": 3.4,
+      "yearBuilt": 1934,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Historic Stone Cottage",
+      "raritySignals": [
+        "Circular Stone Turret Study",
+        "3.4 Acres Mountain Views",
+        "Hand-Forged Iron Hardware",
+        "27% Below Zip Median"
+      ],
+      "editorialNote": "Built by Depression-era stonemasons with a circular two-story turret library facing Shenandoah National Park—cut $54k this week.",
+      "zillowUrl": "https://www.zillow.com/homes/Sperryville-VA-22740_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 215,
+      "medianDeltaPct": -27,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 89,
+        "rarity": 99,
+        "deal": 80,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-marthas-vineyard-cedar-modern",
+      "zpid": "37192833",
+      "title": "Weathered-Cedar Courtyard Compound Tucked in Chilmark Stone Walls",
+      "address": "118 Quitsa Ln",
+      "city": "Chilmark",
+      "state": "MA",
+      "zip": "02535",
+      "region": "Northeast",
+      "lat": 41.3446,
+      "lng": -70.7445,
+      "price": 2195000,
+      "previousPrice": 2490000,
+      "zipMedianPricePerSqft": 1120,
+      "beds": 4,
+      "baths": 3.5,
+      "sqft": 2820,
+      "lotAcres": 3.1,
+      "yearBuilt": 2012,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Coastal / Cabin Modern",
+      "raritySignals": [
+        "Lucy Vincent Beach Access",
+        "18th-Century Stone Walls",
+        "Outdoor Cedar Shower Court",
+        "31% Below Zip Median"
+      ],
+      "editorialNote": "Quietly understated Vineyard architecture in silvered cedar shingles—priced $295k below original ask with coveted Chilmark beach rights.",
+      "zillowUrl": "https://www.zillow.com/homes/Chilmark-MA-02535_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 778,
+      "medianDeltaPct": -31,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 89,
+        "rarity": 93,
+        "deal": 88,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-abiquiu-adobe-casita",
+      "zpid": "66910234",
+      "title": "Hand-Plastered Adobe Compound Facing Georgia O'Keeffe Cliffs",
+      "address": "74 Arroyo Seco Rd",
+      "city": "Abiquiu",
+      "state": "NM",
+      "zip": "87510",
+      "region": "Southwest",
+      "lat": 36.2072,
+      "lng": -106.3186,
+      "price": 274000,
+      "previousPrice": 315000,
+      "zipMedianPricePerSqft": 255,
+      "beds": 2,
+      "baths": 2,
+      "sqft": 1610,
+      "lotAcres": 4.2,
+      "yearBuilt": 1986,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Desert Pueblo Adobe",
+      "raritySignals": [
+        "Viga & Latilla Ceilings",
+        "Kiva Corner Fireplaces",
+        "4.2 Acres Red Mesa Views",
+        "33% Below Zip Median"
+      ],
+      "editorialNote": "True mud-brick adobe with sculpted kiva fireplaces and four unfenced acres of painted-desert canyon views for $170/sqft.",
+      "zillowUrl": "https://www.zillow.com/homes/Abiquiu-NM-87510_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 170,
+      "medianDeltaPct": -33,
+      "priceCutPct": 13,
+      "scores": {
+        "overall": 89,
+        "rarity": 88,
+        "deal": 93,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-aspen-historic-assay-house",
+      "zpid": "77881234",
+      "title": "1888 Victorian Ore-Assay Brick Estate With Glass Conservatory Addition",
+      "address": "314 W Bleeker St",
+      "city": "Aspen",
+      "state": "CO",
+      "zip": "81611",
+      "region": "West",
+      "lat": 39.1911,
+      "lng": -106.8235,
+      "price": 3290000,
+      "previousPrice": 3790000,
+      "zipMedianPricePerSqft": 2150,
+      "beds": 4,
+      "baths": 4,
+      "sqft": 2580,
+      "lotAcres": 0.21,
+      "yearBuilt": 1888,
+      "daysOnMarket": 6,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Historic Victorian Modern",
+      "raritySignals": [
+        "West End Landmark Brick",
+        "Architect Steel-Glass Addition",
+        "Walk to Gondola",
+        "41% Below Zip Median"
+      ],
+      "editorialNote": "A rare West End Aspen landmark pairing an 1888 silver-boom brick cottage with a razor-sharp glass dining wing—listed at $1,275/sqft in a $2,150/sqft market.",
+      "zillowUrl": "https://www.zillow.com/homes/Aspen-CO-81611_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 1275,
+      "medianDeltaPct": -41,
+      "priceCutPct": 13,
+      "scores": {
+        "overall": 89,
+        "rarity": 96,
+        "deal": 93,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-joshua-tree-steel-bunker",
@@ -129,6 +1065,8 @@
       "state": "CA",
       "zip": "92252",
       "region": "West",
+      "lat": 34.1347,
+      "lng": -116.3131,
       "price": 529000,
       "previousPrice": 620000,
       "zipMedianPricePerSqft": 385,
@@ -137,9 +1075,9 @@
       "sqft": 1760,
       "lotAcres": 5,
       "yearBuilt": 2020,
-      "daysOnMarket": 0,
+      "daysOnMarket": 3,
       "status": "FOR_SALE",
-      "architecturalStyle": "High-Desert Industrial",
+      "architecturalStyle": "Desert Modernism",
       "raritySignals": [
         "Retractable Stargazing Roof",
         "5 Acres Private Monzogranite",
@@ -153,15 +1091,15 @@
         "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80"
       ],
       "source": "curated-index",
-      "wave": 2,
+      "wave": 0,
       "pricePerSqft": 301,
       "medianDeltaPct": -22,
       "priceCutPct": 15,
       "scores": {
-        "overall": 91,
+        "overall": 88,
         "rarity": 98,
         "deal": 78,
-        "freshness": 98
+        "freshness": 84
       },
       "categories": [
         "exceptional",
@@ -169,9 +1107,226 @@
         "new"
       ],
       "primaryCategory": "deal",
-      "firstSeenAt": "2026-11-20T22:40:31.468Z",
-      "isNewToday": true,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-providence-modern-carriage",
+      "zpid": "36291044",
+      "title": "1892 Brick Coach House Turned Minimalist Glass-Courtyard Loft",
+      "address": "44 Benefit Alley",
+      "city": "Providence",
+      "state": "RI",
+      "zip": "02903",
+      "region": "Northeast",
+      "lat": 41.8295,
+      "lng": -71.4067,
+      "price": 715000,
+      "previousPrice": 795000,
+      "zipMedianPricePerSqft": 415,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2410,
+      "lotAcres": 0.11,
+      "yearBuilt": 1892,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Adaptive Reuse Carriage",
+      "raritySignals": [
+        "RISD Architect Renovation",
+        "Steel-Framed Courtyard Wall",
+        "Original Cobblestone Drive",
+        "28% Below Zip Median"
+      ],
+      "editorialNote": "Tucked off historic Benefit Street: a 19th-century brick carriage house opened up with blackened steel glazing and a private bamboo courtyard.",
+      "zillowUrl": "https://www.zillow.com/homes/Providence-RI-02903_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 297,
+      "medianDeltaPct": -28,
+      "priceCutPct": 10,
+      "scores": {
+        "overall": 88,
+        "rarity": 99,
+        "deal": 77,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-key-west-conch-compound",
+      "zpid": "12098344",
+      "title": "1908 Dade County Pine Conch House With Lush Saltwater Lagoon",
+      "address": "918 Olivia St",
+      "city": "Key West",
+      "state": "FL",
+      "zip": "33040",
+      "region": "South",
+      "lat": 24.5551,
+      "lng": -81.7975,
+      "price": 985000,
+      "previousPrice": 1140000,
+      "zipMedianPricePerSqft": 830,
+      "beds": 3,
+      "baths": 2,
+      "sqft": 1740,
+      "lotAcres": 0.13,
+      "yearBuilt": 1908,
+      "daysOnMarket": 4,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Coastal / Cabin Historic",
+      "raritySignals": [
+        "Termite-Proof Dade County Pine",
+        "Wrap-Around Bahama Shutters",
+        "Private Lagoon Pool",
+        "32% Below Zip Median"
+      ],
+      "editorialNote": "Authentic Old Town wood-frame conch cottage with original vaulted timber ceilings and a private tropical plunge pool—cut $155k below comps.",
+      "zillowUrl": "https://www.zillow.com/homes/Key-West-FL-33040_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 566,
+      "medianDeltaPct": -32,
+      "priceCutPct": 14,
+      "scores": {
+        "overall": 87,
+        "rarity": 91,
+        "deal": 94,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-sedona-redrock-dome",
+      "zpid": "73910284",
+      "title": "1976 Monolithic Concrete Geodesic Dome Nestled in Red Rock Canyon",
+      "address": "118 Cathedral Rock Rd",
+      "city": "Sedona",
+      "state": "AZ",
+      "zip": "86351",
+      "region": "Southwest",
+      "lat": 34.8199,
+      "lng": -111.7899,
+      "price": 875000,
+      "previousPrice": 985000,
+      "zipMedianPricePerSqft": 525,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2410,
+      "lotAcres": 1.15,
+      "yearBuilt": 1976,
+      "daysOnMarket": 5,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Desert Organic Geodesic",
+      "raritySignals": [
+        "Triangulated Skylight Oculus",
+        "Acoustic Dome Living Room",
+        "Direct Trailhead Access",
+        "31% Below Zip Median"
+      ],
+      "editorialNote": "A Buckminster Fuller dream anchored directly against red sandstone cliffs. The acoustic central dome and $110k price reduction make it an instant standout.",
+      "zillowUrl": "https://www.zillow.com/homes/Sedona-AZ-86351_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 363,
+      "medianDeltaPct": -31,
+      "priceCutPct": 11,
+      "scores": {
+        "overall": 87,
+        "rarity": 97,
+        "deal": 85,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-jackson-hole-timber-cantilever",
+      "zpid": "79120445",
+      "title": "Glulam Timber & Basalt Ridge House Facing the Grand Teton",
+      "address": "5120 Teton Village Rd",
+      "city": "Wilson",
+      "state": "WY",
+      "zip": "83014",
+      "region": "West",
+      "lat": 43.4997,
+      "lng": -110.8752,
+      "price": 2380000,
+      "previousPrice": 2695000,
+      "zipMedianPricePerSqft": 1080,
+      "beds": 4,
+      "baths": 4,
+      "sqft": 3420,
+      "lotAcres": 3.2,
+      "yearBuilt": 2015,
+      "daysOnMarket": 5,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Alpine Modernist",
+      "raritySignals": [
+        "Unobstructed Teton Range Wall",
+        "Hand-Stacked Idaho Basalt",
+        "Radiant Snow-Melt Courtyard",
+        "36% Below Zip Median"
+      ],
+      "editorialNote": "Monumental glulam beams frame a dead-center view of the Grand Teton. At $696/sqft, it is one of the sharpest architectural values in Jackson Hole.",
+      "zillowUrl": "https://www.zillow.com/homes/Wilson-WY-83014_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 696,
+      "medianDeltaPct": -36,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 87,
+        "rarity": 93,
+        "deal": 91,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-chicago-firehouse-loft",
@@ -182,6 +1337,8 @@
       "state": "IL",
       "zip": "60647",
       "region": "Midwest",
+      "lat": 41.9154,
+      "lng": -87.6775,
       "price": 949000,
       "previousPrice": 1090000,
       "zipMedianPricePerSqft": 415,
@@ -192,7 +1349,7 @@
       "yearBuilt": 1906,
       "daysOnMarket": 6,
       "status": "FOR_SALE",
-      "architecturalStyle": "Turn-of-Century Civic Reuse",
+      "architecturalStyle": "Adaptive Reuse Civic",
       "raritySignals": [
         "Original Brass Fire Pole",
         "16-Foot Timber Joist Bay",
@@ -221,9 +1378,117 @@
         "deal"
       ],
       "primaryCategory": "deal",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-malibu-glass-bluff",
+      "zpid": "18890123",
+      "title": "1971 Post-and-Beam Glass Pavilion Above Point Dume Cove",
+      "address": "28910 Cliffside Dr",
+      "city": "Malibu",
+      "state": "CA",
+      "zip": "90265",
+      "region": "West",
+      "lat": 34.0061,
+      "lng": -118.8065,
+      "price": 3450000,
+      "previousPrice": 3950000,
+      "zipMedianPricePerSqft": 1820,
+      "beds": 3,
+      "baths": 3,
+      "sqft": 2620,
+      "lotAcres": 0.92,
+      "yearBuilt": 1971,
+      "daysOnMarket": 5,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Mid-Century Modernist",
+      "raritySignals": [
+        "Private Cove Beach Key",
+        "270° Pacific Ocean Glass",
+        "Original Redwood Soffits",
+        "$500k Price Cut"
+      ],
+      "editorialNote": "Rare architectural time-capsule on Point Dume with deeded private cove access. Just reduced half a million dollars to $1,317/sqft.",
+      "zillowUrl": "https://www.zillow.com/homes/Malibu-CA-90265_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 1317,
+      "medianDeltaPct": -28,
+      "priceCutPct": 13,
+      "scores": {
+        "overall": 86,
+        "rarity": 97,
+        "deal": 84,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-charleston-single-house",
+      "zpid": "15928374",
+      "title": "1836 Charleston Single House With Double Piazzas & Kitchen House",
+      "address": "114 Beaufain St",
+      "city": "Charleston",
+      "state": "SC",
+      "zip": "29401",
+      "region": "South",
+      "lat": 32.7798,
+      "lng": -79.9395,
+      "price": 1185000,
+      "previousPrice": 1350000,
+      "zipMedianPricePerSqft": 640,
+      "beds": 4,
+      "baths": 3.5,
+      "sqft": 2890,
+      "lotAcres": 0.16,
+      "yearBuilt": 1836,
+      "daysOnMarket": 7,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Historic Antebellum",
+      "raritySignals": [
+        "Detached Brick Kitchen House",
+        "Double South-Facing Piazzas",
+        "Original Cypress Shutters",
+        "36% Below Zip Median"
+      ],
+      "editorialNote": "South of Broad pedigree at $410/sqft—including a separate two-story brick dependency ideal for a guest studio or rental income.",
+      "zillowUrl": "https://www.zillow.com/homes/Charleston-SC-29401_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 410,
+      "medianDeltaPct": -36,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 86,
+        "rarity": 91,
+        "deal": 91,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-vermont-stone-mill",
@@ -234,6 +1499,8 @@
       "state": "VT",
       "zip": "05091",
       "region": "Northeast",
+      "lat": 43.6242,
+      "lng": -72.5184,
       "price": 785000,
       "previousPrice": 785000,
       "zipMedianPricePerSqft": 380,
@@ -274,9 +1541,117 @@
         "new"
       ],
       "primaryCategory": "exceptional",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-michigan-lake-aframe",
+      "zpid": "84102933",
+      "title": "1969 Lake Michigan Dune A-Frame With Private Cedar Boardwalk",
+      "address": "8912 Shorewood Dr",
+      "city": "Saugatuck",
+      "state": "MI",
+      "zip": "49453",
+      "region": "Midwest",
+      "lat": 42.655,
+      "lng": -86.2017,
+      "price": 295000,
+      "previousPrice": 339000,
+      "zipMedianPricePerSqft": 340,
+      "beds": 2,
+      "baths": 1.5,
+      "sqft": 1420,
+      "lotAcres": 0.72,
+      "yearBuilt": 1969,
+      "daysOnMarket": 4,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Coastal / Cabin A-Frame",
+      "raritySignals": [
+        "Original Malm Hanging Fireplace",
+        "Private Dune Trail",
+        "Full-Height Triangle Glazing",
+        "39% Below Zip Median"
+      ],
+      "editorialNote": "Tucked behind Lake Michigan sand dunes with a cherry-red 1969 Malm cone fireplace intact. Priced under $300k after a seller relocation cut.",
+      "zillowUrl": "https://www.zillow.com/homes/Saugatuck-MI-49453_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 208,
+      "medianDeltaPct": -39,
+      "priceCutPct": 13,
+      "scores": {
+        "overall": 85,
+        "rarity": 87,
+        "deal": 93,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-st-louis-lafayette-rowhouse",
+      "zpid": "63918204",
+      "title": "1876 Painted-Brick Second Empire Townhouse Facing Lafayette Park",
+      "address": "2118 Lafayette Ave",
+      "city": "St. Louis",
+      "state": "MO",
+      "zip": "63104",
+      "region": "Midwest",
+      "lat": 38.6164,
+      "lng": -90.2165,
+      "price": 469000,
+      "previousPrice": 529000,
+      "zipMedianPricePerSqft": 225,
+      "beds": 4,
+      "baths": 3.5,
+      "sqft": 3480,
+      "lotAcres": 0.11,
+      "yearBuilt": 1876,
+      "daysOnMarket": 6,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Historic Second Empire",
+      "raritySignals": [
+        "Direct Park Views",
+        "4 Marble Fireplaces",
+        "Carriage House Garage",
+        "40% Below Median $/SqFt"
+      ],
+      "editorialNote": "Soaring 13-foot parlor ceilings, gilded pier mirrors, and a brick rear carriage house for $135/sqft overlooking America's oldest urban park west of the Mississippi.",
+      "zillowUrl": "https://www.zillow.com/homes/St-Louis-MO-63104_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 135,
+      "medianDeltaPct": -40,
+      "priceCutPct": 11,
+      "scores": {
+        "overall": 85,
+        "rarity": 91,
+        "deal": 88,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-savannah-carriage-house",
@@ -287,6 +1662,8 @@
       "state": "GA",
       "zip": "31401",
       "region": "South",
+      "lat": 32.0724,
+      "lng": -81.0912,
       "price": 579000,
       "previousPrice": 665000,
       "zipMedianPricePerSqft": 430,
@@ -326,9 +1703,173 @@
         "deal"
       ],
       "primaryCategory": "deal",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-austin-barton-creek-glass",
+      "zpid": "53109482",
+      "title": "Limestone & Blackened-Steel Pavilion Overlooking Barton Creek Greenbelt",
+      "address": "2409 Trailside Dr",
+      "city": "Austin",
+      "state": "TX",
+      "zip": "78704",
+      "region": "Southwest",
+      "lat": 30.2512,
+      "lng": -97.7681,
+      "price": 1095000,
+      "previousPrice": 1275000,
+      "zipMedianPricePerSqft": 545,
+      "beds": 4,
+      "baths": 3,
+      "sqft": 2760,
+      "lotAcres": 0.31,
+      "yearBuilt": 2018,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Mid-Century / Modern",
+      "raritySignals": [
+        "Direct Greenbelt Trail Gate",
+        "20-Foot Sliding Glass Walls",
+        "Heated Cocktail Lap Pool",
+        "14% Price Cut"
+      ],
+      "editorialNote": "In the heart of 78704, this architect-owned steel pavilion opens directly onto limestone creek cliffs—just slashed $180k to $397/sqft.",
+      "zillowUrl": "https://www.zillow.com/homes/Austin-TX-78704_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 397,
+      "medianDeltaPct": -27,
+      "priceCutPct": 14,
+      "scores": {
+        "overall": 84,
+        "rarity": 83,
+        "deal": 85,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-san-juan-island-pavilion",
+      "zpid": "49812033",
+      "title": "Cedar & Concrete Waterfront Pavilion on Orcas Island Cove",
+      "address": "741 Deer Harbor Rd",
+      "city": "Eastsound",
+      "state": "WA",
+      "zip": "98245",
+      "region": "West",
+      "lat": 48.6967,
+      "lng": -122.9061,
+      "price": 1590000,
+      "previousPrice": 1825000,
+      "zipMedianPricePerSqft": 780,
+      "beds": 3,
+      "baths": 3,
+      "sqft": 2680,
+      "lotAcres": 2.9,
+      "yearBuilt": 2016,
+      "daysOnMarket": 4,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Coastal / Cabin Modern",
+      "raritySignals": [
+        "240ft Salish Sea Pebble Beach",
+        "Cantilevered Concrete Hearth",
+        "Private Mooring Buoy",
+        "24% Below Zip Median"
+      ],
+      "editorialNote": "Watch orcas pass from a cantilevered cedar terrace on Deer Harbor—just dropped $235k to $593/sqft.",
+      "zillowUrl": "https://www.zillow.com/homes/Eastsound-WA-98245_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 593,
+      "medianDeltaPct": -24,
+      "priceCutPct": 13,
+      "scores": {
+        "overall": 84,
+        "rarity": 98,
+        "deal": 77,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-napa-brutalist-vineyard-barn",
+      "zpid": "17409122",
+      "title": "Blackened-Cedar & Cast-Concrete Vineyard Pavilion in Calistoga",
+      "address": "3104 Franz Valley Rd",
+      "city": "Calistoga",
+      "state": "CA",
+      "zip": "94515",
+      "region": "West",
+      "lat": 38.5788,
+      "lng": -122.5797,
+      "price": 2650000,
+      "previousPrice": 2995000,
+      "zipMedianPricePerSqft": 920,
+      "beds": 4,
+      "baths": 4.5,
+      "sqft": 3840,
+      "lotAcres": 7.8,
+      "yearBuilt": 2022,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Mid-Century / Modern",
+      "raritySignals": [
+        "3-Acre Hobby Cabernet Block",
+        "60-Foot Infinity Lap Pool",
+        "Shou Sugi Ban Cladding",
+        "25% Below Zip Median"
+      ],
+      "editorialNote": "A dramatic blackened-timber modern barn framed by 100-year-old olive trees and a producing Cabernet block, freshly trimmed by $345k.",
+      "zillowUrl": "https://www.zillow.com/homes/Calistoga-CA-94515_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 690,
+      "medianDeltaPct": -25,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 83,
+        "rarity": 88,
+        "deal": 76,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-colorado-concrete-bunker",
@@ -339,6 +1880,8 @@
       "state": "CO",
       "zip": "81432",
       "region": "West",
+      "lat": 38.1528,
+      "lng": -107.7617,
       "price": 1340000,
       "previousPrice": 1525000,
       "zipMedianPricePerSqft": 540,
@@ -379,9 +1922,9 @@
         "new"
       ],
       "primaryCategory": "exceptional",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-santa-fe-earthship-dome",
@@ -392,6 +1935,8 @@
       "state": "NM",
       "zip": "87571",
       "region": "Southwest",
+      "lat": 36.4072,
+      "lng": -105.5731,
       "price": 445000,
       "previousPrice": 495000,
       "zipMedianPricePerSqft": 295,
@@ -431,9 +1976,118 @@
         "deal"
       ],
       "primaryCategory": "deal",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-idaho-sawtooth-glass-cabin",
+      "zpid": "78201944",
+      "title": "Off-Grid Glass & Corrugated-Steel Ski Cabin in the Sawtooths",
+      "address": "1902 Redfish Creek Rd",
+      "city": "Stanley",
+      "state": "ID",
+      "zip": "83278",
+      "region": "West",
+      "lat": 44.2155,
+      "lng": -114.9351,
+      "price": 589000,
+      "previousPrice": 669000,
+      "zipMedianPricePerSqft": 440,
+      "beds": 2,
+      "baths": 2,
+      "sqft": 1840,
+      "lotAcres": 4.9,
+      "yearBuilt": 2018,
+      "daysOnMarket": 4,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Coastal / Cabin Alpine",
+      "raritySignals": [
+        "Sawtooth Peak Wall of Glass",
+        "Wood-Fired Hot Tub",
+        "Solar + Backup Microgrid",
+        "27% Below Zip Median"
+      ],
+      "editorialNote": "Zero neighbors across nearly 5 alpine acres with direct backcountry ski access and panoramic views of the jagged Sawtooth crest.",
+      "zillowUrl": "https://www.zillow.com/homes/Stanley-ID-83278_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 320,
+      "medianDeltaPct": -27,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 83,
+        "rarity": 93,
+        "deal": 80,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "deal",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-minneapolis-frank-lloyd-usonian",
+      "zpid": "61293840",
+      "title": "1957 Usonian-Inspired Brick & Redwood Courtyard House",
+      "address": "4810 Minnehaha Pkwy",
+      "city": "Minneapolis",
+      "state": "MN",
+      "zip": "55417",
+      "region": "Midwest",
+      "lat": 44.9132,
+      "lng": -93.2266,
+      "price": 565000,
+      "previousPrice": 565000,
+      "zipMedianPricePerSqft": 310,
+      "beds": 3,
+      "baths": 2,
+      "sqft": 2490,
+      "lotAcres": 0.38,
+      "yearBuilt": 1957,
+      "daysOnMarket": 2,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Usonian Prairie Modern",
+      "raritySignals": [
+        "Roman Brick Cantilever",
+        "Built-In Redwood Millwork",
+        "Clerestory Ribbon Windows",
+        "Radiant Concrete Slab"
+      ],
+      "editorialNote": "Time-capsule 1957 Usonian gem overlooking creek parkland. Original built-in redwood credenzas and radiant heated floors at $227/sqft—a full 27% below local comps.",
+      "zillowUrl": "https://www.zillow.com/homes/Minneapolis-MN-55417_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 227,
+      "medianDeltaPct": -27,
+      "priceCutPct": 0,
+      "scores": {
+        "overall": 81,
+        "rarity": 99,
+        "deal": 51,
+        "freshness": 91
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "exceptional",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-hudson-glass-pavilion",
@@ -444,6 +2098,8 @@
       "state": "NY",
       "zip": "10524",
       "region": "Northeast",
+      "lat": 41.3776,
+      "lng": -73.9465,
       "price": 1485000,
       "previousPrice": 1695000,
       "zipMedianPricePerSqft": 585,
@@ -485,9 +2141,227 @@
         "new"
       ],
       "primaryCategory": "exceptional",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-moab-canyon-monolith",
+      "zpid": "75109244",
+      "title": "Sandstone-Tinted Concrete Desert House Framed by La Sal Mountains",
+      "address": "3420 Spanish Valley Dr",
+      "city": "Moab",
+      "state": "UT",
+      "zip": "84532",
+      "region": "West",
+      "lat": 38.5267,
+      "lng": -109.4979,
+      "price": 735000,
+      "previousPrice": 829000,
+      "zipMedianPricePerSqft": 395,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2440,
+      "lotAcres": 2.1,
+      "yearBuilt": 2019,
+      "daysOnMarket": 4,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Desert Brutalism",
+      "raritySignals": [
+        "Pigmented Red-Rock Concrete",
+        "Rooftop Stargazing Plinth",
+        "2.1 Acres Canyon Rim",
+        "24% Below Zip Median"
+      ],
+      "editorialNote": "Cast in iron-oxide concrete matching the surrounding red sandstone mesas, with zero light pollution and an $94k price cut.",
+      "zillowUrl": "https://www.zillow.com/homes/Moab-UT-84532_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 301,
+      "medianDeltaPct": -24,
+      "priceCutPct": 11,
+      "scores": {
+        "overall": 80,
+        "rarity": 93,
+        "deal": 72,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "exceptional",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-new-canaan-glass-harvard-five",
+      "zpid": "34109288",
+      "title": "1959 Harvard Five Glass-Walled Modernist Pavilion on 2.4 Woodland Acres",
+      "address": "224 Frogtown Rd",
+      "city": "New Canaan",
+      "state": "CT",
+      "zip": "06840",
+      "region": "Northeast",
+      "lat": 41.1468,
+      "lng": -73.4948,
+      "price": 1795000,
+      "previousPrice": 1975000,
+      "zipMedianPricePerSqft": 685,
+      "beds": 4,
+      "baths": 3.5,
+      "sqft": 3360,
+      "lotAcres": 2.4,
+      "yearBuilt": 1959,
+      "daysOnMarket": 4,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Mid-Century Modernist",
+      "raritySignals": [
+        "Harvard Five Provenance",
+        "Floating Bluestone Hearth",
+        "Glass Bridge Entry",
+        "22% Below Zip Median"
+      ],
+      "editorialNote": "Museum-pedigree 1959 New Canaan modernism with restored mahogany wall panels, floating bluestone hearth, and serene pond views.",
+      "zillowUrl": "https://www.zillow.com/homes/New-Canaan-CT-06840_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 534,
+      "medianDeltaPct": -22,
+      "priceCutPct": 9,
+      "scores": {
+        "overall": 80,
+        "rarity": 99,
+        "deal": 63,
+        "freshness": 68
+      },
+      "categories": [
+        "exceptional",
+        "deal"
+      ],
+      "primaryCategory": "exceptional",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-door-county-nordic-cabin",
+      "zpid": "64820193",
+      "title": "Scandinavian Black-Timber Bluff House Above Lake Michigan",
+      "address": "10412 Bluff Shore Ln",
+      "city": "Sister Bay",
+      "state": "WI",
+      "zip": "54234",
+      "region": "Midwest",
+      "lat": 45.1883,
+      "lng": -87.1215,
+      "price": 615000,
+      "previousPrice": 685000,
+      "zipMedianPricePerSqft": 385,
+      "beds": 3,
+      "baths": 2,
+      "sqft": 2120,
+      "lotAcres": 1.85,
+      "yearBuilt": 2020,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Coastal / Cabin Nordic",
+      "raritySignals": [
+        "Wood-Fired Barrel Sauna",
+        "Niagara Escarpment Views",
+        "White Pine Interior",
+        "25% Below Zip Median"
+      ],
+      "editorialNote": "Crisp Nordic minimalism perched on a limestone Door County bluff—complete with a cedar sauna house and $70k off-season price cut.",
+      "zillowUrl": "https://www.zillow.com/homes/Sister-Bay-WI-54234_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 290,
+      "medianDeltaPct": -25,
+      "priceCutPct": 10,
+      "scores": {
+        "overall": 79,
+        "rarity": 83,
+        "deal": 72,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "exceptional",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
+    },
+    {
+      "id": "pl-bozeman-steel-ranch",
+      "zpid": "71092834",
+      "title": "Weathered-Steel & Douglas Fir Ranch Compound on Gallatin Creek",
+      "address": "1480 Bridger Canyon Rd",
+      "city": "Bozeman",
+      "state": "MT",
+      "zip": "59715",
+      "region": "West",
+      "lat": 45.7365,
+      "lng": -110.9718,
+      "price": 1190000,
+      "previousPrice": 1345000,
+      "zipMedianPricePerSqft": 485,
+      "beds": 3,
+      "baths": 2.5,
+      "sqft": 2980,
+      "lotAcres": 8.2,
+      "yearBuilt": 2017,
+      "daysOnMarket": 3,
+      "status": "FOR_SALE",
+      "architecturalStyle": "Alpine Contemporary",
+      "raritySignals": [
+        "8.2 Acres Spring Creek Frontage",
+        "Cor-Ten Steel Facade",
+        "Detached Timber Bunkhouse",
+        "18% Below Median $/SqFt"
+      ],
+      "editorialNote": "A Bridger Canyon modern compound with 600 feet of trout-filled creek frontage and a detached timber guest bunkhouse.",
+      "zillowUrl": "https://www.zillow.com/homes/Bozeman-MT-59715_rb/",
+      "images": [
+        "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "source": "curated-index",
+      "wave": 0,
+      "pricePerSqft": 399,
+      "medianDeltaPct": -18,
+      "priceCutPct": 12,
+      "scores": {
+        "overall": 79,
+        "rarity": 88,
+        "deal": 63,
+        "freshness": 84
+      },
+      "categories": [
+        "exceptional",
+        "deal",
+        "new"
+      ],
+      "primaryCategory": "exceptional",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
+      "isNewToday": false,
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-community-seattle-houseboat",
@@ -498,6 +2372,8 @@
       "state": "WA",
       "zip": "98102",
       "region": "West",
+      "lat": 47.6416,
+      "lng": -122.3264,
       "price": 825000,
       "previousPrice": 895000,
       "zipMedianPricePerSqft": 695,
@@ -508,7 +2384,7 @@
       "yearBuilt": 1984,
       "daysOnMarket": 3,
       "status": "FOR_SALE",
-      "architecturalStyle": "Maritime Modern",
+      "architecturalStyle": "Coastal / Cabin Maritime",
       "raritySignals": [
         "Owned Lake Union Moorage",
         "Private Kayak Launch",
@@ -538,9 +2414,9 @@
         "new"
       ],
       "primaryCategory": "exceptional",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-palm-springs-ufo-house",
@@ -551,6 +2427,8 @@
       "state": "CA",
       "zip": "92262",
       "region": "West",
+      "lat": 33.8389,
+      "lng": -116.5453,
       "price": 1295000,
       "previousPrice": 1450000,
       "zipMedianPricePerSqft": 615,
@@ -590,9 +2468,9 @@
         "deal"
       ],
       "primaryCategory": "exceptional",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-oregon-coastal-aframe",
@@ -603,6 +2481,8 @@
       "state": "OR",
       "zip": "97102",
       "region": "West",
+      "lat": 45.8054,
+      "lng": -123.9635,
       "price": 698000,
       "previousPrice": 698000,
       "zipMedianPricePerSqft": 520,
@@ -643,9 +2523,9 @@
         "new"
       ],
       "primaryCategory": "exceptional",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     },
     {
       "id": "pl-maine-granite-lighthouse",
@@ -656,6 +2536,8 @@
       "state": "ME",
       "zip": "04843",
       "region": "Northeast",
+      "lat": 44.2098,
+      "lng": -69.0648,
       "price": 1125000,
       "previousPrice": 1125000,
       "zipMedianPricePerSqft": 495,
@@ -696,9 +2578,9 @@
         "new"
       ],
       "primaryCategory": "exceptional",
-      "firstSeenAt": "2026-11-19T22:40:31.468Z",
+      "firstSeenAt": "2026-11-19T23:03:03.496Z",
       "isNewToday": false,
-      "lastVerifiedAt": "2026-11-20T22:40:31.468Z"
+      "lastVerifiedAt": "2026-11-20T23:03:03.496Z"
     }
   ]
 }
