@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUp, RotateCcw, Sparkles } from 'lucide-react';
 import { TopNav } from './components/TopNav';
 import { FilterStrip } from './components/FilterStrip';
@@ -77,6 +77,7 @@ export function App() {
   const [selectedListing, setSelectedListing] = useState<PropertyListing | null>(null);
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
   const [leadModalState, setLeadModalState] = useState<{
     open: boolean;
     tab: LeadKind;
@@ -369,11 +370,6 @@ export function App() {
         />
       </div>
 
-      {/* Compact mobile purpose tagline that scrolls naturally out of the way */}
-      <div className="mx-auto max-w-[1600px] px-4 pt-3 text-xs font-medium text-slate-500 xl:hidden">
-        Unique, high-value homes ranked by deal spread vs. Zestimate — updated daily, pruned once under contract.
-      </div>
-
       {/* Compact Simulated Sync Banner */}
       {simulationNotice && (
         <div
@@ -407,8 +403,18 @@ export function App() {
         </div>
       )}
 
-      {/* Main High-Density 50-State Gallery + Inline Revenue Capture Strip */}
-      <main className="mx-auto max-w-[1600px] px-4 pt-5 pb-16 sm:px-6 lg:px-8">
+      {/* Main Landing Banner + High-Density 50-State Gallery */}
+      <main className="mx-auto max-w-[1600px] px-4 pt-4 pb-16 sm:px-6 lg:px-8">
+        {!bannerDismissed && (
+          <InlineLeadBanner
+            stealCount={counts.steals}
+            statesCovered={feed.summary.statesCovered || 50}
+            onOpenAlerts={() => openLeadModal('deal-alerts')}
+            onOpenPartner={() => openLeadModal('agent-partner')}
+            onDismiss={() => setBannerDismissed(true)}
+          />
+        )}
+
         {filteredListings.length === 0 ? (
           <div className="mx-auto my-12 max-w-md rounded-3xl bg-white px-6 py-16 text-center ring-1 ring-slate-200/80 shadow-xs">
             <p className="text-lg font-semibold tracking-tight text-slate-950">
@@ -440,27 +446,17 @@ export function App() {
           <>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {visibleListings.map((listing, idx) => (
-                <Fragment key={listing.id}>
-                  <PropertyCard
-                    listing={listing}
-                    index={idx}
-                    isSaved={savedSet.has(listing.id)}
-                    motionPaused={motionPaused}
-                    featured={isDefaultUnfiltered && idx === 0}
-                    isLcp={idx === 0}
-                    onInspect={handleInspect}
-                    onToggleSave={toggleSave}
-                  />
-                  {/* Inject tasteful sapphire-blue Lead Capture Banner after the top row/fold */}
-                  {idx === 6 && (
-                    <InlineLeadBanner
-                      stealCount={counts.steals}
-                      statesCovered={feed.summary.statesCovered || 50}
-                      onOpenAlerts={() => openLeadModal('deal-alerts')}
-                      onOpenPartner={() => openLeadModal('agent-partner')}
-                    />
-                  )}
-                </Fragment>
+                <PropertyCard
+                  key={listing.id}
+                  listing={listing}
+                  index={idx}
+                  isSaved={savedSet.has(listing.id)}
+                  motionPaused={motionPaused}
+                  featured={isDefaultUnfiltered && idx === 0}
+                  isLcp={idx === 0}
+                  onInspect={handleInspect}
+                  onToggleSave={toggleSave}
+                />
               ))}
             </div>
 
