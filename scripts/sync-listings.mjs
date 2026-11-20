@@ -24,13 +24,25 @@ async function readJsonSafe(filePath, fallback) {
 }
 
 async function main() {
+  // Automatically load local .env if present (Node 20.12+ / 22+ built-in)
+  if (typeof process.loadEnvFile === 'function') {
+    try {
+      process.loadEnvFile(path.join(ROOT, '.env'));
+    } catch {
+      // No local .env file — use environment variables / GitHub Secrets
+    }
+  }
+
   const simulateNextDay = process.argv.includes('--simulate-next-day');
-  const existingFeed = await readJsonSafe(LISTINGS_PATH, {
-    editionNumber: 0,
-    syncedAt: null,
-    provider: 'open-50state-index',
-    listings: [],
-  });
+  const liveReset = process.argv.includes('--live-reset');
+  const existingFeed = liveReset
+    ? { editionNumber: 0, syncedAt: null, provider: 'rapidapi-zillow', listings: [] }
+    : await readJsonSafe(LISTINGS_PATH, {
+        editionNumber: 0,
+        syncedAt: null,
+        provider: 'open-50state-index',
+        listings: [],
+      });
   const existingChangelog = await readJsonSafe(CHANGELOG_PATH, {
     totalRemovedUnderContract: 0,
     runs: [],
@@ -50,8 +62,15 @@ async function main() {
   const prevMap = new Map((existingFeed.listings || []).map((item) => [item.id, item]));
   const { provider, candidates, fullPool = [] } = await fetchFromProvider(
     existingFeed.listings || [],
-    { dayIndex }
+    { dayIndex, liveReset }
   );
+
+  if (candidates.length === 0) {
+    console.error(
+      `[CurbSteals Sync] Provider "${provider}" returned 0 listings. Keeping existing listings.json untouched.`
+    );
+    process.exit(1);
+  }
 
   const activeListings = [];
   const added = [];

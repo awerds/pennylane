@@ -25,6 +25,7 @@ jobs:
         env:
           ZILLOW_API_KEY: ${{ secrets.ZILLOW_API_KEY }}
           ZILLOW_API_HOST: ${{ secrets.ZILLOW_API_HOST }}
+          ZILLOW_BATCH_SIZE: ${{ vars.ZILLOW_BATCH_SIZE || '2' }}
           RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
           PENNYLANE_MARKETS: ${{ vars.PENNYLANE_MARKETS }}
         run: node scripts/sync-listings.mjs

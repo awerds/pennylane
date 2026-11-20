@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "sync": "node scripts/sync-listings.mjs",
-    "sync:simulate": "node scripts/sync-listings.mjs --simulate-next-day"
+    "sync:live": "node scripts/sync-listings.mjs --live-reset",
+    "sync:simulate": "node scripts/sync-listings.mjs --simulate-next-day",
+    "test:rapidapi": "node scripts/test-rapidapi.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.511.0",
