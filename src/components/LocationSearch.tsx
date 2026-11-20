@@ -150,7 +150,7 @@ export function LocationSearch({
   return (
     <div ref={wrapperRef} className="relative w-full max-w-xl">
       <div
-        className={`group flex h-10 items-center rounded-full border px-3.5 transition-all ${
+        className={`group flex min-h-[44px] items-center rounded-full border px-3.5 transition-all md:min-h-[40px] md:h-10 ${
           isBlueGlass
             ? 'border-white/25 bg-white/14 backdrop-blur-md hover:border-white/40 hover:bg-white/20 focus-within:border-white focus-within:bg-white focus-within:shadow-lg focus-within:shadow-blue-950/25'
             : 'border-slate-200/90 bg-slate-100/75 hover:border-blue-300/80 hover:bg-white focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/15'
@@ -183,8 +183,8 @@ export function LocationSearch({
             setActiveIndex(-1);
           }}
           onKeyDown={handleKeyDown}
-          placeholder="Search any of 50 states, city, or ZIP code..."
-          className={`w-full bg-transparent px-2.5 text-[13.5px] focus:outline-none ${
+          placeholder="Search city, state, or ZIP..."
+          className={`w-full bg-transparent px-2.5 text-base focus:outline-none md:text-[13.5px] ${
             isBlueGlass
               ? 'text-white placeholder:text-sky-100/75 group-focus-within:text-slate-950 group-focus-within:placeholder:text-slate-400'
               : 'text-slate-950 placeholder:text-slate-400'

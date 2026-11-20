@@ -299,7 +299,7 @@ export function LeadCaptureModal({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Alex Rivera"
-                  className="pl-input mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 focus:border-blue-600 focus:outline-none"
+                  className="pl-input mt-1.5 min-h-[44px] w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-base text-slate-950 focus:border-blue-600 focus:outline-none sm:min-h-0 sm:text-sm"
                 />
                 <div id={`${uid}-name-err`} className="pl-error-msg mt-1 text-xs text-rose-600">
                   <span role="img" aria-label="Error">
@@ -330,7 +330,7 @@ export function LeadCaptureModal({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex@example.com"
-                  className="pl-input mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 focus:border-blue-600 focus:outline-none"
+                  className="pl-input mt-1.5 min-h-[44px] w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-base text-slate-950 focus:border-blue-600 focus:outline-none sm:min-h-0 sm:text-sm"
                 />
                 <div id={`${uid}-email-err`} className="pl-error-msg mt-1 text-xs text-rose-600">
                   <span role="img" aria-label="Error">
@@ -360,7 +360,7 @@ export function LeadCaptureModal({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="(555) 234-5678"
-                  className="pl-input mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 focus:border-blue-600 focus:outline-none"
+                  className="pl-input mt-1.5 min-h-[44px] w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-base text-slate-950 focus:border-blue-600 focus:outline-none sm:min-h-0 sm:text-sm"
                 />
               </div>
 
@@ -383,7 +383,7 @@ export function LeadCaptureModal({
                   value={targetMarket}
                   onChange={(e) => setTargetMarket(e.target.value)}
                   placeholder="Austin, TX or All 50 States"
-                  className="pl-input mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 focus:border-blue-600 focus:outline-none"
+                  className="pl-input mt-1.5 min-h-[44px] w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-base text-slate-950 focus:border-blue-600 focus:outline-none sm:min-h-0 sm:text-sm"
                 />
                 <div id={`${uid}-market-err`} className="pl-error-msg mt-1 text-xs text-rose-600">
                   <span role="img" aria-label="Error">
@@ -413,7 +413,7 @@ export function LeadCaptureModal({
                   value={brokerage}
                   onChange={(e) => setBrokerage(e.target.value)}
                   placeholder="Compass / Sotheby's / Local Mortgage Broker"
-                  className="pl-input mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 focus:border-blue-600 focus:outline-none"
+                  className="pl-input mt-1.5 min-h-[44px] w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-base text-slate-950 focus:border-blue-600 focus:outline-none sm:min-h-0 sm:text-sm"
                 />
                 <div id={`${uid}-brok-err`} className="pl-error-msg mt-1 text-xs text-rose-600">
                   <span role="img" aria-label="Error">

@@ -7,6 +7,8 @@ import { PropertyDossierModal } from './components/PropertyDossierModal';
 import { SyncLedgerModal } from './components/SyncLedgerModal';
 import { LeadCaptureModal } from './components/LeadCaptureModal';
 import { InlineLeadBanner } from './components/InlineLeadBanner';
+import { MobileTabBar } from './components/MobileTabBar';
+import { MobileFilterSheet } from './components/MobileFilterSheet';
 import { PennyLaneLogo } from './components/PennyLaneLogo';
 import type { ChangelogFeed, FilterState, ListingsFeed, PropertyListing } from './types';
 import {
@@ -74,6 +76,7 @@ export function App() {
 
   const [selectedListing, setSelectedListing] = useState<PropertyListing | null>(null);
   const [ledgerOpen, setLedgerOpen] = useState(false);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [leadModalState, setLeadModalState] = useState<{
     open: boolean;
     tab: LeadKind;
@@ -345,6 +348,7 @@ export function App() {
         resultCount={filteredListings.length}
         motionPaused={motionPaused}
         onToggleMotion={() => setMotionPaused((p) => !p)}
+        onOpenMobileSheet={() => setMobileFilterOpen(true)}
         onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
         onReset={() => setFilters(DEFAULT_FILTERS)}
         onSimulateNextDay={handleSimulateNextDay}
@@ -479,8 +483,8 @@ export function App() {
         )}
       </main>
 
-      {/* Clean Minimalist Footer */}
-      <footer className="border-t border-slate-200/70 bg-white/80 backdrop-blur-md">
+      {/* Clean Minimalist Footer (padded to clear fixed mobile bottom nav) */}
+      <footer className="border-t border-slate-200/70 bg-white/80 pb-24 backdrop-blur-md md:pb-0">
         <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4 px-4 py-6 text-xs text-slate-500 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center gap-2.5 tabular-nums">
             <PennyLaneLogo size="sm" />
@@ -530,6 +534,24 @@ export function App() {
           </div>
         </div>
       </footer>
+
+      <MobileTabBar
+        activeLens={filters.lens}
+        savedCount={counts.saved}
+        removedToday={feed.summary.removedToday}
+        onSelectLens={(lens) => setFilters((prev) => ({ ...prev, lens }))}
+        onOpenAlerts={() => openLeadModal('deal-alerts')}
+        onOpenLedger={() => setLedgerOpen(true)}
+      />
+
+      <MobileFilterSheet
+        open={mobileFilterOpen}
+        filters={filters}
+        resultCount={filteredListings.length}
+        onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
+        onReset={() => setFilters(DEFAULT_FILTERS)}
+        onClose={() => setMobileFilterOpen(false)}
+      />
 
       <PropertyDossierModal
         listing={selectedListing}

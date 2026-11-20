@@ -16,6 +16,7 @@ interface FilterStripProps {
   resultCount: number;
   motionPaused: boolean;
   onToggleMotion: () => void;
+  onOpenMobileSheet: () => void;
   onChange: (patch: Partial<FilterState>) => void;
   onReset: () => void;
   onSimulateNextDay: () => void;
@@ -30,8 +31,8 @@ const LENS_TABS: Array<{
   {
     key: 'all',
     label: 'All',
-    activeClass: 'bg-indigo-600 text-white shadow-sm shadow-indigo-500/25',
-    dotClass: 'bg-indigo-500',
+    activeClass: 'bg-blue-700 text-white shadow-sm shadow-blue-700/25',
+    dotClass: 'bg-blue-600',
   },
   {
     key: 'steals',
@@ -81,6 +82,7 @@ export function FilterStrip({
   resultCount,
   motionPaused,
   onToggleMotion,
+  onOpenMobileSheet,
   onChange,
   onReset,
   onSimulateNextDay,
@@ -121,6 +123,13 @@ export function FilterStrip({
     (filters.minDealTier > 0 ? 1 : 0) +
     (filters.styleGroup !== 'all' ? 1 : 0);
 
+  const mobileFilterCount =
+    specsCount +
+    (priceActive ? 1 : 0) +
+    (filters.priceCutsOnly ? 1 : 0) +
+    (filters.belowMedianOnly ? 1 : 0) +
+    (filters.sort !== 'deal-value' ? 1 : 0);
+
   const hasAnyFilter =
     filters.lens !== 'all' ||
     filters.locationQuery.trim().length > 0 ||
@@ -132,13 +141,99 @@ export function FilterStrip({
   return (
     <div
       ref={stripRef}
-      className="sticky top-[88px] z-20 border-b border-sky-200/60 bg-sky-50/75 backdrop-blur-xl xl:top-[58px]"
+      className="sticky top-[106px] z-20 border-b border-sky-200/60 bg-sky-50/82 backdrop-blur-xl md:top-[58px]"
     >
-      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-2.5 px-4 py-2 sm:px-6 lg:px-8">
-        {/* Left: Color-Coded Category Segmented Pills + Filter Popover Triggers */}
+      {/* MOBILE (< md): Single crisp horizontally swipeable pill rail + Bottom-Sheet trigger */}
+      <div className="flex items-center gap-2 px-3.5 py-2 md:hidden">
+        <button
+          type="button"
+          onClick={onOpenMobileSheet}
+          className={`inline-flex min-h-[38px] shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-semibold transition-colors ${
+            mobileFilterCount > 0
+              ? 'border-blue-700 bg-blue-700 text-white shadow-xs'
+              : 'border-slate-200/90 bg-white text-slate-800'
+          }`}
+        >
+          <SlidersHorizontal className="h-3.5 w-3.5" strokeWidth={2.2} />
+          <span>Filters</span>
+          {mobileFilterCount > 0 && (
+            <span className="rounded-full bg-white/25 px-1.5 py-0.2 text-[10px] font-bold tabular-nums">
+              {mobileFilterCount}
+            </span>
+          )}
+        </button>
+
+        <div
+          role="region"
+          aria-label="Quick category filters"
+          tabIndex={0}
+          className="no-scrollbar flex flex-1 items-center gap-1.5 overflow-x-auto py-0.5"
+        >
+          {LENS_TABS.map((tab) => {
+            const active = filters.lens === tab.key;
+            return (
+              <button
+                key={tab.key}
+                type="button"
+                aria-pressed={active}
+                onClick={() => onChange({ lens: tab.key })}
+                className={`inline-flex min-h-[36px] shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-3 text-xs font-semibold whitespace-nowrap transition-all ${
+                  active
+                    ? tab.activeClass
+                    : 'border border-slate-200/80 bg-white text-slate-700'
+                }`}
+              >
+                {tab.key === 'steals' ? (
+                  <Flame className={`h-3 w-3 ${active ? 'text-amber-200' : 'text-emerald-600'}`} />
+                ) : (
+                  !active && (
+                    <span className={`h-1.5 w-1.5 rounded-full ${tab.dotClass}`} aria-hidden="true" />
+                  )
+                )}
+                <span>{tab.label}</span>
+                <span className={`text-[10px] tabular-nums ${active ? 'text-white/85' : 'text-slate-400'}`}>
+                  {formatNumber(counts[tab.key])}
+                </span>
+              </button>
+            );
+          })}
+
+          <button
+            type="button"
+            onClick={onToggleMotion}
+            className="inline-flex min-h-[36px] shrink-0 cursor-pointer items-center gap-1 rounded-full border border-slate-200/80 bg-white px-3 text-xs font-medium whitespace-nowrap text-slate-600"
+          >
+            {motionPaused ? (
+              <>
+                <Play className="h-3 w-3 fill-current text-blue-600" />
+                <span>Play</span>
+              </>
+            ) : (
+              <>
+                <Pause className="h-3 w-3 text-blue-600" />
+                <span>Pause</span>
+              </>
+            )}
+          </button>
+
+          {hasAnyFilter && (
+            <button
+              type="button"
+              onClick={onReset}
+              className="inline-flex min-h-[36px] shrink-0 cursor-pointer items-center gap-1 rounded-full bg-rose-50 px-3 text-xs font-semibold whitespace-nowrap text-rose-600"
+            >
+              <X className="h-3 w-3" />
+              <span>Reset</span>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* DESKTOP (md+): Full sleek single-row filter rail with floating popovers */}
+      <div className="mx-auto hidden max-w-[1600px] items-center justify-between gap-2.5 px-6 py-2 md:flex lg:px-8">
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           <div
-            className="inline-flex items-center rounded-full bg-slate-100/90 p-0.5 ring-1 ring-slate-200/60"
+            className="inline-flex items-center rounded-full bg-white/85 p-0.5 ring-1 ring-slate-200/80"
             role="group"
             aria-label="Category filter"
           >
@@ -174,9 +269,9 @@ export function FilterStrip({
             })}
           </div>
 
-          <span className="hidden h-4 w-px bg-slate-200 sm:inline-block" aria-hidden="true" />
+          <span className="h-4 w-px bg-sky-200" aria-hidden="true" />
 
-          {/* Price Popover Trigger */}
+          {/* Price Popover */}
           <div className="relative">
             <button
               type="button"
@@ -184,8 +279,8 @@ export function FilterStrip({
               onClick={() => setOpenMenu((m) => (m === 'price' ? null : 'price'))}
               className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-all tabular-nums ${
                 priceActive || openMenu === 'price'
-                  ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
-                  : 'border-slate-200/90 bg-white text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/40 hover:text-indigo-700'
+                  ? 'border-blue-700 bg-blue-700 text-white shadow-sm shadow-blue-700/20'
+                  : 'border-slate-200/90 bg-white text-slate-700 hover:border-blue-300 hover:bg-blue-50/40 hover:text-blue-700'
               }`}
             >
               <span>{priceLabel}</span>
@@ -204,7 +299,7 @@ export function FilterStrip({
                     <button
                       type="button"
                       onClick={() => onChange({ minPrice: 0, maxPrice: 0 })}
-                      className="cursor-pointer text-[11px] font-medium text-indigo-600 hover:underline"
+                      className="cursor-pointer text-[11px] font-medium text-blue-600 hover:underline"
                     >
                       Clear
                     </button>
@@ -223,7 +318,7 @@ export function FilterStrip({
                           ...(filters.maxPrice > 0 && nextMin > filters.maxPrice ? { maxPrice: 0 } : {}),
                         });
                       }}
-                      className="mt-1 w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2 text-xs font-medium text-slate-950 tabular-nums focus:border-indigo-600 focus:bg-white focus:outline-none"
+                      className="mt-1 w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2 text-xs font-medium text-slate-950 tabular-nums focus:border-blue-600 focus:bg-white focus:outline-none"
                     >
                       <option value={0}>No min</option>
                       <option value={200000}>$200k</option>
@@ -246,7 +341,7 @@ export function FilterStrip({
                           ...(nextMax > 0 && filters.minPrice > nextMax ? { minPrice: 0 } : {}),
                         });
                       }}
-                      className="mt-1 w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2 text-xs font-medium text-slate-950 tabular-nums focus:border-indigo-600 focus:bg-white focus:outline-none"
+                      className="mt-1 w-full cursor-pointer rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2 text-xs font-medium text-slate-950 tabular-nums focus:border-blue-600 focus:bg-white focus:outline-none"
                     >
                       <option value={0}>No max</option>
                       <option value={350000}>$350k</option>
@@ -275,8 +370,8 @@ export function FilterStrip({
                         }
                         className={`cursor-pointer rounded-xl border px-2.5 py-1.5 text-[11.5px] font-medium tabular-nums transition-colors ${
                           active
-                            ? 'border-indigo-600 bg-indigo-600 text-white'
-                            : 'border-slate-200/80 bg-slate-50 text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/50'
+                            ? 'border-blue-700 bg-blue-700 text-white'
+                            : 'border-slate-200/80 bg-slate-50 text-slate-700 hover:border-blue-300 hover:bg-blue-50/50'
                         }`}
                       >
                         {tier.label}
@@ -288,7 +383,7 @@ export function FilterStrip({
             )}
           </div>
 
-          {/* Beds, Deal Scale & Style Popover Trigger */}
+          {/* Specs Popover */}
           <div className="relative">
             <button
               type="button"
@@ -296,8 +391,8 @@ export function FilterStrip({
               onClick={() => setOpenMenu((m) => (m === 'specs' ? null : 'specs'))}
               className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-all ${
                 specsCount > 0 || openMenu === 'specs'
-                  ? 'border-indigo-600 bg-indigo-600 text-white shadow-sm shadow-indigo-500/20'
-                  : 'border-slate-200/90 bg-white text-slate-700 hover:border-indigo-300 hover:bg-indigo-50/40 hover:text-indigo-700'
+                  ? 'border-blue-700 bg-blue-700 text-white shadow-sm shadow-blue-700/20'
+                  : 'border-slate-200/90 bg-white text-slate-700 hover:border-blue-300 hover:bg-blue-50/40 hover:text-blue-700'
               }`}
             >
               <SlidersHorizontal className="h-3.5 w-3.5" strokeWidth={2} />
@@ -330,14 +425,13 @@ export function FilterStrip({
                           styleGroup: 'all',
                         })
                       }
-                      className="cursor-pointer text-[11px] font-medium text-indigo-600 hover:underline"
+                      className="cursor-pointer text-[11px] font-medium text-blue-600 hover:underline"
                     >
                       Clear
                     </button>
                   )}
                 </div>
 
-                {/* Deal Scale Rating */}
                 <div className="mt-3">
                   <div className="text-[11px] font-medium text-slate-500">Minimum Deal Scale</div>
                   <div className="mt-1.5 grid grid-cols-4 gap-1">
@@ -363,7 +457,6 @@ export function FilterStrip({
                   </div>
                 </div>
 
-                {/* Beds */}
                 <div className="mt-3">
                   <div className="text-[11px] font-medium text-slate-500">Bedrooms</div>
                   <div className="mt-1.5 grid grid-cols-5 gap-1">
@@ -374,8 +467,8 @@ export function FilterStrip({
                         onClick={() => onChange({ minBeds: n })}
                         className={`cursor-pointer rounded-xl border py-1.5 text-xs font-medium transition-colors ${
                           filters.minBeds === n
-                            ? 'border-indigo-600 bg-indigo-600 text-white'
-                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-indigo-300'
+                            ? 'border-blue-700 bg-blue-700 text-white'
+                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-300'
                         }`}
                       >
                         {n === 0 ? 'Any' : `${n}+`}
@@ -384,7 +477,6 @@ export function FilterStrip({
                   </div>
                 </div>
 
-                {/* Baths */}
                 <div className="mt-3">
                   <div className="text-[11px] font-medium text-slate-500">Bathrooms</div>
                   <div className="mt-1.5 grid grid-cols-4 gap-1">
@@ -395,8 +487,8 @@ export function FilterStrip({
                         onClick={() => onChange({ minBaths: n })}
                         className={`cursor-pointer rounded-xl border py-1.5 text-xs font-medium transition-colors ${
                           filters.minBaths === n
-                            ? 'border-indigo-600 bg-indigo-600 text-white'
-                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-indigo-300'
+                            ? 'border-blue-700 bg-blue-700 text-white'
+                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-300'
                         }`}
                       >
                         {n === 0 ? 'Any' : `${n}+`}
@@ -405,7 +497,6 @@ export function FilterStrip({
                   </div>
                 </div>
 
-                {/* Min SqFt */}
                 <div className="mt-3">
                   <div className="text-[11px] font-medium text-slate-500">Minimum Size</div>
                   <div className="mt-1.5 grid grid-cols-4 gap-1">
@@ -421,8 +512,8 @@ export function FilterStrip({
                         onClick={() => onChange({ minSqft: opt.val })}
                         className={`cursor-pointer rounded-xl border py-1.5 text-xs font-medium tabular-nums transition-colors ${
                           filters.minSqft === opt.val
-                            ? 'border-indigo-600 bg-indigo-600 text-white'
-                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-indigo-300'
+                            ? 'border-blue-700 bg-blue-700 text-white'
+                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-300'
                         }`}
                       >
                         {opt.label}
@@ -431,7 +522,6 @@ export function FilterStrip({
                   </div>
                 </div>
 
-                {/* Architectural Style */}
                 <div className="mt-3 border-t border-slate-100 pt-3">
                   <div className="text-[11px] font-medium text-slate-500">Architectural Style</div>
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -442,8 +532,8 @@ export function FilterStrip({
                         onClick={() => onChange({ styleGroup: opt.key })}
                         className={`cursor-pointer rounded-full border px-2.5 py-1 text-[11.5px] font-medium transition-colors ${
                           filters.styleGroup === opt.key
-                            ? 'border-indigo-600 bg-indigo-600 text-white'
-                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-indigo-300'
+                            ? 'border-blue-700 bg-blue-700 text-white'
+                            : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-300'
                         }`}
                       >
                         {opt.label}
@@ -455,7 +545,6 @@ export function FilterStrip({
             )}
           </div>
 
-          {/* Quick Price Cut Checkbox */}
           <label className="pl-check-label hidden h-9 cursor-pointer items-center gap-2 rounded-full border border-slate-200/90 bg-white px-3 text-xs font-medium text-slate-700 transition-colors select-none hover:border-rose-300 hover:bg-rose-50/40 xl:inline-flex">
             <input
               type="checkbox"
@@ -478,32 +567,31 @@ export function FilterStrip({
           )}
         </div>
 
-        {/* Right: Result Count, Pause/Play Motion Control, Sort & +1 Day Demo */}
         <div className="flex shrink-0 items-center gap-2">
-          <span className="hidden text-xs font-semibold text-slate-500 tabular-nums md:inline">
+          <span className="text-xs font-semibold text-slate-500 tabular-nums">
             {formatNumber(resultCount)} {resultCount === 1 ? 'home' : 'homes'}
           </span>
 
           <button
             type="button"
             onClick={onToggleMotion}
-            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-slate-200/90 bg-white px-3 text-xs font-medium text-slate-600 transition-colors hover:border-indigo-300 hover:bg-indigo-50/40 hover:text-indigo-700"
+            className="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-slate-200/90 bg-white px-3 text-xs font-medium text-slate-600 transition-colors hover:border-blue-300 hover:bg-blue-50/40 hover:text-blue-700"
             title={motionPaused ? 'Resume automatic photo transitions' : 'Pause automatic photo transitions'}
           >
             {motionPaused ? (
               <>
-                <Play className="h-3 w-3 fill-current text-indigo-600" />
+                <Play className="h-3 w-3 fill-current text-blue-600" />
                 <span className="hidden xl:inline">Play Motion</span>
               </>
             ) : (
               <>
-                <Pause className="h-3 w-3 text-indigo-600" />
+                <Pause className="h-3 w-3 text-blue-600" />
                 <span className="hidden xl:inline">Pause Motion</span>
               </>
             )}
           </button>
 
-          <label className="inline-flex h-9 items-center rounded-full border border-emerald-200 bg-emerald-50/60 px-3 text-xs font-semibold text-emerald-800 transition-colors hover:border-emerald-300">
+          <label className="inline-flex h-9 items-center rounded-full border border-emerald-200 bg-emerald-50/80 px-3 text-xs font-semibold text-emerald-800 transition-colors hover:border-emerald-300">
             <span className="sr-only">Sort listings</span>
             <select
               value={filters.sort}
@@ -524,7 +612,7 @@ export function FilterStrip({
             type="button"
             onClick={onSimulateNextDay}
             title="Preview tomorrow's automated sync (adds new drops & removes under-contract homes)"
-            className="hidden h-9 cursor-pointer items-center gap-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-rose-500 px-3.5 text-xs font-semibold text-white shadow-sm shadow-indigo-500/20 transition-opacity hover:opacity-90 2xl:inline-flex"
+            className="hidden h-9 cursor-pointer items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-700 to-indigo-600 px-3.5 text-xs font-semibold text-white shadow-sm shadow-blue-700/20 transition-opacity hover:opacity-90 2xl:inline-flex"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>+1 Day Sync</span>

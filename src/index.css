@@ -9,8 +9,15 @@
   --brand-coral: #f43f5e;
   --brand-amber: #f59e0b;
   --brand-emerald: #059669;
+  --target-size: 24px;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-brand: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
+}
+
+@media (pointer: coarse) {
+  :root {
+    --target-size: 44px;
+  }
 }
 
 .font-brand {
@@ -36,6 +43,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    scroll-padding-top: calc(7.5rem + env(safe-area-inset-top, 0px));
+    scroll-padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
   }
 
   body {
@@ -49,12 +58,46 @@
     background-repeat: no-repeat;
     color: var(--ink);
     accent-color: #1d4ed8;
+    overflow-wrap: break-word;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+
+  p, li {
+    text-wrap: pretty;
+  }
+
+  a, code {
+    overflow-wrap: anywhere;
+  }
+
+  img, video {
+    max-inline-size: 100%;
   }
 
   ::selection {
     background-color: var(--brand-indigo);
     color: #ffffff;
   }
+}
+
+/* Touch-friendly target sizing on coarse pointer devices */
+@media (pointer: coarse) {
+  .pl-touch-target {
+    min-block-size: var(--target-size);
+    min-inline-size: var(--target-size);
+  }
+}
+
+.pl-safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pl-safe-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
 }
 
 .tabular-nums {
@@ -102,7 +145,6 @@
   }
 }
 
-/* Opt in to ambient Ken Burns drift only when reduced motion is not requested */
 @media (prefers-reduced-motion: no-preference) {
   .pl-slide-layer--active.pl-slide-layer--moving {
     animation: pl-ken-burns 8.5s ease-out forwards;
@@ -116,7 +158,7 @@
 }
 
 /* Brand-consistent checkbox fallback when accent-color is unsupported */
-@supports not (accent-color: #4f46e5) {
+@supports not (accent-color: #1d4ed8) {
   .pl-native-check {
     position: absolute !important;
     clip-path: inset(50%) !important;
@@ -148,13 +190,13 @@
   }
 
   .pl-native-check:focus-visible + span::before {
-    outline: 2px solid #4f46e5;
+    outline: 2px solid #1d4ed8;
     outline-offset: 2px;
   }
 
   .pl-native-check:checked + span::before {
-    background-color: #4f46e5;
-    border-color: #4f46e5;
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
   }
 
   .pl-native-check:checked + span::after {
@@ -169,7 +211,7 @@
   }
 }
 
-/* Native Modal Dialog: scroll containment & top-layer entry/exit transitions */
+/* Native Modal Dialog: Desktop centered card -> Mobile native bottom sheet */
 dialog.modern-modal {
   padding: 0;
   border: 1px solid rgba(15, 23, 42, 0.08);
@@ -194,9 +236,30 @@ dialog.modern-modal.modern-modal--narrow {
   max-width: min(740px, calc(100vw - 1.5rem));
 }
 
+@media (max-width: 639px) {
+  dialog.modern-modal,
+  dialog.modern-modal.modern-modal--narrow {
+    margin: auto 0 0 0;
+    max-width: 100vw;
+    width: 100vw;
+    max-height: 92dvh;
+    border-radius: 1.5rem 1.5rem 0 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   dialog.modern-modal {
-    transform: translateY(14px) scale(0.98);
+    transform: translateY(18px) scale(0.985);
+  }
+
+  @media (max-width: 639px) {
+    dialog.modern-modal {
+      transform: translateY(36px);
+    }
   }
 }
 
@@ -231,12 +294,20 @@ dialog.modern-modal[open] {
     transform: translateY(0) scale(1);
 
     @starting-style {
-      transform: translateY(14px) scale(0.98);
+      transform: translateY(20px) scale(0.985);
+    }
+
+    @media (max-width: 639px) {
+      transform: translateY(0);
+
+      @starting-style {
+        transform: translateY(36px);
+      }
     }
   }
 
   &::backdrop {
-    background-color: rgba(15, 23, 42, 0.48);
+    background-color: rgba(15, 23, 42, 0.52);
     backdrop-filter: blur(6px);
 
     @starting-style {

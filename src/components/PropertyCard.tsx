@@ -34,6 +34,8 @@ export function PropertyCard({
   const [isVisible, setIsVisible] = useState(isLcp);
   const [isInteracting, setIsInteracting] = useState(false);
   const cardRef = useRef<HTMLElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const swipedRef = useRef(false);
 
   const images = listing.images.length > 0 ? listing.images : [''];
   const hasMultiplePhotos = images.length > 1;
@@ -80,6 +82,27 @@ export function PropertyCard({
     setPhotoIdx((prev) => (prev + delta + images.length) % images.length);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!hasMultiplePhotos || e.touches.length !== 1) return;
+    swipedRef.current = false;
+    touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    setIsInteracting(true);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    setIsInteracting(false);
+    if (!start || !hasMultiplePhotos || e.changedTouches.length !== 1) return;
+
+    const dx = e.changedTouches[0].clientX - start.x;
+    const dy = e.changedTouches[0].clientY - start.y;
+    if (Math.abs(dx) > 36 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      swipedRef.current = true;
+      setPhotoIdx((prev) => (prev + (dx < 0 ? 1 : -1) + images.length) % images.length);
+    }
+  };
+
   const pctBelowZest = Math.max(0, -listing.zestimateDeltaPct);
 
   return (
@@ -97,15 +120,23 @@ export function PropertyCard({
         featured ? 'sm:col-span-2' : ''
       }`}
     >
-      {/* Rounded Multi-Layer Crossfade Photo Stage */}
+      {/* Rounded Multi-Layer Crossfade Photo Stage (Swipeable on Touch Devices) */}
       <div
-        className={`relative w-full overflow-hidden rounded-2xl bg-slate-100 ${
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        className={`relative w-full overflow-hidden rounded-2xl bg-slate-100 touch-pan-y ${
           featured ? 'aspect-[16/10] sm:aspect-[2.25/1]' : 'aspect-[4/3]'
         }`}
       >
         <button
           type="button"
-          onClick={() => onInspect(listing)}
+          onClick={() => {
+            if (swipedRef.current) {
+              swipedRef.current = false;
+              return;
+            }
+            onInspect(listing);
+          }}
           className="relative block h-full w-full cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-indigo-600"
           aria-label={`View details for ${listing.title} in ${listing.city}, ${listing.state}`}
         >
@@ -154,7 +185,7 @@ export function PropertyCard({
           )}
         </div>
 
-        {/* Top-right Save Button */}
+        {/* Top-right Save Button (44px hit target on touch devices) */}
         <button
           type="button"
           onClick={(e) => {
@@ -163,7 +194,7 @@ export function PropertyCard({
           }}
           aria-pressed={isSaved}
           aria-label={isSaved ? `Remove ${listing.title} from saved` : `Save ${listing.title}`}
-          className={`absolute top-3 right-3 z-[3] flex h-8 w-8 cursor-pointer items-center justify-center rounded-full backdrop-blur-md transition-all ${
+          className={`pl-touch-target absolute top-2.5 right-2.5 z-[3] flex h-9 w-9 cursor-pointer items-center justify-center rounded-full backdrop-blur-md transition-all sm:top-3 sm:right-3 sm:h-8 sm:w-8 ${
             isSaved
               ? 'bg-rose-500 text-white shadow-md shadow-rose-500/35'
               : 'bg-slate-950/35 text-white hover:scale-105 hover:bg-rose-500'
