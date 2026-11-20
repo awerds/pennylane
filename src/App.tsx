@@ -321,38 +321,58 @@ export function App() {
     );
   }
 
-  return (
-    <div className="min-h-dvh text-slate-950">
-      <TopNav
-        locationQuery={filters.locationQuery}
-        listings={allListings}
-        activeCount={feed.summary.activeCount}
-        statesCovered={feed.summary.statesCovered || 50}
-        removedToday={feed.summary.removedToday}
-        savedCount={counts.saved}
-        leadCount={leads.length}
-        isSavedLens={filters.lens === 'saved'}
-        isSimulated={isSimulated}
-        onLocationChange={(locationQuery) => setFilters((prev) => ({ ...prev, locationQuery }))}
-        onToggleSavedLens={() =>
-          setFilters((prev) => ({ ...prev, lens: prev.lens === 'saved' ? 'all' : 'saved' }))
-        }
-        onOpenAlerts={() => openLeadModal('deal-alerts')}
-        onOpenLedger={() => setLedgerOpen(true)}
-        onResetHome={() => setFilters(DEFAULT_FILTERS)}
-      />
+  const mobileFilterCount =
+    (filters.minPrice > 0 || filters.maxPrice > 0 ? 1 : 0) +
+    (filters.minBeds > 0 ? 1 : 0) +
+    (filters.minBaths > 0 ? 1 : 0) +
+    (filters.minSqft > 0 ? 1 : 0) +
+    (filters.minDealTier > 0 ? 1 : 0) +
+    (filters.styleGroup !== 'all' ? 1 : 0) +
+    (filters.priceCutsOnly ? 1 : 0) +
+    (filters.belowMedianOnly ? 1 : 0) +
+    (filters.sort !== 'deal-value' ? 1 : 0);
 
-      <FilterStrip
-        filters={filters}
-        counts={counts}
-        resultCount={filteredListings.length}
-        motionPaused={motionPaused}
-        onToggleMotion={() => setMotionPaused((p) => !p)}
-        onOpenMobileSheet={() => setMobileFilterOpen(true)}
-        onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
-        onReset={() => setFilters(DEFAULT_FILTERS)}
-        onSimulateNextDay={handleSimulateNextDay}
-      />
+  return (
+    <div className="min-h-dvh w-full max-w-full text-slate-950">
+      {/* Unified Sticky Top Shell — eliminates separate sticky magic-pixel offsets & overhang */}
+      <div className="sticky top-0 z-30 w-full max-w-full">
+        <TopNav
+          locationQuery={filters.locationQuery}
+          listings={allListings}
+          activeCount={feed.summary.activeCount}
+          statesCovered={feed.summary.statesCovered || 50}
+          removedToday={feed.summary.removedToday}
+          savedCount={counts.saved}
+          leadCount={leads.length}
+          mobileFilterCount={mobileFilterCount}
+          isSavedLens={filters.lens === 'saved'}
+          isSimulated={isSimulated}
+          onLocationChange={(locationQuery) => setFilters((prev) => ({ ...prev, locationQuery }))}
+          onToggleSavedLens={() =>
+            setFilters((prev) => ({ ...prev, lens: prev.lens === 'saved' ? 'all' : 'saved' }))
+          }
+          onOpenAlerts={() => openLeadModal('deal-alerts')}
+          onOpenLedger={() => setLedgerOpen(true)}
+          onOpenMobileSheet={() => setMobileFilterOpen(true)}
+          onResetHome={() => setFilters(DEFAULT_FILTERS)}
+        />
+
+        <FilterStrip
+          filters={filters}
+          counts={counts}
+          resultCount={filteredListings.length}
+          motionPaused={motionPaused}
+          onToggleMotion={() => setMotionPaused((p) => !p)}
+          onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
+          onReset={() => setFilters(DEFAULT_FILTERS)}
+          onSimulateNextDay={handleSimulateNextDay}
+        />
+      </div>
+
+      {/* Compact mobile purpose tagline that scrolls naturally out of the way */}
+      <div className="mx-auto max-w-[1600px] px-4 pt-3 text-xs font-medium text-slate-500 xl:hidden">
+        Unique, high-value homes ranked by deal spread vs. Zestimate — updated daily, pruned once under contract.
+      </div>
 
       {/* Compact Simulated Sync Banner */}
       {simulationNotice && (

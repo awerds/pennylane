@@ -148,7 +148,7 @@ export function LocationSearch({
   const isBlueGlass = variant === 'glass-blue';
 
   return (
-    <div ref={wrapperRef} className="relative w-full max-w-xl">
+    <div ref={wrapperRef} className="relative w-full min-w-0 max-w-xl">
       <div
         className={`group flex min-h-[44px] items-center rounded-full border px-3.5 transition-all md:min-h-[40px] md:h-10 ${
           isBlueGlass

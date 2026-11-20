@@ -16,7 +16,6 @@ interface FilterStripProps {
   resultCount: number;
   motionPaused: boolean;
   onToggleMotion: () => void;
-  onOpenMobileSheet: () => void;
   onChange: (patch: Partial<FilterState>) => void;
   onReset: () => void;
   onSimulateNextDay: () => void;
@@ -82,7 +81,6 @@ export function FilterStrip({
   resultCount,
   motionPaused,
   onToggleMotion,
-  onOpenMobileSheet,
   onChange,
   onReset,
   onSimulateNextDay,
@@ -123,13 +121,6 @@ export function FilterStrip({
     (filters.minDealTier > 0 ? 1 : 0) +
     (filters.styleGroup !== 'all' ? 1 : 0);
 
-  const mobileFilterCount =
-    specsCount +
-    (priceActive ? 1 : 0) +
-    (filters.priceCutsOnly ? 1 : 0) +
-    (filters.belowMedianOnly ? 1 : 0) +
-    (filters.sort !== 'deal-value' ? 1 : 0);
-
   const hasAnyFilter =
     filters.lens !== 'all' ||
     filters.locationQuery.trim().length > 0 ||
@@ -141,33 +132,15 @@ export function FilterStrip({
   return (
     <div
       ref={stripRef}
-      className="sticky top-[106px] z-20 border-b border-sky-200/60 bg-sky-50/82 backdrop-blur-xl md:top-[58px]"
+      className="w-full max-w-full border-b border-sky-200/60 bg-sky-50/88 backdrop-blur-xl"
     >
-      {/* MOBILE (< md): Single crisp horizontally swipeable pill rail + Bottom-Sheet trigger */}
-      <div className="flex items-center gap-2 px-3.5 py-2 md:hidden">
-        <button
-          type="button"
-          onClick={onOpenMobileSheet}
-          className={`inline-flex min-h-[38px] shrink-0 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-semibold transition-colors ${
-            mobileFilterCount > 0
-              ? 'border-blue-700 bg-blue-700 text-white shadow-xs'
-              : 'border-slate-200/90 bg-white text-slate-800'
-          }`}
-        >
-          <SlidersHorizontal className="h-3.5 w-3.5" strokeWidth={2.2} />
-          <span>Filters</span>
-          {mobileFilterCount > 0 && (
-            <span className="rounded-full bg-white/25 px-1.5 py-0.2 text-[10px] font-bold tabular-nums">
-              {mobileFilterCount}
-            </span>
-          )}
-        </button>
-
+      {/* MOBILE (< md): Constrained min-w-0 horizontal swipeable chip rail — ZERO overhang */}
+      <div className="flex w-full min-w-0 items-center md:hidden">
         <div
           role="region"
           aria-label="Quick category filters"
           tabIndex={0}
-          className="no-scrollbar flex flex-1 items-center gap-1.5 overflow-x-auto py-0.5"
+          className="no-scrollbar flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto px-3.5 py-2"
         >
           {LENS_TABS.map((tab) => {
             const active = filters.lens === tab.key;
@@ -177,7 +150,7 @@ export function FilterStrip({
                 type="button"
                 aria-pressed={active}
                 onClick={() => onChange({ lens: tab.key })}
-                className={`inline-flex min-h-[36px] shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-3 text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`inline-flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-full px-3 text-xs font-semibold whitespace-nowrap transition-all ${
                   active
                     ? tab.activeClass
                     : 'border border-slate-200/80 bg-white text-slate-700'
@@ -201,7 +174,7 @@ export function FilterStrip({
           <button
             type="button"
             onClick={onToggleMotion}
-            className="inline-flex min-h-[36px] shrink-0 cursor-pointer items-center gap-1 rounded-full border border-slate-200/80 bg-white px-3 text-xs font-medium whitespace-nowrap text-slate-600"
+            className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1 rounded-full border border-slate-200/80 bg-white px-3 text-xs font-medium whitespace-nowrap text-slate-600"
           >
             {motionPaused ? (
               <>
@@ -220,7 +193,7 @@ export function FilterStrip({
             <button
               type="button"
               onClick={onReset}
-              className="inline-flex min-h-[36px] shrink-0 cursor-pointer items-center gap-1 rounded-full bg-rose-50 px-3 text-xs font-semibold whitespace-nowrap text-rose-600"
+              className="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1 rounded-full bg-rose-50 px-3 text-xs font-semibold whitespace-nowrap text-rose-600"
             >
               <X className="h-3 w-3" />
               <span>Reset</span>
