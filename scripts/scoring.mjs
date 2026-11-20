@@ -52,14 +52,15 @@ export function scoreListing(raw) {
   const pricePerSqft = Math.round(price / sqft);
   const zipMedian = Math.max(Number(raw.zipMedianPricePerSqft) || pricePerSqft, 100);
 
-  // Derive realistic Zestimate when not explicitly provided on hand-curated flagship properties
+  // Use live AVM/Zestimate directly when supplied; fall back to zip-median derivation only for curated demo entries
   const derivedZestimate = Math.round(
     Math.max(
       price * 1.04,
       (sqft * zipMedian * 0.94 + previousPrice * 0.14) / 1.08
     ) / 1000
   ) * 1000;
-  const zestimate = Math.max(Number(raw.zestimate) || derivedZestimate, Math.round(price * 0.96));
+  const rawZest = Number(raw.zestimate);
+  const zestimate = rawZest > 0 ? Math.round(rawZest) : derivedZestimate;
 
   const estimatedSavings = Math.max(0, zestimate - price);
   // Negative percentage means BELOW Zestimate (good deal)

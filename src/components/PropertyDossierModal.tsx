@@ -103,6 +103,7 @@ export function PropertyDossierModal({
 
   const images = listing?.images ?? [];
   const dealMeta = listing ? dealTierMeta(listing.dealTier) : null;
+  const isRealtor = listing?.zillowUrl.includes('realtor.com') ?? false;
   const priceRatioPct = listing
     ? Math.min(100, Math.max(40, Math.round((listing.price / Math.max(listing.zestimate, 1)) * 100)))
     : 80;
@@ -245,10 +246,11 @@ export function PropertyDossierModal({
                 </h2>
 
                 <div className="mt-1 text-xs font-medium text-indigo-600/85">
-                  {listing.architecturalStyle} · Built {listing.yearBuilt}
+                  {listing.architecturalStyle}
+                  {listing.yearBuilt > 0 ? ` · Built ${listing.yearBuilt}` : ''}
                 </div>
 
-                {/* Asking Price vs Zestimate Valuation Card */}
+                {/* Asking Price vs Market Estimate Valuation Card */}
                 <div className="mt-5 rounded-2xl bg-gradient-to-br from-emerald-50/90 via-white to-teal-50/70 p-4 ring-1 ring-emerald-200/80">
                   <div className="flex items-start justify-between gap-2">
                     <div>
@@ -261,7 +263,7 @@ export function PropertyDossierModal({
                     </div>
                     <div className="text-right">
                       <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                        Zestimate
+                        {isRealtor ? 'Market Est.' : 'Zestimate'}
                       </div>
                       <div className="mt-0.5 text-lg font-semibold text-slate-500 line-through tabular-nums">
                         {formatCurrency(listing.zestimate)}
@@ -269,14 +271,14 @@ export function PropertyDossierModal({
                     </div>
                   </div>
 
-                  {/* Visual Price vs Zestimate Proportion Bar */}
+                  {/* Visual Price vs Estimate Proportion Bar */}
                   <div className="mt-3">
                     <div className="flex items-center justify-between text-xs font-semibold tabular-nums">
                       <span className="text-emerald-700">
                         Est. Instant Value: +{formatCurrency(listing.estimatedSavings)}
                       </span>
                       <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-[11px] text-white">
-                        {listing.zestimateDeltaPct}% vs Zest.
+                        {listing.zestimateDeltaPct}% vs {isRealtor ? 'Est.' : 'Zest.'}
                       </span>
                     </div>
                     <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-emerald-200/70">
@@ -379,7 +381,7 @@ export function PropertyDossierModal({
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-2.5 text-xs font-semibold text-slate-900 transition-colors hover:border-blue-300 hover:bg-blue-50/50"
                 >
-                  <span>View Original Listing on Zillow</span>
+                  <span>View Original Listing on {isRealtor ? 'Realtor.com' : 'Zillow'}</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
 

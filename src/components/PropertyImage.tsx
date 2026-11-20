@@ -45,6 +45,7 @@ export function PropertyImage({
       alt={alt}
       width={width}
       height={height}
+      referrerPolicy="no-referrer"
       onError={() => setFailed(true)}
       className={className}
       {...imgPriorityProps}

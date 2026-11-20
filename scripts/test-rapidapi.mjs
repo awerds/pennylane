@@ -23,17 +23,28 @@ if (!key || key === 'your_rapidapi_key_here') {
   process.exit(1);
 }
 
-const testLocation = process.argv[2] || 'Hudson, NY';
-const url = buildRapidApiRequest(host, testLocation);
+const testLocation = process.argv[2] || 'Asheville, NC';
+const reqSpec = buildRapidApiRequest(host, testLocation);
 
-console.log(`Testing 1 live call -> ${url}`);
+console.log(`Testing 1 live call -> ${reqSpec.method} ${reqSpec.url} (${testLocation})`);
 
-const res = await fetch(url, {
-  headers: {
-    'X-RapidAPI-Key': key,
-    'X-RapidAPI-Host': host,
-  },
+const headers = {
+  'X-RapidAPI-Key': key.trim(),
+  'X-RapidAPI-Host': host.trim(),
+};
+if (reqSpec.body) headers['Content-Type'] = 'application/json';
+
+const res = await fetch(reqSpec.url, {
+  method: reqSpec.method,
+  headers,
+  body: reqSpec.body,
 });
+
+const remaining = res.headers.get('x-ratelimit-requests-remaining');
+const limit = res.headers.get('x-ratelimit-requests-limit');
+if (remaining !== null) {
+  console.log(`Quota remaining: ${remaining}${limit ? ` / ${limit}` : ''}`);
+}
 
 if (!res.ok) {
   console.error(`HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
@@ -42,16 +53,17 @@ if (!res.ok) {
 
 const json = await res.json();
 const props = extractPropsArray(json);
-console.log(`Success! Received ${props.length} live Zillow properties for "${testLocation}".`);
+console.log(`Success! Received ${props.length} live properties for "${testLocation}".`);
 
 if (props.length > 0) {
-  const sample = props[0];
+  const s = props[0];
   console.log('Sample listing:', {
-    zpid: sample.zpid || sample.id,
-    address: sample.address || sample.streetAddress,
-    price: sample.price,
-    zestimate: sample.zestimate,
-    detailUrl: sample.detailUrl || sample.url,
-    hasImage: Boolean(sample.imgSrc || sample.carouselPhotos?.length),
+    id: s.property_id || s.zpid || s.id,
+    address: s.location?.address?.line || s.address || s.streetAddress,
+    price: s.list_price ?? s.price,
+    estimate: s.estimate?.estimate ?? s.zestimate,
+    url: s.href || s.detailUrl || s.url,
+    hasImage: Boolean(s.primary_photo?.href || s.imgSrc || s.carouselPhotos?.length),
   });
 }
+

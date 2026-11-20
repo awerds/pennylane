@@ -33,28 +33,57 @@ export function detectProvider() {
 }
 
 /**
- * Builds the exact RapidAPI endpoint URL for any of the popular free-tier Zillow APIs
+ * Builds the exact RapidAPI request (URL + method + optional JSON body) for supported free-tier US real-estate APIs
  */
 export function buildRapidApiRequest(host, location) {
   const cleanHost = host.trim().toLowerCase();
-  const loc = encodeURIComponent(location);
 
-  if (cleanHost.includes('zillow56')) {
-    return `https://${cleanHost}/search?location=${loc}&status=forSale&home_type=Houses&sortSelection=newest`;
+  if (cleanHost.includes('realty-in-us')) {
+    const parts = location.split(',').map((s) => s.trim());
+    const city = parts[0] || 'Asheville';
+    const stateCode = (parts[1] || 'NC').toUpperCase().slice(0, 2);
+    return {
+      url: `https://${cleanHost}/properties/v3/list`,
+      method: 'POST',
+      body: JSON.stringify({
+        limit: 40,
+        offset: 0,
+        city,
+        state_code: stateCode,
+        status: ['for_sale'],
+        type: ['single_family', 'townhomes', 'condos', 'farm'],
+        sort: { direction: 'desc', field: 'list_date' },
+      }),
+    };
   }
-  if (cleanHost.includes('real-time-zillow-data')) {
-    return `https://${cleanHost}/search?location=${loc}&status=forSale&home_type=Houses&sort=Newest`;
+
+  const loc = encodeURIComponent(location);
+  if (cleanHost.includes('zillow56')) {
+    return {
+      url: `https://${cleanHost}/search?location=${loc}&status=forSale&home_type=Houses&sortSelection=newest`,
+      method: 'GET',
+    };
+  }
+  if (cleanHost.includes('real-time-zillow-data') || cleanHost.includes('real-time-real-estate-data')) {
+    return {
+      url: `https://${cleanHost}/search?location=${loc}&status=forSale&home_type=Houses&sort=Newest`,
+      method: 'GET',
+    };
   }
   // Default: zillow-com1.p.rapidapi.com & us-housing-market-data1.p.rapidapi.com
-  return `https://${cleanHost}/propertyExtendedSearch?location=${loc}&status_type=ForSale&home_type=Houses&sort=Newest`;
+  return {
+    url: `https://${cleanHost}/propertyExtendedSearch?location=${loc}&status_type=ForSale&home_type=Houses&sort=Newest`,
+    method: 'GET',
+  };
 }
 
 /**
- * Normalizes different RapidAPI Zillow JSON shapes into a single clean array of raw items
+ * Normalizes different RapidAPI real estate JSON shapes into a single clean array of raw items
  */
 export function extractPropsArray(payload) {
   if (!payload || typeof payload !== 'object') return [];
   if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload.data?.home_search?.results)) return payload.data.home_search.results;
   if (Array.isArray(payload.props)) return payload.props;
   if (Array.isArray(payload.results)) return payload.results;
   if (Array.isArray(payload.data)) return payload.data;
@@ -204,15 +233,169 @@ function normalizeRapidApiProperty(p, fallbackLocation, marketKey) {
   };
 }
 
+function upgradeRealtorPhoto(url) {
+  if (!url || typeof url !== 'string') return '';
+  if (url.includes('rdcpix.com') && /s\.jpg$/i.test(url)) {
+    return url.replace(/s\.jpg$/i, 'rd-w960_h720.webp');
+  }
+  return url;
+}
+
+function formatPropertyTypeLabel(rawType, subType) {
+  const map = {
+    single_family: 'Single Family',
+    townhomes: 'Townhome',
+    condos: 'Condo',
+    condo: 'Condo',
+    farm: 'Farm & Ranch',
+    multi_family: 'Multi-Family',
+    mobile: 'Manufactured Home',
+  };
+  const base = map[String(rawType || '').toLowerCase()] ||
+    String(rawType || 'Single Family')
+      .replace(/_/g, ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  if (subType && typeof subType === 'string' && subType.length > 2) {
+    const cleanSub = subType.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    if (!cleanSub.toLowerCase().includes(base.toLowerCase())) return cleanSub;
+  }
+  return base;
+}
+
+function normalizeRealtyInUsProperty(p, fallbackLocation, marketKey) {
+  const propId = String(p.property_id || p.listing_id || '');
+  const price = Number(p.list_price ?? 0);
+  const rawPhoto = p.primary_photo?.href || p.photos?.[0]?.href || '';
+  const photo = upgradeRealtorPhoto(rawPhoto);
+  const href = typeof p.href === 'string' && p.href.startsWith('http') ? p.href : '';
+
+  // Skip incomplete, land-only, missing-price, or no-photo entries
+  if (!propId || !price || price < 45000 || !photo || !href) return null;
+
+  const flags = p.flags || {};
+  let status = normalizeStatus(p.status || 'for_sale');
+  if (flags.is_pending) status = 'PENDING';
+  else if (flags.is_contingent) status = 'CONTINGENT';
+
+  const addr = p.location?.address || {};
+  const desc = p.description || {};
+  const fallbackCity = fallbackLocation.split(',')[0].trim();
+  const fallbackState = fallbackLocation.split(',')[1]?.trim() || 'US';
+
+  const street = String(addr.line || '').trim();
+  const city = String(addr.city || fallbackCity).trim();
+  const state = String(addr.state_code || fallbackState).trim().toUpperCase().slice(0, 2);
+  const zip = String(addr.postal_code || '00000').slice(0, 5);
+
+  const beds = Number(desc.beds ?? 0);
+  const baths = Number(desc.baths ?? desc.baths_full ?? 0);
+  const sqft = Number(desc.sqft ?? 0);
+  if (!sqft || sqft < 400 || !beds) return null;
+
+  const lotSqft = Number(desc.lot_sqft || 0);
+  const lotAcres = lotSqft > 0 ? Number((lotSqft / 43560).toFixed(2)) : 0.18;
+  const yearBuilt = Number(desc.year_built || 0);
+
+  let daysOnMarket = 1;
+  if (p.list_date) {
+    const listedMs = new Date(p.list_date).getTime();
+    if (!Number.isNaN(listedMs)) {
+      daysOnMarket = Math.max(0, Math.floor((Date.now() - listedMs) / (24 * 60 * 60 * 1000)));
+    }
+  }
+
+  const priceReduced = Math.abs(Number(p.price_reduced_amount || 0));
+  const previousPrice = priceReduced > 0 ? price + priceReduced : price;
+
+  // Use real Realtor.com AVM estimate when present; never invent inflated fake discounts
+  const rawEstimate = Number(p.estimate?.estimate || 0);
+  const zestimate = rawEstimate > 0 ? Math.round(rawEstimate) : price;
+
+  const stateBaseMedian = STATE_MEDIAN_SQFT.get(state) || 260;
+  const zipMedianPricePerSqft =
+    rawEstimate > 0 ? Math.round(rawEstimate / sqft) : stateBaseMedian;
+
+  const propertyType = formatPropertyTypeLabel(desc.type, desc.sub_type);
+  const title = street
+    ? `${beds} Bd ${propertyType} on ${street}`
+    : `${beds} Bd ${propertyType} in ${city}, ${state}`;
+
+  const savings = Math.max(0, zestimate - price);
+  const pctBelow = zestimate > 0 ? Math.round(((zestimate - price) / zestimate) * 100) : 0;
+
+  const images = [photo];
+  if (Array.isArray(p.photos)) {
+    for (const ph of p.photos) {
+      const upgraded = upgradeRealtorPhoto(ph?.href);
+      if (upgraded && !images.includes(upgraded)) images.push(upgraded);
+      if (images.length >= 6) break;
+    }
+  }
+
+  const signals = [propertyType, 'Verified Live MLS'];
+  if (priceReduced > 0) signals.push(`Price Cut $${Math.round(priceReduced / 1000)}k`);
+  if (pctBelow >= 10) signals.push(`${pctBelow}% Below Market Est.`);
+  if (flags.is_new_listing) signals.push('Just Listed');
+  if (flags.is_foreclosure) signals.push('Foreclosure');
+  if (flags.is_new_construction) signals.push('New Construction');
+  if (lotAcres >= 1) signals.push(`${lotAcres} Acre Lot`);
+  if (Number(p.photo_count) >= 25) signals.push(`${p.photo_count} MLS Photos`);
+
+  const brokerage = p.branding?.[0]?.name ? ` via ${p.branding[0].name}` : '';
+  const domText = daysOnMarket === 0 ? 'Listed today' : `Listed ${daysOnMarket}d ago`;
+  const savingsText =
+    savings >= 5000
+      ? ` Priced $${Math.round(savings / 1000)}k (${pctBelow}%) below its market estimate.`
+      : priceReduced >= 5000
+      ? ` Recently cut by $${Math.round(priceReduced / 1000)}k.`
+      : '';
+
+  const editorialNote = `${domText} in ${city}, ${state}${brokerage}.${savingsText} ${beds} bed, ${baths} bath ${propertyType.toLowerCase()} (${sqft.toLocaleString()} sqft) on ${lotAcres} acres.`;
+
+  return {
+    id: `realtor-${propId}`,
+    zpid: propId,
+    title,
+    address: street || `${city}, ${state}`,
+    city,
+    state,
+    zip,
+    region: inferRegion(state),
+    lat: Number(addr.coordinate?.lat ?? 39.8283) || 39.8283,
+    lng: Number(addr.coordinate?.lon ?? -98.5795) || -98.5795,
+    price,
+    previousPrice,
+    zestimate,
+    zipMedianPricePerSqft,
+    beds,
+    baths,
+    sqft,
+    lotAcres,
+    yearBuilt,
+    daysOnMarket,
+    status,
+    architecturalStyle: propertyType,
+    raritySignals: signals.slice(0, 4),
+    editorialNote,
+    zillowUrl: href,
+    images,
+    source: 'rapidapi-realtor',
+    marketKey,
+  };
+}
+
 /**
- * Quota-Smart Free-Tier RapidAPI Zillow Adapter
+ * Quota-Smart Free-Tier RapidAPI Live Listings Adapter
+ * - Supports Realty in US (Realtor.com live MLS) and RapidAPI Zillow hosts
  * - Rotates cleanly through all 50 US states (or custom PENNYLANE_MARKETS)
- * - Accumulates real live listings across runs so even 2–8 free calls/day builds 1,000+ live homes
- * - Prunes any previously synced home in a re-fetched market once it leaves FOR_SALE (Under Contract)
+ * - Accumulates real live listings across runs while pruning homes that leave FOR_SALE (Under Contract)
  */
 async function fetchRapidApiZillow(existingListings, { dayIndex, liveReset }) {
-  const apiKey = process.env.ZILLOW_API_KEY;
-  const apiHost = process.env.ZILLOW_API_HOST || 'zillow-com1.p.rapidapi.com';
+  const apiKey = process.env.ZILLOW_API_KEY.trim();
+  const apiHost = (process.env.ZILLOW_API_HOST || 'zillow-com1.p.rapidapi.com').trim();
+  const isRealtyInUs = apiHost.toLowerCase().includes('realty-in-us');
+  const sourceTag = isRealtyInUs ? 'rapidapi-realtor' : 'rapidapi-zillow';
   const batchSize = Math.max(1, Math.min(50, Number(process.env.ZILLOW_BATCH_SIZE || 8)));
 
   const customMarkets = (process.env.PENNYLANE_MARKETS || '')
@@ -226,7 +409,7 @@ async function fetchRapidApiZillow(existingListings, { dayIndex, liveReset }) {
       ? customMarkets
       : ALL_50_STATES.map((s) => `${s.cities[0][0]}, ${s.state}`);
 
-  const startIdx = (dayIndex * batchSize) % allMarkets.length;
+  const startIdx = liveReset ? 0 : (dayIndex * batchSize) % allMarkets.length;
   const batchMarkets = [];
   for (let i = 0; i < Math.min(batchSize, allMarkets.length); i++) {
     batchMarkets.push(allMarkets[(startIdx + i) % allMarkets.length]);
@@ -235,22 +418,43 @@ async function fetchRapidApiZillow(existingListings, { dayIndex, liveReset }) {
   const fetched = [];
   const refreshedMarketKeys = new Set();
   const fetchedIds = new Set();
+  let lastRemaining = null;
 
-  for (const location of batchMarkets) {
+  for (let idx = 0; idx < batchMarkets.length; idx++) {
+    const location = batchMarkets[idx];
     const marketKey = location.toLowerCase();
-    const url = buildRapidApiRequest(apiHost, location);
+    const reqSpec = buildRapidApiRequest(apiHost, location);
+
+    // Polite pacing to stay comfortably under RapidAPI per-second limits
+    if (idx > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 220));
+    }
 
     try {
-      const res = await fetch(url, {
-        headers: {
-          'X-RapidAPI-Key': apiKey,
-          'X-RapidAPI-Host': apiHost,
-        },
+      const headers = {
+        'X-RapidAPI-Key': apiKey,
+        'X-RapidAPI-Host': apiHost,
+      };
+      if (reqSpec.body) {
+        headers['Content-Type'] = 'application/json';
+      }
+
+      const res = await fetch(reqSpec.url, {
+        method: reqSpec.method,
+        headers,
+        body: reqSpec.body,
       });
+
+      const rem = res.headers.get('x-ratelimit-requests-remaining');
+      if (rem !== null) lastRemaining = rem;
 
       if (!res.ok) {
         const errText = await res.text().catch(() => '');
         console.warn(`[RapidAPI] ${location} returned HTTP ${res.status}: ${errText.slice(0, 140)}`);
+        if (res.status === 429) {
+          console.warn('[RapidAPI] Rate/quota limit hit — stopping batch early to protect quota.');
+          break;
+        }
         continue;
       }
 
@@ -260,7 +464,9 @@ async function fetchRapidApiZillow(existingListings, { dayIndex, liveReset }) {
 
       let addedForMarket = 0;
       for (const rawProp of props) {
-        const normalized = normalizeRapidApiProperty(rawProp, location, marketKey);
+        const normalized = isRealtyInUs
+          ? normalizeRealtyInUsProperty(rawProp, location, marketKey)
+          : normalizeRapidApiProperty(rawProp, location, marketKey);
         if (!normalized || fetchedIds.has(normalized.id)) continue;
         fetchedIds.add(normalized.id);
         fetched.push(normalized);
@@ -273,6 +479,10 @@ async function fetchRapidApiZillow(existingListings, { dayIndex, liveReset }) {
     }
   }
 
+  if (lastRemaining !== null) {
+    console.log(`[RapidAPI] Monthly free quota remaining: ${lastRemaining}`);
+  }
+
   // Keep existing REAL RapidAPI listings from markets not queried in this batch;
   // prune any listing from a refreshed market that disappeared from FOR_SALE as UNDER_CONTRACT!
   const retainedLive = [];
@@ -280,7 +490,7 @@ async function fetchRapidApiZillow(existingListings, { dayIndex, liveReset }) {
 
   if (!liveReset) {
     for (const prev of existingListings) {
-      if (prev.source !== 'rapidapi-zillow') continue;
+      if (prev.source !== sourceTag) continue;
       if (fetchedIds.has(prev.id)) continue;
 
       const prevKey = (prev.marketKey || `${prev.city}, ${prev.state}`).toLowerCase();
@@ -292,14 +502,9 @@ async function fetchRapidApiZillow(existingListings, { dayIndex, liveReset }) {
     }
   }
 
-  const watchlist = await readJson('data/watchlist.json', []);
-  const liveWatchlist = watchlist.filter(
-    (w) => typeof w.zillowUrl === 'string' && w.zillowUrl.includes('/homedetails/')
-  );
-
   return {
     provider: `rapidapi:${apiHost}`,
-    candidates: [...fetched, ...retainedLive, ...liveWatchlist, ...contractedUpdates],
+    candidates: [...fetched, ...retainedLive, ...contractedUpdates],
     fullPool: [...fetched, ...retainedLive],
   };
 }

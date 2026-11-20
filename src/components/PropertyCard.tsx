@@ -104,6 +104,9 @@ export function PropertyCard({
   };
 
   const pctBelowZest = Math.max(0, -listing.zestimateDeltaPct);
+  const isRealtor = listing.zillowUrl.includes('realtor.com');
+  const sourceLabel = isRealtor ? 'Realtor.com' : 'Zillow';
+  const estLabel = isRealtor ? 'Est.' : 'Zest.';
 
   return (
     <article
@@ -254,9 +257,9 @@ export function PropertyCard({
             </span>
             <span
               className="text-[11.5px] font-medium text-slate-400 tabular-nums"
-              title={`Zestimate: ${formatCurrency(listing.zestimate)}`}
+              title={`${isRealtor ? 'Market Estimate' : 'Zestimate'}: ${formatCurrency(listing.zestimate)}`}
             >
-              Zest. <span className="line-through">{formatPriceCompact(listing.zestimate)}</span>
+              {estLabel} <span className="line-through">{formatPriceCompact(listing.zestimate)}</span>
             </span>
           </div>
 
@@ -311,10 +314,11 @@ export function PropertyCard({
           </p>
         )}
 
-        {/* Row 4: Specs & Zillow Link */}
+        {/* Row 4: Specs & Live Listing Link */}
         <div className="mt-1.5 flex items-center justify-between gap-2 text-[11.5px] text-slate-500 tabular-nums">
           <span>
-            {listing.beds} bd · {listing.baths} ba · {formatNumber(listing.sqft)} sf · {listing.yearBuilt}
+            {listing.beds} bd · {listing.baths} ba · {formatNumber(listing.sqft)} sf
+            {listing.yearBuilt > 0 ? ` · ${listing.yearBuilt}` : ''}
           </span>
           <a
             href={listing.zillowUrl}
@@ -322,7 +326,7 @@ export function PropertyCard({
             rel="noopener noreferrer"
             className="inline-flex shrink-0 items-center gap-0.5 font-semibold text-slate-600 transition-colors hover:text-indigo-600"
           >
-            <span>Zillow</span>
+            <span>{sourceLabel}</span>
             <ArrowUpRight className="h-3 w-3" />
           </a>
         </div>
