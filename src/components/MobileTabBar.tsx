@@ -37,7 +37,7 @@ export function MobileTabBar({
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           className={`flex min-h-[48px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl text-[10.5px] font-semibold transition-colors ${
-            isExplore ? 'text-blue-700' : 'text-slate-500'
+            isExplore ? 'text-emerald-700' : 'text-slate-500'
           }`}
         >
           <Compass className="h-5 w-5" strokeWidth={isExplore ? 2.25 : 1.8} />
@@ -61,9 +61,9 @@ export function MobileTabBar({
         <button
           type="button"
           onClick={onOpenAlerts}
-          className="flex min-h-[48px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl text-[10.5px] font-bold text-blue-700"
+          className="flex min-h-[48px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl text-[10.5px] font-bold text-emerald-700"
         >
-          <span className="flex h-7 w-11 items-center justify-center rounded-full bg-gradient-to-r from-blue-700 to-indigo-600 text-white shadow-sm shadow-blue-700/25">
+          <span className="flex h-7 w-11 items-center justify-center rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-sm shadow-emerald-600/25">
             <BellRing className="h-4 w-4" strokeWidth={2.2} />
           </span>
           <span>Alerts</span>
@@ -113,3 +113,4 @@ export function MobileTabBar({
     </nav>
   );
 }
+

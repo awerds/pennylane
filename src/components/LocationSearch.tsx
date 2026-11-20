@@ -152,15 +152,15 @@ export function LocationSearch({
       <div
         className={`group flex min-h-[44px] items-center rounded-full border px-3.5 transition-all md:min-h-[40px] md:h-10 ${
           isBlueGlass
-            ? 'border-white/25 bg-white/14 backdrop-blur-md hover:border-white/40 hover:bg-white/20 focus-within:border-white focus-within:bg-white focus-within:shadow-lg focus-within:shadow-blue-950/25'
-            : 'border-slate-200/90 bg-slate-100/75 hover:border-blue-300/80 hover:bg-white focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/15'
+            ? 'border-white/25 bg-white/14 backdrop-blur-md hover:border-white/40 hover:bg-white/20 focus-within:border-white focus-within:bg-white focus-within:shadow-lg focus-within:shadow-emerald-950/25'
+            : 'border-slate-200/90 bg-slate-100/75 hover:border-emerald-300/80 hover:bg-white focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/15'
         }`}
       >
         <Search
           className={`h-4 w-4 shrink-0 transition-colors ${
             isBlueGlass
-              ? 'text-sky-100/85 group-focus-within:text-blue-700'
-              : 'text-slate-400 group-focus-within:text-blue-600'
+              ? 'text-emerald-100/85 group-focus-within:text-emerald-700'
+              : 'text-slate-400 group-focus-within:text-emerald-600'
           }`}
           strokeWidth={2}
         />
@@ -186,7 +186,7 @@ export function LocationSearch({
           placeholder="Search city, state, or ZIP..."
           className={`w-full bg-transparent px-2.5 text-base focus:outline-none md:text-[13.5px] ${
             isBlueGlass
-              ? 'text-white placeholder:text-sky-100/75 group-focus-within:text-slate-950 group-focus-within:placeholder:text-slate-400'
+              ? 'text-white placeholder:text-emerald-50/75 group-focus-within:text-slate-950 group-focus-within:placeholder:text-slate-400'
               : 'text-slate-950 placeholder:text-slate-400'
           }`}
         />
@@ -202,7 +202,7 @@ export function LocationSearch({
             aria-label="Clear location search"
             className={`flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors ${
               isBlueGlass
-                ? 'bg-white/25 text-white hover:bg-white hover:text-blue-950 group-focus-within:bg-slate-200 group-focus-within:text-slate-700'
+                ? 'bg-white/25 text-white hover:bg-white hover:text-emerald-950 group-focus-within:bg-slate-200 group-focus-within:text-slate-700'
                 : 'bg-slate-200/90 text-slate-600 hover:bg-slate-950 hover:text-white'
             }`}
           >

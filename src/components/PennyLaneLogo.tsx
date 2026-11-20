@@ -103,8 +103,8 @@ export function PennyLaneLogo({
           <span
             className={
               variant === 'dark'
-                ? 'bg-gradient-to-r from-sky-200 via-amber-200 to-rose-300 bg-clip-text font-semibold tracking-[-0.04em] text-transparent'
-                : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-rose-500 bg-clip-text font-semibold tracking-[-0.04em] text-transparent'
+                ? 'bg-gradient-to-r from-emerald-200 via-amber-200 to-teal-100 bg-clip-text font-semibold tracking-[-0.04em] text-transparent'
+                : 'bg-gradient-to-r from-emerald-600 via-teal-600 to-amber-500 bg-clip-text font-semibold tracking-[-0.04em] text-transparent'
             }
           >
             steals

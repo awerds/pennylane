@@ -52,12 +52,12 @@
     min-height: 100dvh;
     background-color: var(--surface);
     background-image:
-      radial-gradient(65% 360px at 18% 0%, rgba(14, 165, 233, 0.1), transparent 72%),
-      radial-gradient(60% 340px at 84% 0%, rgba(37, 99, 235, 0.1), transparent 72%),
+      radial-gradient(65% 360px at 18% 0%, rgba(16, 185, 129, 0.11), transparent 72%),
+      radial-gradient(60% 340px at 84% 0%, rgba(13, 148, 136, 0.1), transparent 72%),
       radial-gradient(45% 260px at 50% 5%, rgba(245, 158, 11, 0.055), transparent 70%);
     background-repeat: no-repeat;
     color: var(--ink);
-    accent-color: #1d4ed8;
+    accent-color: #059669;
     overflow-wrap: break-word;
     -webkit-tap-highlight-color: transparent;
   }
@@ -158,7 +158,7 @@
 }
 
 /* Brand-consistent checkbox fallback when accent-color is unsupported */
-@supports not (accent-color: #1d4ed8) {
+@supports not (accent-color: #059669) {
   .pl-native-check {
     position: absolute !important;
     clip-path: inset(50%) !important;
@@ -190,13 +190,13 @@
   }
 
   .pl-native-check:focus-visible + span::before {
-    outline: 2px solid #1d4ed8;
+    outline: 2px solid #059669;
     outline-offset: 2px;
   }
 
   .pl-native-check:checked + span::before {
-    background-color: #1d4ed8;
-    border-color: #1d4ed8;
+    background-color: #059669;
+    border-color: #059669;
   }
 
   .pl-native-check:checked + span::after {

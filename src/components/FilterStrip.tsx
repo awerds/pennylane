@@ -132,7 +132,7 @@ export function FilterStrip({
   return (
     <div
       ref={stripRef}
-      className="w-full max-w-full border-b border-sky-200/60 bg-sky-50/88 backdrop-blur-xl"
+      className="w-full max-w-full border-b border-emerald-200/60 bg-emerald-50/82 backdrop-blur-xl"
     >
       {/* MOBILE (< md): Constrained min-w-0 horizontal swipeable chip rail — ZERO overhang */}
       <div className="flex w-full min-w-0 items-center md:hidden">
