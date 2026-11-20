@@ -52,8 +52,7 @@ export function TopNav({
               onClick={onResetHome}
               className="flex min-w-0 flex-1 cursor-pointer items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-200 md:flex-initial"
             >
-              <PennyLaneLogo size="sm" variant="dark" showWordmark={false} className="md:hidden" />
-              <PennyLaneLogo size="md" variant="dark" showWordmark={false} className="hidden md:inline-flex" />
+              <PennyLaneLogo size="md" variant="dark" showWordmark={false} />
 
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
