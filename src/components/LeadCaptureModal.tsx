@@ -170,7 +170,7 @@ export function LeadCaptureModal({
             {tab === 'property-tour'
               ? 'Tour This Property or Request Local Comps'
               : tab === 'agent-partner'
-              ? 'Partner With PennyLane for Exclusive Leads'
+              ? 'Partner With CurbSteals for Exclusive Leads'
               : 'Get High-Value Finds Before They Go Under Contract'}
           </h2>
         </div>
@@ -509,3 +509,4 @@ export function LeadCaptureModal({
     </dialog>
   );
 }
+

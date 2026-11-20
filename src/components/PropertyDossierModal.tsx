@@ -329,7 +329,7 @@ export function PropertyDossierModal({
                 {/* PennyLane Index Breakdown */}
                 <div className="mt-4 rounded-2xl border border-slate-200/80 p-4">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs font-semibold text-slate-950">PennyLane Score</span>
+                    <span className="text-xs font-semibold text-slate-950">CurbSteals Score</span>
                     <span className="text-base font-bold text-indigo-600 tabular-nums">
                       {listing.scores.overall}
                       <span className="text-xs font-normal text-slate-400"> / 100</span>

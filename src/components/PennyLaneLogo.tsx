@@ -1,6 +1,6 @@
 import { useId } from 'react';
 
-interface PennyLaneLogoProps {
+interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'light' | 'dark';
   showWordmark?: boolean;
@@ -14,16 +14,16 @@ const SIZE_MAP = {
 };
 
 /**
- * PennyLane Signature Architectural Monogram
- * Interlocks a crisp architectural "L" spine/floorplate with a cantilevered
- * coral-amber "P" arch separated by a precision Swiss reveal gap.
+ * CurbSteals Signature Architectural CS Monogram
+ * Pairs a precision alabaster-white architectural "C" arch with a cantilevered
+ * metallic coral-to-gold "S" separated by a clean Swiss reveal gap.
  */
 export function PennyLaneLogo({
   size = 'md',
   variant = 'light',
   showWordmark = true,
   className = '',
-}: PennyLaneLogoProps) {
+}: BrandLogoProps) {
   const uid = useId().replace(/:/g, '');
   const dims = SIZE_MAP[size];
 
@@ -45,7 +45,7 @@ export function PennyLaneLogo({
             <stop offset="50%" stopColor="#7DD3FC" stopOpacity="0.22" />
             <stop offset="100%" stopColor="#000000" stopOpacity="0.45" />
           </linearGradient>
-          <linearGradient id={`${uid}-arch`} x1="21" y1="10" x2="38" y2="30" gradientUnits="userSpaceOnUse">
+          <linearGradient id={`${uid}-s`} x1="26" y1="11" x2="39" y2="37" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#FB7185" />
             <stop offset="50%" stopColor="#F97316" />
             <stop offset="100%" stopColor="#FBBF24" />
@@ -75,14 +75,17 @@ export function PennyLaneLogo({
           strokeWidth="1"
         />
 
-        <path d="M12 11H19V31.5H36V37H12V11Z" fill="#FFFFFF" />
+        {/* Precision architectural C */}
+        <path
+          d="M24.5 11H19.5C13.2 11 9.5 15.5 9.5 24C9.5 32.5 13.2 37 19.5 37H24.5V31.2H20C16.8 31.2 15.2 28.5 15.2 24C15.2 19.5 16.8 16.8 20 16.8H24.5V11Z"
+          fill="#FFFFFF"
+        />
 
+        {/* Cantilevered metallic coral-gold S */}
         <path
           className="pl-logo-arch"
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M21.5 11H28C33.8 11 37.5 14.5 37.5 19.75C37.5 25 33.8 28.5 28 28.5H21.5V11ZM26.2 16V23.5H27.7C30.4 23.5 32 22 32 19.75C32 17.5 30.4 16 27.7 16H26.2Z"
-          fill={`url(#${uid}-arch)`}
+          d="M38 11H31C27.8 11 26 13.1 26 16.2V18.5C26 21.4 27.8 23.3 31 23.8L33.8 24.3C34.8 24.5 35.3 25 35.3 26.1V28.6C35.3 30.4 34.2 31.4 32.2 31.4H26.5V37H33.2C36.8 37 38.8 34.7 38.8 31.2V28.3C38.8 25.1 37.1 23.1 33.6 22.5L30.8 22C29.7 21.8 29.2 21.2 29.2 20.1V18.2C29.2 16.9 30.1 16.2 31.7 16.2H38V11Z"
+          fill={`url(#${uid}-s)`}
         />
       </svg>
 
@@ -95,7 +98,7 @@ export function PennyLaneLogo({
               variant === 'dark' ? 'text-white' : 'text-slate-950'
             }`}
           >
-            penny
+            curb
           </span>
           <span
             className={
@@ -104,7 +107,7 @@ export function PennyLaneLogo({
                 : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-rose-500 bg-clip-text font-semibold tracking-[-0.04em] text-transparent'
             }
           >
-            lane
+            steals
           </span>
         </span>
       )}

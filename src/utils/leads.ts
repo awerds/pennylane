@@ -160,7 +160,7 @@ export function exportLeadsCsv(leads: LeadRecord[]): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `pennylane-leads-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `curbsteals-leads-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -240,3 +240,4 @@ export function attachAccessibleValidation(form: HTMLFormElement): () => void {
     form.removeEventListener('invalid', onInvalid, true);
   };
 }
+

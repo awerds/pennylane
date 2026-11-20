@@ -51,9 +51,9 @@ export function TopNav({
           <div className="hidden sm:block">
             <div className="flex items-center gap-2.5">
               <span className="font-brand text-[19px] leading-none select-none">
-                <span className="font-bold tracking-[-0.045em] text-white">penny</span>
+                <span className="font-bold tracking-[-0.045em] text-white">curb</span>
                 <span className="bg-gradient-to-r from-sky-200 via-amber-200 to-rose-300 bg-clip-text font-semibold tracking-[-0.04em] text-transparent">
-                  lane
+                  steals
                 </span>
               </span>
 
