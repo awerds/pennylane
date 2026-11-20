@@ -58,7 +58,7 @@ export function TopNav({
                 <div className="flex items-center gap-2">
                   <span className="font-brand text-[17.5px] leading-none select-none md:text-[19px]">
                     <span className="font-bold tracking-[-0.045em] text-white">curb</span>
-                    <span className="bg-gradient-to-r from-emerald-200 via-amber-200 to-teal-100 bg-clip-text font-semibold tracking-[-0.04em] text-transparent">
+                    <span className="bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-100 bg-clip-text font-semibold tracking-[-0.04em] text-transparent">
                       steals
                     </span>
                   </span>
