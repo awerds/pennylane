@@ -182,7 +182,7 @@ export function PropertyCard({
           </span>
 
           {(listing.isNewToday || listing.daysOnMarket === 0) && (
-            <span className="rounded-full bg-rose-500/95 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm backdrop-blur-md">
+            <span className="rounded-full bg-amber-400/95 px-2.5 py-1 text-[11px] font-bold text-emerald-950 shadow-sm ring-1 ring-yellow-200/70 backdrop-blur-md">
               New
             </span>
           )}

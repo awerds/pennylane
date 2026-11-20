@@ -188,9 +188,9 @@ export function categoryPillClasses(category: CategoryKey): string {
     return 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20';
   }
   if (category === 'new') {
-    return 'bg-rose-50 text-rose-700 ring-1 ring-rose-600/20';
+    return 'bg-yellow-100 text-emerald-950 ring-1 ring-amber-400/50';
   }
-  return 'bg-amber-50 text-amber-800 ring-1 ring-amber-600/20';
+  return 'bg-teal-50 text-teal-800 ring-1 ring-teal-600/20';
 }
 
 export function simulateNextDayClient(

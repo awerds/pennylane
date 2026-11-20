@@ -341,8 +341,8 @@ export function PropertyDossierModal({
                   <div className="mt-3 space-y-2.5">
                     {[
                       { label: 'Deal / Zestimate Value', value: listing.scores.deal, color: 'bg-emerald-500' },
-                      { label: 'Architectural Rarity', value: listing.scores.rarity, color: 'bg-amber-500' },
-                      { label: 'Market Freshness', value: listing.scores.freshness, color: 'bg-rose-500' },
+                      { label: 'Architectural Rarity', value: listing.scores.rarity, color: 'bg-teal-500' },
+                      { label: 'Market Freshness', value: listing.scores.freshness, color: 'bg-amber-400' },
                     ].map((row) => (
                       <div key={row.label}>
                         <div className="flex justify-between text-[11.5px] tabular-nums">

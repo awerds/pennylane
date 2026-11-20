@@ -54,8 +54,8 @@ const LENS_TABS: Array<{
   {
     key: 'new',
     label: 'Just Listed',
-    activeClass: 'bg-rose-500 text-white shadow-sm shadow-rose-500/25',
-    dotClass: 'bg-rose-500',
+    activeClass: 'bg-amber-400 text-emerald-950 shadow-sm shadow-amber-400/30',
+    dotClass: 'bg-amber-400',
   },
 ];
 
